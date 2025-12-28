@@ -1,15 +1,12 @@
 package com.example.task_auth.auth;
 
-import com.example.task_auth.dto.UserDTO;
 import com.example.task_auth.dto.UserLoginDTO;
-import com.example.task_auth.exceptions.exception.SignupException;
+import com.example.task_auth.exceptions.exception.UnauthorizedException;
 import com.example.task_auth.utils.Token;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,9 +19,8 @@ public class AuthController {
     @PostMapping("/login")
     public Token update(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new SignupException(bindingResult.getAllErrors());
+            throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
-
         return authService.login(userLoginDTO);
     }
 

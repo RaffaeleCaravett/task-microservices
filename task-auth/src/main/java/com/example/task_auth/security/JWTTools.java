@@ -1,12 +1,10 @@
 package com.example.task_auth.security;
 
-import com.example.task_auth.dto.UserDTO;
 import com.example.task_auth.exceptions.exception.UnauthorizedException;
 import com.example.task_auth.utils.Token;
 import com.example.task_auth.utils.TokenType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

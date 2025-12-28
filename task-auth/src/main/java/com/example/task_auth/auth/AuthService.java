@@ -1,15 +1,12 @@
 package com.example.task_auth.auth;
 
-import com.example.task_auth.dto.UserDTO;
 import com.example.task_auth.dto.UserLoginDTO;
 import com.example.task_auth.exceptions.exception.UnauthorizedException;
 import com.example.task_auth.security.JWTTools;
 import com.example.task_auth.user.UserGateway;
 import com.example.task_auth.utils.Token;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 @Service
 @RequiredArgsConstructor

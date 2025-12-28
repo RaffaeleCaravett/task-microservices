@@ -1,10 +1,7 @@
 package com.example.task_auth.user;
 
-import com.example.task_auth.dto.UserDTO;
-import com.example.task_auth.exceptions.exception.SignupException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
