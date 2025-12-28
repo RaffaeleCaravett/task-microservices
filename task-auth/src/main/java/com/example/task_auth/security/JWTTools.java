@@ -1,57 +1,68 @@
 package com.example.task_auth.security;
 
+import com.example.task_auth.dto.UserDTO;
 import com.example.task_auth.exceptions.exception.UnauthorizedException;
-import com.example.task_auth.user.User;
-import com.example.task_auth.user.UserRepository;
 import com.example.task_auth.utils.Token;
+import com.example.task_auth.utils.TokenType;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import io.jsonwebtoken.Jwts;
 
 @Component
 public class JWTTools {
     @Value("${spring.jwt.secret}")
     private String secret;
-    @Autowired
-    UserRepository userRepository;
 
-    public Token createTokens(User user){
-        String accessToken = Jwts.builder().setSubject(String.valueOf(user.getId()))
+    public Token createTokens(Long id) {
+
+        Map<String, Object> accessMap = new HashMap<>();
+        accessMap.put("type", TokenType.ACCESS);
+        Map<String, Object> refreshMap = new HashMap<>();
+        refreshMap.put("type", TokenType.REFRESH);
+
+        String accessToken = Jwts.builder().setSubject(String.valueOf(id))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60*10))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .addClaims(accessMap)
+                .setIssuer("task-auth")
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes())).compact();
 
-        String refreshToken = Jwts.builder().setSubject(String.valueOf(user.getId()))
+        String refreshToken = Jwts.builder().setSubject(String.valueOf(id))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*60 *24 *7))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24 * 7))
+                .addClaims(refreshMap)
+                .setIssuer("task-auth")
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes())).compact();
 
-        Token token = new Token(accessToken,refreshToken);
-        return token;
+        return new Token(accessToken, refreshToken);
     }
 
-    public User verifyToken(String token){
+
+    public Token verifyRefreshToken(String token) {
         try {
-            Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
-                    .build().parse(token).getBody();
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
+            if (!TokenType.REFRESH.name().equals(claims.get("type")) || !"task-auth".equals(claims.getIssuer())) {
+                throw new UnauthorizedException("Accedi nuovamente.");
+            }
             String userId = claims.getSubject();
-            return userRepository.findById(Long.valueOf(userId)).get();
-        }catch (Exception e){
-            throw new UnauthorizedException("Il token non è valido! Per favore effettua nuovamente il login o refresha la pagina!");
+
+            Token token1 = this.createTokens(Long.valueOf(userId));
+            token1.setRefreshToken(token);
+            return token1;
+        } catch (Exception e) {
+            throw new UnauthorizedException("Accedi nuovamente.");
         }
-    }
-    public String extractIdFromToken(String token){
-        return  Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
-                .build().parseClaimsJws(token).getBody().getSubject();
     }
 }

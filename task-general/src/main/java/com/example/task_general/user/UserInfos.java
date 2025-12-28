@@ -1,4 +1,4 @@
-package com.example.task_auth.utils;
+package com.example.task_general.user;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,9 +9,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.boot.internal.Abstract;
-
-import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -19,13 +16,12 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @MappedSuperclass
 @SuperBuilder(toBuilder=true)
-public abstract class UserMusts {
+public abstract class UserInfos {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private LocalDate createdAt;
-    private LocalDate deletedAt;
+    private String createdAt;
+    private String deleteddAt;
     private Boolean isActive;
     private Boolean isConfirmed;
-    private Role role;
 }
