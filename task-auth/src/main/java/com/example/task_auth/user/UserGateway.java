@@ -21,7 +21,7 @@ public class UserGateway {
                 "email", email,
                 "password", password
         );
-        return restTemplate.postForEntity(endpoint + "/user/email",
+        return restTemplate.postForEntity(endpoint + "/auth/email",
                 body, Long.class).getBody();
     }
 }
