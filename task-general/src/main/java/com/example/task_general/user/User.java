@@ -1,13 +1,10 @@
 package com.example.task_general.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.MappedSuperclass;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,13 +18,13 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@MappedSuperclass
 public class User extends UserInfos implements UserDetails {
 
     private String nome;
     private String cognome;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
     private Role role;
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.task_general.user;
 
+import com.example.task_general.auth.AuthService;
 import com.example.task_general.exceptions.UnauthorizedException;
 import com.example.task_general.user.dto.UserLoginDTO;
 import com.example.task_general.user.dto.UserSignupDTO;
@@ -15,23 +16,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/user")
 @RequiredArgsConstructor
 public class UserController {
-
-    private final UserService userService;
-
-    @PostMapping("/email")
-    public Long getUserByEmail(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
-        }
-        return userService.findByEmail(userLoginDTO);
-    }
-
-    @PostMapping("/signup")
-    public User getUserByEmail(@RequestBody @Valid UserSignupDTO userSignup, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
-        }
-        return userService.signup(userSignup);
-    }
 
 }
