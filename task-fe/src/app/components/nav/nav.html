@@ -1,0 +1,126 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+  <div class="container">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">
+      <img
+        src="/assets/logo/logo.png"
+        width="80"
+        height="80"
+        class="d-inline-block align-top"
+        alt=""
+      />
+    </a>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <li class="nav-item">
+        <a class="nav-link fw-semibold" href="#"
+          ><button class="btn fw-bold">
+            <h2>Taskmaster</h2>
+          </button></a
+        >
+      </li>
+    </ul>
+    <!-- Mobile toggle -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Links -->
+    @if (authService.getIsLoggedIn()) {
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold" href="#">Dashboard</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Task</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Progetti</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Calendario</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="#">Team</a>
+        </li>
+      </ul>
+
+      <!-- Right actions -->
+      <div class="d-flex align-items-center gap-2">
+        <!-- Search (optional) -->
+        <form class="d-none d-lg-flex">
+          <input
+            class="form-control form-control-sm"
+            type="search"
+            placeholder="Cerca task..."
+            aria-label="Search"
+          />
+        </form>
+
+        <!-- User menu -->
+        <div class="dropdown">
+          <button
+            class="btn btn-outline-secondary btn-sm dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            Mario Rossi
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" href="#">Profilo</a></li>
+            <li><a class="dropdown-item" href="#">Impostazioni</a></li>
+            <li><hr class="dropdown-divider" /></li>
+            <li><a class="dropdown-item text-danger" href="#">Logout</a></li>
+          </ul>
+        </div>
+
+        <!-- CTA -->
+        <a href="#" class="btn btn-primary btn-sm"> + Nuovo task </a>
+      </div>
+    </div>
+    }@else{
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link fw-semibold"
+            ><button
+              class="btn"
+              routerLink="home/login"
+              routerLinkActive="text-info fw-bold"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              Login
+            </button></a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link"
+            ><button
+              class="btn"
+              routerLink="home/signup"
+              routerLinkActive="text-info fw-bold"
+              [routerLinkActiveOptions]="{ exact: true }"
+            >
+              Signup
+            </button></a
+          >
+        </li>
+      </ul>
+    </div>
+    }
+  </div>
+</nav>

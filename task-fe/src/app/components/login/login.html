@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-12">
+    <p class="h2 fw-bold">Access the platform</p>
+    <form [formGroup]="loginForm" class="m-auto py-5 row text-start">
+      <label for="Email" class="py-3 fw-bold">Email</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">@</span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Email"
+          aria-label="Email"
+          aria-describedby="basic-addon1"
+          formControlName="email"
+        />
+      </div>
+      <label for="Password" class="py-3 fw-bold">Password</label>
+      <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1"><i class="pi pi-key"></i></span>
+        <input
+          type="password"
+          class="form-control"
+          placeholder="Password"
+          aria-label="Password"
+          aria-describedby="basic-addon1"
+          formControlName="password"
+        />
+      </div>
+    </form>
+    <button class="btn btn-outline-primary shadow-sm mb-5" pTooltip="Signin">Access</button>
+    <hr class="w-50 m-auto" />
+    <p class="h5 pt-5 pb-3">or</p>
+    <button class="btn btn-outline-warning shadow-sm" pTooltip="Go to signup" (click)="goToSignup()">
+      Register
+    </button>
+  </div>
+</div>

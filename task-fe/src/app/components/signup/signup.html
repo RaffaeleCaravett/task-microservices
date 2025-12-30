@@ -1,0 +1,172 @@
+<div class="row text-start">
+  <form [formGroup]="signupForm" class="row w-75 m-auto">
+    <div class="col-md-12 py-3">
+      <h2>Dati generali</h2>
+    </div>
+    <div class="col-md-6">
+      <label for="ragioneSociale" class="py-2 fw-bold"> Ragione sociale*</label>
+      <input type="text" formControlName="ragioneSociale" class="form-control" />
+      @if(signupForm.controls['ragioneSociale'].touched&&signupForm.controls['ragioneSociale'].invalid){
+      <p class="text-danger">Campo obbligatorio</p>
+      }
+    </div>
+    <div class="col-md-6">
+      <label for="partitaIva" class="py-2 fw-bold">Partita Iva*</label>
+      <input type="text" formControlName="partitaIva" class="form-control" />
+      @if(signupForm.controls['partitaIva'].touched&&signupForm.controls['partitaIva'].hasError('required')){
+      <p class="text-danger">Campo obbligatorio</p>
+      }@else if(signupForm.controls['partitaIva'].touched
+      &&signupForm.controls['partitaIva'].hasError('pattern')){
+      <p class="text-danger">Inserisci una partita iva valida</p>
+      }
+    </div>
+    <div class="col-md-12">
+      <label for="formaGiuridica" class="py-2 fw-bold"> Forma giuridica*</label>
+      <select formControlName="formaGiuridica" class="form-select"></select>
+      @if(signupForm.controls['formaGiuridica'].touched&&signupForm.controls['formaGiuridica'].invalid){
+      <p class="text-danger">Campo obbligatorio</p>
+      }
+    </div>
+    <div class="col-md-12">
+      <label for="paeseDiRegistrazione" class="py-2 fw-bold"> Paese di registrazione*</label>
+      <select formControlName="paeseDiRegistrazione" class="form-select"></select>
+      @if(signupForm.controls['paeseDiRegistrazione'].touched&&signupForm.controls['paeseDiRegistrazione'].invalid){
+      <p class="text-danger">Campo obbligatorio</p>
+      }
+    </div>
+    <form formGroupName="indirizzo" class="row p-0 m-0">
+      <div class="col-md-12 py-3">
+        <h2>Indirizzo</h2>
+      </div>
+      <div class="col-md-4">
+        <label for="regione" class="py-2 fw-bold">Regione*</label>
+        <select formControlName="regione" class="form-select"></select>
+        @if(signupForm.controls['regione'].touched&&signupForm.controls['regione'].invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
+      <div class="col-md-4">
+        <label for="citta" class="py-2 fw-bold">Città*</label>
+        <select formControlName="citta" class="form-select"></select>
+        @if(signupForm.controls['citta'].touched&&signupForm.controls['citta'].invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
+      <div class="col-md-4">
+        <label for="cap" class="py-2 fw-bold">Cap*</label>
+        <select formControlName="cap" class="form-select"></select>
+        @if(signupForm.controls['cap'].touched&&signupForm.controls['cap'].invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
+      <div class="col-12">
+        <label for="via" class="py-2 fw-bold">Via*</label>
+        <input type="text" class="form-control" formControlName="via" />
+        @if(signupForm.controls['via'].touched&&signupForm.controls['via'].invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
+    </form>
+    <div class="col-md-8">
+      <label for="settore" class="py-2 fw-bold">Settore*</label>
+      <select formControlName="settore" class="form-select"></select>
+      @if(signupForm.controls['settore'].touched&&signupForm.controls['settore'].invalid){
+      <p class="text-danger">Campo obbligatorio</p>
+      }
+    </div>
+    <div class="col-md-4">
+      <label for="dimensioniAzienda" class="py-2 fw-bold">Dimensioni*</label>
+      <select formControlName="dimensioniAzienda" class="form-select"></select>
+      @if(signupForm.controls['dimensioniAzienda'].touched&&signupForm.controls['dimensioniAzienda'].invalid){
+      <p class="text-danger">Campo obbligatorio</p>
+      }
+    </div>
+    <div class="col-md-12 py-4">
+      <div class="form-check">
+        <input
+          type="checkbox"
+          id="settore"
+          formControlName="differentWorkStation"
+          class="form-check-input mt-2"
+        />
+        <label for="settore" class="py-2 fw-bold">Sede operativa diversa dalla sede legale</label>
+      </div>
+    </div>
+    @if(signupForm.controls['differentWorkStation'].value){
+    <form formGroupName="sedeOperativa" class="row p-0 m-0">
+      <div class="col-md-12">
+        <h2>Sede operativa</h2>
+      </div>
+      <div class="col-md-4">
+        <label for="regione" class="py-2 fw-bold">Regione*</label>
+        <select formControlName="regione" class="form-select"></select>
+        @if(signupForm.controls['regione'].touched&&signupForm.controls['regione'].invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
+      <div class="col-md-4">
+        <label for="citta" class="py-2 fw-bold">Città*</label>
+        <select formControlName="citta" class="form-select"></select>
+        @if(signupForm.controls['citta'].touched&&signupForm.controls['citta'].invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
+      <div class="col-md-4">
+        <label for="cap" class="py-2 fw-bold">Cap*</label>
+        <select formControlName="cap" class="form-select"></select>
+        @if(signupForm.controls['cap'].touched&&signupForm.controls['cap'].invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
+      <div class="col-12">
+        <label for="via" class="py-2 fw-bold">Via*</label>
+        <input type="text" class="form-control" formControlName="via" />
+        @if(signupForm.controls['via'].touched&&signupForm.controls['via'].invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
+    </form>
+    }
+    <div class="col-md-12">
+      <label for="email" class="py-2 fw-bold">Email*</label>
+      <input formControlName="email" type="email" class="form-control" />
+      @if(signupForm.controls['email'].touched&&signupForm.controls['email'].invalid){
+      <p class="text-danger">Campo obbligatorio</p>
+      }
+    </div>
+    <div class="col-md-6">
+      <label for="password" class="py-2 fw-bold">Password*</label>
+      <input formControlName="password" class="form-control" type="password" />
+      @if(signupForm.controls['password'].touched&&signupForm.controls['password'].invalid){
+      <p class="text-danger">Campo obbligatorio</p>
+      }
+    </div>
+    <div class="col-md-6">
+      <label for="password" class="py-2 fw-bold">Ripeti password*</label>
+      <input formControlName="ripetiPassword" class="form-control" type="password" />
+      @if(signupForm.controls['ripetiPassword'].touched&&signupForm.controls['ripetiPassword'].invalid){
+      <p class="text-danger">Campo obbligatorio</p>
+      } @else if(signupForm.controls['password'].valid&&
+      signupForm.controls['password'].value!=signupForm.controls['ripetiPassword'].value){
+      <p class="text-danger">La password non combacia</p>
+      }
+    </div>
+  </form>
+  <div class="w-75 m-auto text-center py-4">
+    <button
+      class="btn btn-outline-primary"
+      (click)="signup()"
+      [disabled]="signupForm.invalid || passwordMismatch()"
+      pTooltip="Register"
+    >
+      Signup
+    </button>
+    <hr />
+    <p>or</p>
+  </div>
+  <div class="w-75 m-auto py-4 text-center">
+    <button class="btn btn-outline-warning" (click)="goToLogin()" pTooltip="Go to signin">
+      Login
+    </button>
+  </div>
+</div>
