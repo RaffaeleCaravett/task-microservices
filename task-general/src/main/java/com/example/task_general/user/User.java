@@ -1,5 +1,7 @@
 package com.example.task_general.user;
 
+import com.example.task_general.company.Company;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +28,9 @@ public class User extends UserInfos implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-
+    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "users")
+    @JsonIgnore
+    private List<Company> companies;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));

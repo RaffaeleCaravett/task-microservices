@@ -1,7 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
+import { AuthService } from '../../services/auth.service';
+import { formaGiuridica, nazione, settore } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-signup',
@@ -10,16 +18,17 @@ import { TooltipModule } from 'primeng/tooltip';
   styleUrl: './signup.scss',
 })
 export class SignupComponent implements OnInit {
-  router: Router = inject(Router);
   signupForm: FormGroup = new FormGroup({});
-
+  router: Router = inject(Router);
+  authService: AuthService = inject(AuthService);
+  formBuilder: FormBuilder = inject(FormBuilder);
   ngOnInit(): void {
-    this.signupForm = new FormGroup({
+    this.signupForm = this.formBuilder.group({
       ragioneSociale: new FormControl('', Validators.required),
       partitaIva: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]),
       formaGiuridica: new FormControl('', Validators.required),
-      paeseDiRegistrazione: new FormControl('', Validators.required),
-      indirizzo: new FormGroup({
+      indirizzo: this.formBuilder.group({
+        nazione: new FormControl('', Validators.required),
         citta: new FormControl('', Validators.required),
         cap: new FormControl('', Validators.required),
         regione: new FormControl('', Validators.required),
@@ -28,7 +37,8 @@ export class SignupComponent implements OnInit {
       settore: new FormControl('', Validators.required),
       dimensioniAzienda: new FormControl('', Validators.required),
       differentWorkStation: new FormControl(0),
-      sedeOperativa: new FormGroup({
+      sedeOperativa: this.formBuilder.group({
+        nazione: new FormControl('', Validators.required),
         citta: new FormControl(''),
         cap: new FormControl(''),
         regione: new FormControl(''),
@@ -48,6 +58,7 @@ export class SignupComponent implements OnInit {
         ),
       ]),
     });
+    this.getDatas();
   }
   signup() {}
 
@@ -58,5 +69,22 @@ export class SignupComponent implements OnInit {
   }
   goToLogin() {
     this.router.navigate(['home/login']);
+  }
+  getDatas() {
+    this.authService.getNazioni().subscribe({
+      next: (nazioni: nazione[]) => {
+        console.log(nazioni);
+      },
+    });
+    this.authService.getSettori().subscribe({
+      next: (nazioni: settore[]) => {
+        console.log(nazioni);
+      },
+    });
+    this.authService.getForme().subscribe({
+      next: (nazioni: formaGiuridica[]) => {
+        console.log(nazioni);
+      },
+    });
   }
 }

@@ -1,7 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Token } from '@angular/compiler';
 import { inject, Injectable } from '@angular/core';
-import { Company, CompanySignup, UserLogin } from '../interfaces/interfaces';
+import {
+  cap,
+  citta,
+  Company,
+  CompanySignup,
+  formaGiuridica,
+  nazione,
+  regione,
+  settore,
+  UserLogin,
+} from '../interfaces/interfaces';
 import { API_URL } from '../core/environment';
 import { Observable } from 'rxjs';
 
@@ -30,11 +40,28 @@ export class AuthService {
   public isOwner(): boolean {
     return this.user?.role == 'OWNER';
   }
-
-  public login(body: UserLogin): Observable<Token> {
-    return this.http.post<Token>(API_URL.auth + '/login', body);
-  }
   public signup(body: CompanySignup): Observable<Company> {
-    return this.http.post<Company>(API_URL.auth + 'company/signup', body);
+    return this.http.post<Company>(API_URL.company + '/company/signup', body);
+  }
+  public login(body: UserLogin): Observable<Token> {
+    return this.http.post<Token>(API_URL.auth + '/auth/login', body);
+  }
+  public getNazioni(): Observable<nazione[]> {
+    return this.http.get<nazione[]>(API_URL.general + '/indirizzo/nazioni');
+  }
+  public getRegioni(nazioneId: number): Observable<regione[]> {
+    return this.http.get<regione[]>(API_URL.general + '/indirizzo/regioni/' + nazioneId);
+  }
+  public getCitta(regioneId: number): Observable<citta[]> {
+    return this.http.get<citta[]>(API_URL.general + '/indirizzo/citta/' + regioneId);
+  }
+  public getCap(cittaId: number): Observable<cap[]> {
+    return this.http.get<cap[]>(API_URL.general + '/indirizzo/cap/' + cittaId);
+  }
+  public getSettori(): Observable<settore[]> {
+    return this.http.get<settore[]>(API_URL.general + '/indirizzo/settori');
+  }
+  public getForme(): Observable<formaGiuridica[]> {
+    return this.http.get<formaGiuridica[]>(API_URL.general + '/indirizzo/forme');
   }
 }

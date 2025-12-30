@@ -27,42 +27,43 @@
       <p class="text-danger">Campo obbligatorio</p>
       }
     </div>
-    <div class="col-md-12">
-      <label for="paeseDiRegistrazione" class="py-2 fw-bold"> Paese di registrazione*</label>
-      <select formControlName="paeseDiRegistrazione" class="form-select"></select>
-      @if(signupForm.controls['paeseDiRegistrazione'].touched&&signupForm.controls['paeseDiRegistrazione'].invalid){
-      <p class="text-danger">Campo obbligatorio</p>
-      }
-    </div>
+
     <form formGroupName="indirizzo" class="row p-0 m-0">
       <div class="col-md-12 py-3">
         <h2>Indirizzo</h2>
       </div>
+      <div class="col-md-12">
+        <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>
+        <select formControlName="nazione" class="form-select"></select>
+        @if(signupForm.controls['indirizzo'].get('nazione')?.touched&&signupForm.controls['indirizzo'].get('nazione')?.invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
       <div class="col-md-4">
         <label for="regione" class="py-2 fw-bold">Regione*</label>
         <select formControlName="regione" class="form-select"></select>
-        @if(signupForm.controls['regione'].touched&&signupForm.controls['regione'].invalid){
+        @if(signupForm.controls['indirizzo'].get('regione')?.touched&&signupForm.controls['indirizzo'].get('regione')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="citta" class="py-2 fw-bold">Città*</label>
         <select formControlName="citta" class="form-select"></select>
-        @if(signupForm.controls['citta'].touched&&signupForm.controls['citta'].invalid){
+        @if(signupForm.controls['indirizzo'].get('citta')?.touched&&signupForm.controls['indirizzo'].get('citta')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="cap" class="py-2 fw-bold">Cap*</label>
         <select formControlName="cap" class="form-select"></select>
-        @if(signupForm.controls['cap'].touched&&signupForm.controls['cap'].invalid){
+        @if(signupForm.controls['indirizzo'].get('cap')?.touched&&signupForm.controls['indirizzo'].get('cap')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-12">
         <label for="via" class="py-2 fw-bold">Via*</label>
         <input type="text" class="form-control" formControlName="via" />
-        @if(signupForm.controls['via'].touched&&signupForm.controls['via'].invalid){
+        @if(signupForm.controls['indirizzo'].get('via')?.touched&&signupForm.controls['indirizzo'].get('via')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
@@ -97,31 +98,38 @@
       <div class="col-md-12">
         <h2>Sede operativa</h2>
       </div>
+        <div class="col-md-12">
+        <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>
+        <select formControlName="nazione" class="form-select"></select>
+        @if(signupForm.controls['sedeOperativa'].get('nazione')?.touched&&signupForm.controls['sedeOperativa'].get('nazione')?.invalid){
+        <p class="text-danger">Campo obbligatorio</p>
+        }
+      </div>
       <div class="col-md-4">
         <label for="regione" class="py-2 fw-bold">Regione*</label>
         <select formControlName="regione" class="form-select"></select>
-        @if(signupForm.controls['regione'].touched&&signupForm.controls['regione'].invalid){
+        @if(signupForm.controls['sedeOperativa'].get('regione')?.touched&&signupForm.controls['sedeOperativa'].get('regione')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="citta" class="py-2 fw-bold">Città*</label>
         <select formControlName="citta" class="form-select"></select>
-        @if(signupForm.controls['citta'].touched&&signupForm.controls['citta'].invalid){
+        @if(signupForm.controls['sedeOperativa'].get('citta')?.touched&&signupForm.controls['sedeOperativa'].get('citta')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="cap" class="py-2 fw-bold">Cap*</label>
         <select formControlName="cap" class="form-select"></select>
-        @if(signupForm.controls['cap'].touched&&signupForm.controls['cap'].invalid){
+        @if(signupForm.controls['sedeOperativa'].get('cap')?.touched&&signupForm.controls['sedeOperativa'].get('cap')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-12">
         <label for="via" class="py-2 fw-bold">Via*</label>
         <input type="text" class="form-control" formControlName="via" />
-        @if(signupForm.controls['via'].touched&&signupForm.controls['via'].invalid){
+        @if(signupForm.controls['sedeOperativa'].get('via')?.touched&&signupForm.controls['sedeOperativa'].get('via')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>

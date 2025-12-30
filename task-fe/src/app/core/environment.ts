@@ -1,4 +1,5 @@
 export const API_URL = {
-  auth: 'localhost://3031',
-  general: 'localhost://3032',
+  auth: 'http://localhost:3031',
+  general: 'http://localhost:3032',
+  company: 'http://localhost:3033',
 };

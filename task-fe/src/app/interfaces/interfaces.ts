@@ -29,27 +29,27 @@ export interface CompanySignup {
 }
 export interface settore {
   id: number;
-  nome: string;
+  name: string;
 }
 export interface nazione {
   id: number;
-  nome: string;
+  name: string;
 }
 export interface regione {
   id: number;
-  nome: string;
+  name: string;
 }
 export interface citta {
   id: number;
-  nome: string;
+  name: string;
 }
 export interface cap {
   id: number;
-  cap: string;
+  name: string;
 }
 export interface formaGiuridica {
   id: number;
-  nome: string;
+  name: string;
 }
 export interface indirizzo {
   id: number;
