@@ -1,5 +1,7 @@
 package com.example.task_general.auth;
 
+import com.example.task_general.dtos.entitiesDTO.CompanyDTO;
+import com.example.task_general.dtos.entitiesDTO.CompanySignupDTO;
 import com.example.task_general.exceptions.UnauthorizedException;
 import com.example.task_general.user.User;
 import com.example.task_general.user.UserService;
@@ -20,11 +22,11 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public User signup(@RequestBody @Valid UserSignupDTO userSignup, BindingResult bindingResult) {
+    public CompanyDTO signup(@RequestBody @Valid CompanySignupDTO companySignupDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
-        return authService.signup(userSignup);
+        return authService.signup(companySignupDTO);
     }
 
     @PostMapping("/email")

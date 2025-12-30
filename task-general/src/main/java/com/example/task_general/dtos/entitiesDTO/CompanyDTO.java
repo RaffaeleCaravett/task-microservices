@@ -1,4 +1,4 @@
-package com.example.task_company.dtos.entitiesDTOS;
+package com.example.task_general.dtos.entitiesDTO;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -8,6 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class CompanyDTO {
     @NotNull(message = "Campo necessario: Id")
