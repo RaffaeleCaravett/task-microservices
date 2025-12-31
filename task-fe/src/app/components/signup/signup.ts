@@ -20,6 +20,7 @@ import {
   settore,
 } from '../../interfaces/interfaces';
 import { CurrencyPipe, NgClass } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-signup',
@@ -46,7 +47,12 @@ export class SignupComponent implements OnInit {
   step: number = 1;
   piani: piano[] = [];
   choosedPlan: piano | null = null;
+  paymentForm: FormGroup = new FormGroup({});
+  protected currentYear: number = 0;
+  protected paymentAccepted: boolean = false;
+  protected toastr: ToastrService = inject(ToastrService);
   ngOnInit(): void {
+    this.currentYear = Number(new Date().getFullYear().toString().substring(2, 4));
     this.signupForm = this.formBuilder.group({
       ragioneSociale: new FormControl('', Validators.required),
       partitaIva: new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{11}$/)]),
@@ -89,6 +95,32 @@ export class SignupComponent implements OnInit {
         Validators.required,
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/),
       ]),
+    });
+    this.paymentForm = new FormGroup({
+      cardNumber: new FormControl('', [
+        Validators.required,
+        Validators.minLength(19),
+        Validators.maxLength(19),
+        Validators.pattern(/^\d{4}( \d{4}){3}$/),
+      ]),
+      expirationMonth: new FormControl('', [
+        Validators.required,
+        Validators.max(12),
+        Validators.maxLength(2),
+        Validators.min(Number(0o1)),
+      ]),
+      expirationYear: new FormControl('', [
+        Validators.required,
+        Validators.max(99),
+        Validators.maxLength(2),
+        Validators.min(Number(this.currentYear)),
+      ]),
+      securityCode: new FormControl('', [
+        Validators.required,
+        Validators.min(111),
+        Validators.max(999),
+      ]),
+      cardHolder: new FormControl('', [Validators.required, Validators.pattern('^.+\\s.+$')]),
     });
     this.getDatas();
   }
@@ -250,5 +282,94 @@ export class SignupComponent implements OnInit {
       this.signupForm.controls['sedeOperativa'].get('via')?.setValue(null);
     }
     this.signupForm.updateValueAndValidity();
+  }
+
+  getNation(id: number, isSede?: boolean) {
+    if (isSede) return this.nazioniSede.filter((n) => (n.id = id))[0].name;
+    return this.nazioni.filter((n) => (n.id = id))[0].name;
+  }
+  getRegion(id: number, isSede?: boolean) {
+    if (isSede) return this.regioniSede.filter((n) => (n.id = id))[0].name;
+    return this.regioni.filter((n) => (n.id = id))[0].name;
+  }
+  getCitta(id: number, isSede?: boolean) {
+    if (isSede) return this.cittaSede.filter((n) => (n.id = id))[0].name;
+    return this.citta.filter((n) => (n.id = id))[0].name;
+  }
+  getCap(id: number, isSede?: boolean) {
+    if (isSede) return this.capSede.filter((n) => (n.id = id))[0].name;
+    return this.cap.filter((n) => (n.id = id))[0].name;
+  }
+  getSettore(id: number) {
+    return this.settori.filter((n) => (n.id = id))[0].name;
+  }
+  getForma(id: number) {
+    return this.forme.filter((n) => (n.id = id))[0].name;
+  }
+  getDimensione(id: number) {
+    return this.dimensioni.filter((n) => (n.id = id))[0].label;
+  }
+  pay() {
+    if (this.paymentForm.valid) {
+      let currentMonth = new Date().getMonth();
+      if (
+        currentMonth + 1 >= this.paymentForm.controls['expirationMonth'].value &&
+        this.currentYear == this.paymentForm.controls['expirationYear'].value
+      ) {
+        this.toastr.error("We can't add this payment method: expiration too near.");
+      } else {
+        this.toastr.error("We've succesfuly checked your card, and added as your payment method.");
+        this.paymentAccepted = true;
+      }
+    } else {
+      this.toastr.error('Dati mancanti o incorretti.');
+    }
+  }
+  adeguateCardNumberValue(event: any) {
+    let value: string = this.paymentForm.controls['cardNumber'].value || '';
+    if (
+      event &&
+      event.data != ' ' &&
+      event.data != null &&
+      !(this.paymentForm.controls['cardNumber'].value as string).endsWith(' ')
+    ) {
+      if (value.length == 4) {
+        this.paymentForm.controls['cardNumber'].setValue(
+          this.paymentForm.controls['cardNumber'].value + ' '
+        );
+      } else if (value.length == 9) {
+        this.paymentForm.controls['cardNumber'].setValue(
+          this.paymentForm.controls['cardNumber'].value + ' '
+        );
+      } else if (value.length == 14) {
+        this.paymentForm.controls['cardNumber'].setValue(
+          this.paymentForm.controls['cardNumber'].value + ' '
+        );
+      }
+    }
+    this.paymentForm.controls['cardNumber'].updateValueAndValidity();
+  }
+
+  limitExpirationMonth() {
+    if (
+      this.paymentForm.controls['expirationMonth'].value &&
+      String(this.paymentForm.controls['expirationMonth'].value).length > 2
+    ) {
+      this.paymentForm.controls['expirationMonth'].setValue(
+        String(this.paymentForm.controls['expirationMonth'].value).substring(0, 2)
+      );
+    }
+    this.paymentForm.controls['expirationMonth'].updateValueAndValidity();
+  }
+  limitExpirationYear() {
+    if (
+      this.paymentForm.controls['expirationYear'].value &&
+      String(this.paymentForm.controls['expirationYear'].value).length > 2
+    ) {
+      this.paymentForm.controls['expirationYear'].setValue(
+        String(this.paymentForm.controls['expirationYear'].value).substring(0, 2)
+      );
+    }
+    this.paymentForm.controls['expirationYear'].updateValueAndValidity();
   }
 }
