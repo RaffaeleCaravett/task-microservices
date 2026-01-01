@@ -1,7 +1,6 @@
-package com.example.task_auth.dto;
+package com.example.task_auth.dto.entities;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 public record UserLoginDTO(
         @NotEmpty(message = "Email necessaria")

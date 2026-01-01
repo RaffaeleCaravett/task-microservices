@@ -5,13 +5,17 @@ import {
   cap,
   citta,
   Company,
+  CompanyDTOFromSignup,
   CompanySignup,
   dimensioni,
   formaGiuridica,
+  loginSuccess,
   nazione,
   piano,
   regione,
   settore,
+  token,
+  User,
   UserLogin,
 } from '../interfaces/interfaces';
 import { API_URL } from '../core/environment';
@@ -22,28 +26,60 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   private isLoggedIn: boolean = false;
-  private user: any = null;
+  private user: User | null = null;
+  private company: Company | null = null;
+  private accesstoken: string = '';
+  private refreshtoken: string = '';
   private http: HttpClient = inject(HttpClient);
   public getIsLoggedIn(): boolean {
     return this.isLoggedIn;
   }
+  public setIsLoggedIn(loggedIn: boolean): void {
+    this.isLoggedIn = loggedIn;
+  }
+  public setUser(user: User): void {
+    this.user = user;
+  }
   public getUser(): any {
     return this.user;
   }
+  public setCompany(company: Company): void {
+    this.company = company;
+  }
+  public getCompany(): any {
+    return this.company;
+  }
+  public setAccessToken(token: string) {
+    this.accesstoken = token;
+  }
+  public setRefreshToken(token: string) {
+    this.refreshtoken = token;
+  }
+  public getAccessToken(): string {
+    return this.accesstoken;
+  }
+  public getRefreshToken(): string {
+    return this.refreshtoken;
+  }
   public isAdmin(): boolean {
-    return this.user?.role == 'ADMIN';
+    return (this.user && this.user?.role == 'ADMIN') || false;
   }
   public isUser(): boolean {
-    return this.user?.role == 'USER';
+    return (this.user && this.user?.role == 'USER') || false;
   }
   public isCompany(): boolean {
-    return this.user?.role == 'COMPANY';
+    return (this.company && this.company?.role == 'COMPANY') || false;
   }
   public isOwner(): boolean {
-    return this.user?.role == 'OWNER';
+    return (this.user && this.user?.role == 'OWNER') || false;
   }
-  public signup(body: CompanySignup): Observable<Company> {
-    return this.http.post<Company>(API_URL.company + '/company/signup', body);
+  public signup(body: CompanySignup): Observable<CompanyDTOFromSignup> {
+    return this.http.post<CompanyDTOFromSignup>(API_URL.company + '/company/signup', body);
+  }
+  public verifyCode(companyId: number, code: string): Observable<loginSuccess> {
+    return this.http.get<loginSuccess>(
+      API_URL.company + '/validate/code/' + code + '/' + companyId + '/COMPANY'
+    );
   }
   public login(body: UserLogin): Observable<Token> {
     return this.http.post<Token>(API_URL.auth + '/auth/login', body);

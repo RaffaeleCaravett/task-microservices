@@ -12,19 +12,25 @@ import { AuthService } from '../../services/auth.service';
 import {
   cap,
   citta,
+  CompanyDTOFromSignup,
+  CompanySignup,
   dimensioni,
   formaGiuridica,
+  loginSuccess,
+  metodoPagamento,
   nazione,
   piano,
   regione,
   settore,
+  token,
 } from '../../interfaces/interfaces';
 import { CurrencyPipe, NgClass } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-
+import { InputOtp } from 'primeng/inputotp';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, TooltipModule, CurrencyPipe, NgClass],
+  imports: [ReactiveFormsModule, TooltipModule, CurrencyPipe, NgClass, FormsModule, InputOtp],
   templateUrl: './signup.html',
   styleUrl: './signup.scss',
 })
@@ -48,9 +54,17 @@ export class SignupComponent implements OnInit {
   piani: piano[] = [];
   choosedPlan: piano | null = null;
   paymentForm: FormGroup = new FormGroup({});
+  chosedDays: string | null = null;
   protected currentYear: number = 0;
   protected paymentAccepted: boolean = false;
   protected toastr: ToastrService = inject(ToastrService);
+  protected paymentIsLoading: boolean = false;
+  protected paymentMethod: metodoPagamento | null = null;
+  protected sbDays: number[] = [30, 60, 160, 365];
+  protected section: string = 'signup';
+  protected showSpinner: boolean = false;
+  protected value: string = '';
+  protected registredCompany: CompanyDTOFromSignup | null = null;
   ngOnInit(): void {
     this.currentYear = Number(new Date().getFullYear().toString().substring(2, 4));
     this.signupForm = this.formBuilder.group({
@@ -124,8 +138,70 @@ export class SignupComponent implements OnInit {
     });
     this.getDatas();
   }
-  signup() {}
+  signup() {
+    if (
+      this.signupForm.valid &&
+      !this.passwordMismatch() &&
+      this.paymentMethod &&
+      this.choosedPlan &&
+      ((!this.chosedDays && this.choosedPlan.id == 1) ||
+        (this.chosedDays && this.choosedPlan.id != 1))
+    ) {
+      let companySignupDTO: CompanySignup = this.buildCompanySignup();
 
+      this.authService.signup(companySignupDTO).subscribe({
+        next: (datas: CompanyDTOFromSignup) => {
+          this.showSpinner = true;
+          setTimeout(() => {
+            this.section = 'access-code';
+            this.showSpinner = false;
+            this.registredCompany = datas;
+          }, 3000);
+        },
+      });
+    }
+  }
+  verifyCode(code: string) {
+    this.authService.verifyCode(this.registredCompany!.id, code).subscribe({
+      next: (data: loginSuccess) => {
+        if (data && data.token.accessToken) {
+          localStorage.setItem('accessToken', data.token.accessToken);
+          localStorage.setItem('refreshToken', data.token.refreshToken);
+          this.authService.setAccessToken(data.token.accessToken);
+          this.authService.setRefreshToken(data.token.refreshToken);
+          this.authService.setIsLoggedIn(true);
+          if (data.company) {
+            this.authService.setCompany(data.company!);
+          } else if (data.user) {
+            this.authService.setUser(data.user);
+          }
+          this.router.navigate(['/dashboard']);
+        }
+      },
+    });
+  }
+  buildCompanySignup(): CompanySignup {
+    return {
+      ragioneSociale: this.signupForm.controls['ragioneSociale'].value,
+      partitaIva: this.signupForm.controls['partitaIva'].value,
+      formaGiuridica: this.signupForm.controls['formaGiuridica'].value,
+      nazione: this.signupForm.controls['indirizzo'].get('nazione')?.value,
+      citta: this.signupForm.controls['indirizzo'].get('citta')?.value,
+      cap: this.signupForm.controls['indirizzo'].get('cap')?.value,
+      regione: this.signupForm.controls['indirizzo'].get('regione')?.value,
+      via: this.signupForm.controls['indirizzo'].get('via')?.value,
+      settore: this.signupForm.controls['settore'].value,
+      dimensioniAzienda: this.signupForm.controls['dimensioniAzienda'].value,
+      nazioneSede: this.signupForm.controls['sedeOperativa'].get('nazione')?.value,
+      cittaSede: this.signupForm.controls['sedeOperativa'].get('citta')?.value,
+      capSede: this.signupForm.controls['sedeOperativa'].get('cap')?.value,
+      regioneSede: this.signupForm.controls['sedeOperativa'].get('regione')?.value,
+      viaSede: this.signupForm.controls['sedeOperativa'].get('via')?.value,
+      pianoId: this.choosedPlan!.id,
+      subscriptionDays: Number(this.chosedDays),
+      metodoPagamentoDTO: this.paymentMethod!,
+    };
+  }
   passwordMismatch(): boolean {
     return (
       this.signupForm.controls['password'].value != this.signupForm.controls['ripetiPassword'].value
@@ -310,20 +386,33 @@ export class SignupComponent implements OnInit {
     return this.dimensioni.filter((n) => (n.id = id))[0].label;
   }
   pay() {
-    if (this.paymentForm.valid) {
-      let currentMonth = new Date().getMonth();
-      if (
-        currentMonth + 1 >= this.paymentForm.controls['expirationMonth'].value &&
-        this.currentYear == this.paymentForm.controls['expirationYear'].value
-      ) {
-        this.toastr.error("We can't add this payment method: expiration too near.");
+    this.paymentIsLoading = true;
+    setTimeout(() => {
+      this.paymentIsLoading = false;
+      if (this.paymentForm.valid) {
+        let currentMonth = new Date().getMonth();
+        if (
+          currentMonth + 1 >= this.paymentForm.controls['expirationMonth'].value &&
+          this.currentYear == this.paymentForm.controls['expirationYear'].value
+        ) {
+          this.toastr.error("We can't add this payment method: expiration too near.");
+        } else {
+          this.toastr.success(
+            "We've succesfuly checked your card, and added as your payment method."
+          );
+          this.paymentAccepted = true;
+          this.paymentMethod = {
+            cardNumber: this.paymentForm.controls['cardNumber'].value as string,
+            month: this.paymentForm.controls['expirationMonth'].value as number,
+            year: this.paymentForm.controls['expirationYear'].value as number,
+            secretCode: this.paymentForm.controls['securityCode'].value as number,
+            owner: this.paymentForm.controls['cardHolder'].value as string,
+          };
+        }
       } else {
-        this.toastr.error("We've succesfuly checked your card, and added as your payment method.");
-        this.paymentAccepted = true;
+        this.toastr.error('Dati mancanti o incorretti.');
       }
-    } else {
-      this.toastr.error('Dati mancanti o incorretti.');
-    }
+    }, 2000);
   }
   adeguateCardNumberValue(event: any) {
     let value: string = this.paymentForm.controls['cardNumber'].value || '';

@@ -8,26 +8,39 @@ export interface Token {
   email: string;
   password: string;
 }
-
+export interface token {
+  accessToken: string;
+  refreshToken: string;
+}
+export interface loginSuccess {
+  token: token;
+  company: Company | null;
+  user: User | null;
+}
 export interface CompanySignup {
   ragioneSociale: string;
   partitaIva: string;
   formaGiuridica: number;
-  paeseDiRegistrazione: number;
-  indirizzo: {
-    citta: number;
-    cap: number;
-    regione: number;
-    via: string;
-  };
+  nazione: number;
+  citta: number;
+  cap: number;
+  regione: number;
+  via: string;
   settore: number;
   dimensioniAzienda: number;
-  sedeOperativa?: {
-    citta: string;
-    cap: string;
-    regione: string;
-    via: string;
-  };
+  nazioneSede: number;
+  cittaSede: string;
+  capSede: string;
+  regioneSede: string;
+  viaSede: string;
+  pianoId: number;
+  subscriptionDays: number;
+  metodoPagamentoDTO: metodoPagamento;
+}
+export interface CompanyDTOFromSignup {
+  id: number;
+  email: string;
+  nomeAzienda: string;
 }
 export interface settore {
   id: number;
@@ -66,6 +79,7 @@ export interface piano {
 }
 export interface indirizzo {
   id: number;
+  nazione: nazione;
   citta: citta;
   cap: cap;
   regione: regione;
@@ -76,14 +90,33 @@ export interface Company {
   createdAt: string;
   isActive: boolean;
   isConfirmed: boolean;
-  deletedAt?: string;
+  deleteddAt?: string;
   role: string;
   ragioneSociale: string;
   partitaIva: string;
   formaGiuridica: formaGiuridica;
-  paeseDiRegistrazione: nazione;
   indirizzo: indirizzo;
   settore: settore;
-  dimensioniAzienda: number;
+  dimensioniAzienda: dimensioni;
   sedeOperativa?: indirizzo;
+  email: string;
+}
+export interface User {
+  id: number;
+  createdAt: string;
+  isActive: boolean;
+  isConfirmed: boolean;
+  deleteddAt?: string;
+  role: string;
+  nome: string;
+  cognome: string;
+  email: string;
+  companies: Company[];
+}
+export interface metodoPagamento {
+  cardNumber: string;
+  month: number;
+  year: number;
+  secretCode: number;
+  owner: string;
 }
