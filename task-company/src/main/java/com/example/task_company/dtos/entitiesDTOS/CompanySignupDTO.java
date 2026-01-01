@@ -13,7 +13,7 @@ public class CompanySignupDTO {
     @NotNull(message = "Campo necessario: Ragione sociale")
     private String ragioneSociale;
     @NotNull(message = "Campo necessario: Partita Iva")
-    @Pattern(regexp = "^[0-9]{11}$")
+    @Pattern(regexp = "^[0-9]{11}$", message = "La partita iva è invalida , ricorda : 11 numeri.")
     private String partitaIva;
     @NotNull(message = "Campo necessario: Forma Giuridica")
     private Long formaGiuridica;
@@ -39,9 +39,9 @@ public class CompanySignupDTO {
             message = "Password non sicura")
     private String password;
     @Nullable
-    @Max(9999999)
-    @Min(1)
-    private String dimensioniAzienda;
+    @Max(value = 9999999, message = "Il campo dimensioni azienda è invalido: valore superiore a 9999999")
+    @Min(value = 1, message = "Il campo dimensioni azienda è invalido: valore inferiore a 1")
+    private Integer dimensioniAzienda;
     @Nullable
     private Long paeseDiRegistrazioneSede;
     @Nullable
@@ -52,4 +52,10 @@ public class CompanySignupDTO {
     private Long regioneSede;
     @Nullable
     private String viaSede;
+    @NotNull(message = "Scegli un piano")
+    private Long pianoId;
+    @NotNull(message = "Inserisci la durata del piano")
+    @Min(value = 30, message = "Valore minimo durata: 30 giorni")
+    @Max(value = 365, message = "Valore massimo durata: 365 giorni")
+    private Integer subscriptionDays;
 }

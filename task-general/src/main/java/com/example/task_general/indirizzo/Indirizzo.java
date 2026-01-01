@@ -4,6 +4,7 @@ import com.example.task_general.company.Company;
 import com.example.task_general.indirizzo.cap.Cap;
 import com.example.task_general.indirizzo.citta.Citta;
 import com.example.task_general.indirizzo.nazione.Nazione;
+import com.example.task_general.indirizzo.regione.Regione;
 import com.example.task_general.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -21,16 +22,19 @@ public class Indirizzo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nazione_id")
     private Nazione nazione;
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "regione_id")
+    private Regione regione;
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "company_id")
     private Company company;
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "citta")
     private Citta citta;
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "cap_id")
     private Cap cap;
     private String via;

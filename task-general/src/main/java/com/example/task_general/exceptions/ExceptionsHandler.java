@@ -18,4 +18,10 @@ public class ExceptionsHandler {
     public ErrorWithListDTO handleSignup(UnauthorizedException e) {
         return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
     }
+
+    @ExceptionHandler(EntityNotPresentException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorWithListDTO handleSignup(EntityNotPresentException e) {
+        return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
+    }
 }

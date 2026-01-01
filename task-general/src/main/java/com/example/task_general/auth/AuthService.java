@@ -1,19 +1,18 @@
 package com.example.task_general.auth;
 
-import com.example.task_general.company.Company;
-import com.example.task_general.company.CompanyRepository;
-import com.example.task_general.dtos.entitiesDTO.CompanyDTO;
-import com.example.task_general.dtos.entitiesDTO.CompanySignupDTO;
-import com.example.task_general.exceptions.SignupException;
+import com.example.task_general.codiceAccesso.CodiceAccesso;
+import com.example.task_general.codiceAccesso.CodiceAccessoRepository;
 import com.example.task_general.exceptions.UnauthorizedException;
-import com.example.task_general.user.Role;
 import com.example.task_general.user.User;
 import com.example.task_general.user.UserRepository;
-import com.example.task_general.user.dto.UserLoginDTO;
-import com.example.task_general.user.dto.UserSignupDTO;
+import com.example.task_general.dtos.entitiesDTO.UserLoginDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class AuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final CompanyRepository companyRepository;
+    private final CodiceAccessoRepository codiceAccessoRepository;
 
     public Long findByEmail(UserLoginDTO userLoginDTO) {
 
@@ -33,20 +32,34 @@ public class AuthService {
         throw new UnauthorizedException("Credenziali errate");
     }
 
-    public CompanyDTO signup(CompanySignupDTO companySignupDTO) {
+    public void createUserAccessCode(Long id) {
+        CodiceAccesso codiceAccesso = new CodiceAccesso();
+        codiceAccesso.setCreationTime(Instant.now());
+        codiceAccesso.setUser(userRepository.findById(id).orElseThrow(() -> new UnauthorizedException("Accesso negato")));
+        codiceAccesso.setIsUsed(false);
+        codiceAccesso.setCompany(null);
+        codiceAccesso.setCode(createAccessCode());
+        codiceAccessoRepository.save(codiceAccesso);
+    }
 
-        if (companyRepository.findByEmail(companySignupDTO.getEmail()).isPresent()) {
-            throw new SignupException("L'email è già presente in db");
+    public String createAccessCode() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 6) {
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
         }
-        try {
-            Company company = companyRepository.save(companySignupDTO);
-            CompanyDTO companyDTO = new CompanyDTO();
-            companyDTO.setEmail(companySignupDTO.getEmail());
-            companyDTO.setId(company.getId());
-            companyDTO.setNome(companySignupDTO.getNomeAzienda());
-        return companyDTO;
-        } catch (Exception e) {
-            throw new SignupException(e.getMessage());
+        return salt.toString();
+    }
+
+    public Boolean deleteAccessCode(Long id) {
+        Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByUser_Id(id);
+        if (codiceAccesso.isPresent()) {
+            codiceAccessoRepository.delete(codiceAccesso.get());
+            return true;
+        } else {
+            return false;
         }
     }
 }

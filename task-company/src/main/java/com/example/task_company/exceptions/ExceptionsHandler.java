@@ -17,4 +17,10 @@ public class ExceptionsHandler {
     public ErrorWithListDTO handleSignup(SignupException e) {
         return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
     }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorWithListDTO handleSignup(UnauthorizedException e) {
+        return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
+    }
 }

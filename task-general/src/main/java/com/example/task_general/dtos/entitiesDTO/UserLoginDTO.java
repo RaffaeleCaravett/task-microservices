@@ -1,4 +1,4 @@
-package com.example.task_general.user.dto;
+package com.example.task_general.dtos.entitiesDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

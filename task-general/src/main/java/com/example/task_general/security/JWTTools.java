@@ -1,5 +1,6 @@
 package com.example.task_general.security;
 
+import com.example.task_general.company.CompanyRepository;
 import com.example.task_general.exceptions.UnauthorizedException;
 import com.example.task_general.user.User;
 import com.example.task_general.user.UserRepository;
@@ -18,9 +19,10 @@ public class JWTTools {
     private String secret;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    CompanyRepository companyRepository;
 
-
-    public User verifyToken(String token) {
+    public Object verifyToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
                     .build().parse(token).getBody();
@@ -33,7 +35,12 @@ public class JWTTools {
                 throw new UnauthorizedException("Devi effettuare di nuovo l'accesso.");
             }
             String userId = claims.getSubject();
-            return userRepository.findById(Long.valueOf(userId)).get();
+            String type = extractTypeFromToken(token);
+            if ("USER".equalsIgnoreCase(type)) {
+                return userRepository.findById(Long.valueOf(userId)).get();
+            } else {
+                return companyRepository.findById(Long.valueOf(userId)).get();
+            }
         } catch (Exception e) {
             throw new UnauthorizedException("Il token non è valido! Per favore effettua nuovamente il login o refresha la pagina!");
         }
@@ -42,5 +49,11 @@ public class JWTTools {
     public String extractIdFromToken(String token) {
         return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
                 .build().parseClaimsJws(token).getBody().getSubject();
+    }
+
+    public String extractTypeFromToken(String token) {
+        return Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
+                .build().parseClaimsJws(token).getBody().get("userType").equals("COMPANY") ?
+                "COMPANY" : "USER";
     }
 }

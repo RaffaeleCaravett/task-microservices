@@ -1,5 +1,6 @@
 package com.example.task_general.user;
 
+import com.example.task_general.codiceAccesso.CodiceAccesso;
 import com.example.task_general.company.Company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -31,6 +32,8 @@ public class User extends UserInfos implements UserDetails {
     @ManyToMany(fetch = FetchType.LAZY,mappedBy = "users")
     @JsonIgnore
     private List<Company> companies;
+    @OneToOne(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private CodiceAccesso codiceAccesso;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));

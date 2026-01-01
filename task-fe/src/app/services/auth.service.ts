@@ -47,21 +47,21 @@ export class AuthService {
     return this.http.post<Token>(API_URL.auth + '/auth/login', body);
   }
   public getNazioni(): Observable<nazione[]> {
-    return this.http.get<nazione[]>(API_URL.general + '/indirizzo/nazioni');
+    return this.http.get<nazione[]>(API_URL.company + '/indirizzo/nazioni');
   }
   public getRegioni(nazioneId: number): Observable<regione[]> {
-    return this.http.get<regione[]>(API_URL.general + '/indirizzo/regioni/' + nazioneId);
+    return this.http.get<regione[]>(API_URL.company + '/indirizzo/regioni/' + nazioneId);
   }
   public getCitta(regioneId: number): Observable<citta[]> {
-    return this.http.get<citta[]>(API_URL.general + '/indirizzo/citta/' + regioneId);
+    return this.http.get<citta[]>(API_URL.company + '/indirizzo/citta/' + regioneId);
   }
   public getCap(cittaId: number): Observable<cap[]> {
-    return this.http.get<cap[]>(API_URL.general + '/indirizzo/cap/' + cittaId);
+    return this.http.get<cap[]>(API_URL.company + '/indirizzo/cap/' + cittaId);
   }
   public getSettori(): Observable<settore[]> {
-    return this.http.get<settore[]>(API_URL.general + '/indirizzo/settori');
+    return this.http.get<settore[]>(API_URL.company + '/indirizzo/settori');
   }
   public getForme(): Observable<formaGiuridica[]> {
-    return this.http.get<formaGiuridica[]>(API_URL.general + '/indirizzo/forme');
+    return this.http.get<formaGiuridica[]>(API_URL.company + '/indirizzo/forme');
   }
 }

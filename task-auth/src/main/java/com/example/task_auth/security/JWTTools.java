@@ -19,11 +19,13 @@ public class JWTTools {
     @Value("${spring.jwt.secret}")
     private String secret;
 
-    public Token createTokens(Long id) {
+    public Token createTokens(Long id, String type) {
 
         Map<String, Object> accessMap = new HashMap<>();
         accessMap.put("type", TokenType.ACCESS);
+        accessMap.put("userType", type);
         Map<String, Object> refreshMap = new HashMap<>();
+        accessMap.put("userType", type);
         refreshMap.put("type", TokenType.REFRESH);
 
         String accessToken = Jwts.builder().setSubject(String.valueOf(id))
@@ -44,19 +46,20 @@ public class JWTTools {
     }
 
 
-    public Token verifyRefreshToken(String token) {
+    public Token verifyRefreshToken(String token, String type) {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            if (!TokenType.REFRESH.name().equals(claims.get("type")) || !"task-auth".equals(claims.getIssuer())) {
+            if (!TokenType.REFRESH.name().equals(claims.get("type")) || !"task-auth".equals(claims.getIssuer())
+                    || !type.equals(claims.get("userType"))) {
                 throw new UnauthorizedException("Accedi nuovamente.");
             }
-            String userId = claims.getSubject();
+            String entityId = claims.getSubject();
 
-            Token token1 = this.createTokens(Long.valueOf(userId));
+            Token token1 = this.createTokens(Long.valueOf(entityId), type);
             token1.setRefreshToken(token);
             return token1;
         } catch (Exception e) {

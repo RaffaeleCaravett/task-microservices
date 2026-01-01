@@ -17,15 +17,39 @@ public class AuthController {
 
 
     @PostMapping("/login")
-    public Token update(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult) {
+    public Boolean login(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
         return authService.login(userLoginDTO);
     }
 
-    @PostMapping("/refreshAccessToken/{refreshToken}")
-    public Token refreshAccess(@PathVariable String refreshToken) {
-        return authService.refreshAccessToken(refreshToken);
+    @PostMapping("/company/login")
+    public Boolean companyLogin(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
+        }
+        return authService.companyLogin(userLoginDTO);
+    }
+
+    @PostMapping("/validate/code/{code}/{id}/{type}")
+    public Token validateCode(@PathVariable String code, @PathVariable Long id, @PathVariable String type) {
+        try {
+            switch (type) {
+                case "COMPANY":
+                    return authService.validateCompanyCode(code, id);
+                case "USER":
+                    return authService.validateUserCode(code, id);
+                default:
+                    throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new UnauthorizedException("Impossibile verificare il codice di accesso");
+        }
+    }
+
+    @PostMapping("/refreshAccessToken/{refreshToken}/{type}")
+    public Token refreshAccess(@PathVariable String refreshToken, @PathVariable String type) {
+        return authService.refreshAccessToken(refreshToken, type);
     }
 }

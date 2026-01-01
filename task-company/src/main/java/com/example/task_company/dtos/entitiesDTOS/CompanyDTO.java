@@ -8,6 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 public class CompanyDTO {
     @NotNull(message = "Campo necessario: Id")
@@ -15,5 +16,5 @@ public class CompanyDTO {
     @NotNull(message = "Campo necessario: Email")
     private String email;
     @NotNull(message = "Campo necessario: Nome")
-    private String nome;
+    private String nomeAzienda;
 }
