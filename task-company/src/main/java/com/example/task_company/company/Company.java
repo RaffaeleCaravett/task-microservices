@@ -49,7 +49,7 @@ public class Company implements UserDetails {
     private List<Indirizzo> sedeLegale;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @OneToOne(mappedBy = "company",orphanRemoval = true,cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "company",orphanRemoval = true,cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private CodiceAccesso codiceAccesso;
     @OneToOne(mappedBy = "company",orphanRemoval = true,cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Subscription subscription;

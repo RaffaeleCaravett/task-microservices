@@ -23,7 +23,7 @@ public class CodiceAccesso {
     private String code;
     private Instant creationTime;
     private Boolean isUsed;
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private Company company;

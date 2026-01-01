@@ -6,8 +6,10 @@ import com.example.task_company.company.Company;
 import com.example.task_company.company.CompanyRepository;
 import com.example.task_company.company.Role;
 import com.example.task_company.dtos.entitiesDTOS.CompanyDTO;
+import com.example.task_company.dtos.entitiesDTOS.CompanyLoginDTO;
 import com.example.task_company.dtos.entitiesDTOS.CompanySignupDTO;
 import com.example.task_company.exceptions.SignupException;
+import com.example.task_company.exceptions.UnauthorizedException;
 import com.example.task_company.exceptions.WrongDTOException;
 import com.example.task_company.formaGiuridica.FormaGiuridica;
 import com.example.task_company.formaGiuridica.FormaGiuridicaRepository;
@@ -98,7 +100,6 @@ public class AuthService {
             company.setIsConfirmed(false);
             companyRepository.save(company);
             CodiceAccesso codiceAccesso = createAccessCode(company.getId(), company);
-            codiceAccessoRepository.save(codiceAccesso);
 
             Subscription subscription = new Subscription();
             subscription.setCompany(company);
@@ -162,15 +163,19 @@ public class AuthService {
         codiceAccesso.setCreationTime(Instant.now());
         codiceAccesso.setIsUsed(false);
         codiceAccesso.setCode(salt.toString());
-        return codiceAccesso;
+        return codiceAccessoRepository.save(codiceAccesso);
     }
 
     public Boolean deleteAccessCode(Long id) {
         Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByCompany_Id(id);
         if (codiceAccesso.isPresent()) {
-            codiceAccessoRepository.delete(codiceAccesso.get());
-            return true;
-        } else {
+            try {
+                codiceAccessoRepository.deleteById(codiceAccesso.get().getId());
+                return true;
+            }catch (Exception e){
+                return false;
+            }
+            } else {
             return false;
         }
     }
@@ -193,5 +198,13 @@ public class AuthService {
             indirizzo.setVia(companySignupDTO.getViaSede());
             return indirizzoRepository.save(indirizzo);
         }
+    }
+
+    public Long findByEmail(CompanyLoginDTO companyLoginDTO){
+        Company user = companyRepository.findByEmail(companyLoginDTO.getEmail()).orElseThrow(() -> new UnauthorizedException("Credenziali errate"));
+        if (passwordEncoder.matches(companyLoginDTO.getPassword(), user.getPassword())) {
+            return user.getId();
+        }
+        throw new UnauthorizedException("Credenziali errate");
     }
 }
