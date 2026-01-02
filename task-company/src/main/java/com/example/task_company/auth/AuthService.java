@@ -22,6 +22,9 @@ import com.example.task_company.indirizzo.nazione.NazioneRepository;
 import com.example.task_company.indirizzo.regione.RegioneRepository;
 import com.example.task_company.mailgun.MGSamples;
 import com.example.task_company.mapper.CompanyMapper;
+import com.example.task_company.notification.Notification;
+import com.example.task_company.notification.NotificationRepository;
+import com.example.task_company.notification.NotificationState;
 import com.example.task_company.piano.PianoRepository;
 import com.example.task_company.settore.Settore;
 import com.example.task_company.settore.SettoreRepository;
@@ -58,6 +61,7 @@ public class AuthService {
     private final CodiceAccessoRepository codiceAccessoRepository;
     private final PianoRepository pianoRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final NotificationRepository notificationRepository;
 
     @Transactional
     public CompanyDTO signup(CompanySignupDTO companySignupDTO) {
@@ -125,6 +129,13 @@ public class AuthService {
             companyDTO.setEmail(companySignupDTO.getEmail());
             companyDTO.setId(company.getId());
             companyDTO.setNomeAzienda(companySignupDTO.getNomeAzienda());
+
+            Notification notification = new Notification();
+            notification.setText("Benvenuto! La registrazione è avvenuta con successo.");
+            notification.setStato(NotificationState.SENT);
+            notification.setCreatedAt(LocalDate.now());
+            notification.setReceiver(company);
+            notificationRepository.save(notification);
             return companyDTO;
         } catch (WrongDTOException e) {
             throw new WrongDTOException(e.getMessage());
@@ -172,10 +183,10 @@ public class AuthService {
             try {
                 codiceAccessoRepository.deleteById(codiceAccesso.get().getId());
                 return true;
-            }catch (Exception e){
+            } catch (Exception e) {
                 return false;
             }
-            } else {
+        } else {
             return false;
         }
     }
@@ -200,7 +211,7 @@ public class AuthService {
         }
     }
 
-    public Long findByEmail(CompanyLoginDTO companyLoginDTO){
+    public Long findByEmail(CompanyLoginDTO companyLoginDTO) {
         Company user = companyRepository.findByEmail(companyLoginDTO.getEmail()).orElseThrow(() -> new UnauthorizedException("Credenziali errate"));
         if (passwordEncoder.matches(companyLoginDTO.getPassword(), user.getPassword())) {
             return user.getId();

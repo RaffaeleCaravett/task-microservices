@@ -36,7 +36,7 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/accessCode/createe/{id}")
+    @GetMapping("/accessCode/create/{id}")
     public void createAccessCodeByUSerId(@PathVariable Long id) {
         authService.createUserAccessCode(id);
     }
