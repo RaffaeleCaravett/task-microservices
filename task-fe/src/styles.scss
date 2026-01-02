@@ -1,0 +1,19 @@
+@use 'primeicons/primeicons.css' as *;
+
+.h1 {
+  font-family: 'Source Code Pro', monospace;
+  font-optical-sizing: auto;
+}
+* {
+  font-family: 'Source Code Pro', monospace;
+  font-optical-sizing: auto;
+}
+.pi {
+  font-family: 'primeicons' !important;
+}
+
+.btn {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none;
+}
