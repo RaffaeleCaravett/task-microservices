@@ -26,6 +26,7 @@ import com.example.task_company.mapper.CompanyMapper;
 import com.example.task_company.notification.Notification;
 import com.example.task_company.notification.NotificationRepository;
 import com.example.task_company.notification.NotificationState;
+import com.example.task_company.piano.Piano;
 import com.example.task_company.piano.PianoRepository;
 import com.example.task_company.settore.Settore;
 import com.example.task_company.settore.SettoreRepository;
@@ -220,5 +221,9 @@ public class AuthService {
             return user.getId();
         }
         throw new UnauthorizedException("Credenziali errate");
+    }
+
+    public List<Piano> getPiani() {
+        return pianoRepository.findAll();
     }
 }

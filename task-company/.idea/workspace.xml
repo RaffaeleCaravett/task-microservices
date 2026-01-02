@@ -4,36 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="94856bcc-874f-4f96-ab73-a157275a6477" name="Changes" comment="ready to do fe now">
-      <change afterPath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/dimensioni/Dimensione.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/dimensioni/DimensioneRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/dimensioni/Size.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/dimensioni/Dimensione.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/dimensioni/DimensioneRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/dimensioni/Size.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/user/Role.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/user/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/user/UserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/user/UserInfos.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/user/UserRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/user/UserService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/dimensioni/Dimensione.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/dimensioni/DimensioneRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/dimensioni/Size.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/auth/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/company/Company.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/company/Company.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/auth/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/codiceAccesso/CodiceAccesso.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/codiceAccesso/CodiceAccesso.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/company/Company.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/company/Company.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/dtos/entitiesDTOS/CompanySignupDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/dtos/entitiesDTOS/CompanySignupDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/indirizzo/IndirizzoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/indirizzo/IndirizzoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/mapper/CompanyMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/mapper/CompanyMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/notification/UserNotification.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/notification/UserNotification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-fe/src/app/components/login/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/components/login/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-fe/src/app/components/signup/signup.html" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/components/signup/signup.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-fe/src/app/components/signup/signup.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/components/signup/signup.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/Company.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/Company.java" afterDir="false" />
-    </list>
+    <list default="true" id="94856bcc-874f-4f96-ab73-a157275a6477" name="Changes" comment="ready to do fe now" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,7 +56,6 @@
     "Maven.task-company [clean].executor": "Run",
     "Maven.task-company [install].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "fe",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/raffaele.caravetta/Desktop/Task-Microservices/task-company/src/main/java/com/example/task_company"
   }
@@ -160,16 +130,5 @@
     <MESSAGE value="application builds and run" />
     <MESSAGE value="ready to do fe now" />
     <option name="LAST_COMMIT_MESSAGE" value="ready to do fe now" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/example/task_company/mailgun/MGSamples.java</url>
-          <line>24</line>
-          <option name="timeStamp" value="24" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
