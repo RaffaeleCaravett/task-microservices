@@ -38,10 +38,10 @@ public class CompanySignupDTO {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
             message = "Password non sicura")
     private String password;
-    @Nullable
-    @Max(value = 9999999, message = "Il campo dimensioni azienda è invalido: valore superiore a 9999999")
+    @NotNull(message = "Dimensione azienda mancante")
+    @Max(value = 4, message = "Il campo dimensioni azienda è invalido: valore non presente in db")
     @Min(value = 1, message = "Il campo dimensioni azienda è invalido: valore inferiore a 1")
-    private Integer dimensioniAzienda;
+    private Long dimensioniAzienda;
     @Nullable
     private Long paeseDiRegistrazioneSede;
     @Nullable

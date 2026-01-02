@@ -47,13 +47,16 @@ public class AuthService {
         try {
             Company company = companyService.findByEmail(userLoginDTO.email());
             if (bcrypt.matches(userLoginDTO.password(), company.getPassword())) {
+                if (codiceAccessoRepository.findByCompany_Id(company.getId()).isPresent()) {
+                    throw new Exception("Hai già ricevuto un codice di accesso sulla tua email. Aspetta 10 minuti per riceverne un altro.");
+                }
                 companyService.createAccessCode(company.getId(), company);
                 return true;
             } else {
-                throw new Exception();
+                throw new Exception("Credenziali non valide");
             }
         } catch (Exception e) {
-            throw new UnauthorizedException("Credenziali non valide");
+            throw new UnauthorizedException(e.getMessage());
         }
     }
 

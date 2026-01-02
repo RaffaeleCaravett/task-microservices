@@ -1,4 +1,4 @@
-package com.example.task_auth.user;
+package com.example.task_company.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

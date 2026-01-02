@@ -1,7 +1,7 @@
-package com.example.task_auth.user;
+package com.example.task_company.user;
 
-import com.example.task_auth.codiceAccesso.CodiceAccesso;
-import com.example.task_auth.company.Company;
+import com.example.task_company.codiceAccesso.CodiceAccesso;
+import com.example.task_company.company.Company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

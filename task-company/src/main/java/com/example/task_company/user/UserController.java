@@ -1,4 +1,4 @@
-package com.example.task_auth.user;
+package com.example.task_company.user;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;

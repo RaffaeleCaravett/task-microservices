@@ -5,6 +5,7 @@ import com.example.task_company.codiceAccesso.CodiceAccessoRepository;
 import com.example.task_company.company.Company;
 import com.example.task_company.company.CompanyRepository;
 import com.example.task_company.company.Role;
+import com.example.task_company.dimensioni.DimensioneRepository;
 import com.example.task_company.dtos.entitiesDTOS.CompanyDTO;
 import com.example.task_company.dtos.entitiesDTOS.CompanyLoginDTO;
 import com.example.task_company.dtos.entitiesDTOS.CompanySignupDTO;
@@ -62,6 +63,7 @@ public class AuthService {
     private final PianoRepository pianoRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final NotificationRepository notificationRepository;
+    private final DimensioneRepository dimensioneRepository;
 
     @Transactional
     public CompanyDTO signup(CompanySignupDTO companySignupDTO) {
@@ -102,6 +104,7 @@ public class AuthService {
             company.setCreatedAt(LocalDate.now().toString());
             company.setIsActive(true);
             company.setIsConfirmed(false);
+            company.setDimensioniAzienda(dimensioneRepository.findById(companySignupDTO.getDimensioniAzienda()).orElseThrow(() -> new SignupException("La dimensione non è corretta")));
             companyRepository.save(company);
             CodiceAccesso codiceAccesso = createAccessCode(company.getId(), company);
 

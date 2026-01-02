@@ -1,10 +1,14 @@
-package com.example.task_general.dimensioni;
+package com.example.task_auth.dimensioni;
 
+import com.example.task_auth.company.Company;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "dimensioni")
@@ -19,4 +23,7 @@ public class Dimensione {
     private String label;
     @Enumerated(EnumType.STRING)
     private Size dimensione;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Company> companies;
 }

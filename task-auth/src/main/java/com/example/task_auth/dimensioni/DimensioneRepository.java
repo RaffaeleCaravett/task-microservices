@@ -1,4 +1,4 @@
-package com.example.task_general.dimensioni;
+package com.example.task_auth.dimensioni;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

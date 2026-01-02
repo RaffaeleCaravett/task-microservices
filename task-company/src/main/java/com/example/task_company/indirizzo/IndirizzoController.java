@@ -1,6 +1,8 @@
 package com.example.task_company.indirizzo;
 
 
+import com.example.task_company.dimensioni.Dimensione;
+import com.example.task_company.dimensioni.DimensioneRepository;
 import com.example.task_company.formaGiuridica.FormaGiuridica;
 import com.example.task_company.formaGiuridica.FormaGiuridicaRepository;
 import com.example.task_company.indirizzo.cap.Cap;
@@ -32,10 +34,16 @@ public class IndirizzoController {
     private final CapRepository capRepository;
     private final SettoreRepository settoreRepository;
     private final FormaGiuridicaRepository formaGiuridicaRepository;
+    private final DimensioneRepository dimensioneRepository;
 
     @GetMapping("/settori")
     public List<Settore> findAllSettori() {
         return settoreRepository.findAll();
+    }
+
+    @GetMapping("/dimensioni")
+    public List<Dimensione> findAllDimensioni() {
+        return dimensioneRepository.findAll();
     }
 
     @GetMapping("/forme")

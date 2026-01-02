@@ -1,10 +1,12 @@
 package com.example.task_company.company;
 
 import com.example.task_company.codiceAccesso.CodiceAccesso;
+import com.example.task_company.dimensioni.Dimensione;
 import com.example.task_company.formaGiuridica.FormaGiuridica;
 import com.example.task_company.indirizzo.Indirizzo;
 import com.example.task_company.settore.Settore;
 import com.example.task_company.subscription.Subscription;
+import com.example.task_company.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,8 +44,9 @@ public class Company implements UserDetails {
     private String email;
     private String password;
     private String nomeAzienda;
-    private String dimensioniAzienda;
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "dimensione_id")
+    private Dimensione dimensioniAzienda;    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Indirizzo> indirizzo;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Indirizzo> sedeLegale;
@@ -53,6 +56,12 @@ public class Company implements UserDetails {
     private CodiceAccesso codiceAccesso;
     @OneToOne(mappedBy = "company",orphanRemoval = true,cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private Subscription subscription;
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "companies_users",
+            joinColumns = @JoinColumn(name = "company_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));

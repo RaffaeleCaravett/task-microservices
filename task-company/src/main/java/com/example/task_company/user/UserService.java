@@ -1,6 +1,6 @@
-package com.example.task_auth.user;
+package com.example.task_company.user;
 
-import com.example.task_auth.exceptions.exception.UnauthorizedException;
+import com.example.task_company.exceptions.UnauthorizedException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package com.example.task_auth.dimensioni;
+package com.example.task_company.dimensioni;
 
-import com.example.task_auth.company.Company;
+import com.example.task_company.company.Company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

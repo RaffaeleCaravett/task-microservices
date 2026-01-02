@@ -1,4 +1,4 @@
-package com.example.task_auth.user;
+package com.example.task_company.user;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

@@ -19,5 +19,6 @@ public interface CompanyMapper {
     @Mapping(target = "sedeLegale", ignore = true)
     @Mapping(target = "formaGiuridica", ignore = true)
     @Mapping(target = "settore", ignore = true)
+    @Mapping(target = "dimensioniAzienda", ignore = true)
     Company toCompany(CompanySignupDTO csu);
 }

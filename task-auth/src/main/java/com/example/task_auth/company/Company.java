@@ -1,6 +1,7 @@
 package com.example.task_auth.company;
 
 
+import com.example.task_auth.dimensioni.Dimensione;
 import com.example.task_auth.formaGiuridica.FormaGiuridica;
 import com.example.task_auth.indirizzo.Indirizzo;
 import com.example.task_auth.settore.Settore;
@@ -38,7 +39,9 @@ public class Company extends UserInfos implements UserDetails {
     private String email;
     private String password;
     private String nomeAzienda;
-    private String dimensioniAzienda;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "dimensione_id")
+    private Dimensione dimensioniAzienda;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Indirizzo> indirizzo;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)

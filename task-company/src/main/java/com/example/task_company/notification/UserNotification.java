@@ -1,12 +1,12 @@
 package com.example.task_company.notification;
 
 import com.example.task_company.company.Company;
+import com.example.task_company.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.core.userdetails.User;
 
 import java.time.LocalDate;
 
@@ -32,5 +32,5 @@ public class UserNotification {
     private User senderUser;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender_company_id")
-    private User senderCompany;
+    private Company senderCompany;
 }

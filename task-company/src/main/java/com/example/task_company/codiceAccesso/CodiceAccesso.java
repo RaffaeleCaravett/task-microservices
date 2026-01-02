@@ -1,6 +1,7 @@
 package com.example.task_company.codiceAccesso;
 
 import com.example.task_company.company.Company;
+import com.example.task_company.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,4 +28,8 @@ public class CodiceAccesso {
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private Company company;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonIgnore
+    private User user;
 }
