@@ -58,6 +58,12 @@ export interface dimensioni {
   label: string;
   dimensione: sizes;
 }
+export interface piano {
+  id: number;
+  titolo: string;
+  prezzo: number;
+  description: string;
+}
 export interface indirizzo {
   id: number;
   citta: citta;

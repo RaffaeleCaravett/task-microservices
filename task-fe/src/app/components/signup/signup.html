@@ -1,4 +1,5 @@
 <div class="row text-start">
+  @if (step == 1) {
   <form [formGroup]="signupForm" class="row w-75 m-auto">
     <div class="col-12 text-center"><p class="h2 fw-bold">Create a profile</p></div>
     <div class="col-md-12 py-1 pt-5">
@@ -23,7 +24,13 @@
     </div>
     <div class="col-md-12">
       <label for="formaGiuridica" class="py-2 fw-bold"> Forma giuridica*</label>
-      <select formControlName="formaGiuridica" class="form-select"></select>
+      <select formControlName="formaGiuridica" class="form-select">
+        @for (item of forme; track $index) {
+        <option value="{{ item.id }}">{{ item.name }}</option>
+        }@empty {
+        <option value=""></option>
+        }
+      </select>
       @if(signupForm.controls['formaGiuridica'].touched&&signupForm.controls['formaGiuridica'].invalid){
       <p class="text-danger">Campo obbligatorio</p>
       }
@@ -113,14 +120,26 @@
     </form>
     <div class="col-md-8">
       <label for="settore" class="py-2 fw-bold">Settore*</label>
-      <select formControlName="settore" class="form-select"></select>
+      <select formControlName="settore" class="form-select">
+        @for (item of settori; track $index) {
+        <option value="{{ item.id }}">{{ item.name }}</option>
+        }@empty {
+        <option value=""></option>
+        }
+      </select>
       @if(signupForm.controls['settore'].touched&&signupForm.controls['settore'].invalid){
       <p class="text-danger">Campo obbligatorio</p>
       }
     </div>
     <div class="col-md-4">
       <label for="dimensioniAzienda" class="py-2 fw-bold">Dimensioni*</label>
-      <select formControlName="dimensioniAzienda" class="form-select"></select>
+      <select formControlName="dimensioniAzienda" class="form-select">
+        @for (item of dimensioni; track $index) {
+        <option value="{{ item.id }}">{{ item.label }}</option>
+        }@empty {
+        <option value=""></option>
+        }
+      </select>
       @if(signupForm.controls['dimensioniAzienda'].touched&&signupForm.controls['dimensioniAzienda'].invalid){
       <p class="text-danger">Campo obbligatorio</p>
       }
@@ -222,37 +241,134 @@
     <div class="col-md-12">
       <label for="email" class="py-2 fw-bold">Email*</label>
       <input formControlName="email" type="email" class="form-control" />
-      @if(signupForm.controls['email'].touched&&signupForm.controls['email'].invalid){
+      @if(signupForm.controls['email'].touched&&signupForm.controls['email'].hasError('pattern')){
+      <p class="text-danger">Inserisci una email valida</p>
+      }@else if(signupForm.controls['email'].touched&&
+      signupForm.controls['email'].hasError('required')){
       <p class="text-danger">Campo obbligatorio</p>
       }
     </div>
     <div class="col-md-6">
       <label for="password" class="py-2 fw-bold">Password*</label>
       <input formControlName="password" class="form-control" type="password" />
-      @if(signupForm.controls['password'].touched&&signupForm.controls['password'].invalid){
+      @if(signupForm.controls['password'].touched&&signupForm.controls['password'].hasError('pattern')){
+      <p class="text-danger">
+        Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1 minuscola e
+        minimo 8 caratteri)
+      </p>
+      }@else if(signupForm.controls['password'].touched&&
+      signupForm.controls['password'].hasError('required')){
       <p class="text-danger">Campo obbligatorio</p>
+      }@else if(signupForm.controls['password'].valid&&
+      signupForm.controls['password'].value==signupForm.controls['ripetiPassword'].value){
+      <p class="text-success">Le password combaciano</p>
       }
     </div>
     <div class="col-md-6">
       <label for="password" class="py-2 fw-bold">Ripeti password*</label>
       <input formControlName="ripetiPassword" class="form-control" type="password" />
-      @if(signupForm.controls['ripetiPassword'].touched&&signupForm.controls['ripetiPassword'].invalid){
+      @if(signupForm.controls['ripetiPassword'].touched&&signupForm.controls['ripetiPassword'].hasError('pattern')){
+      <p class="text-danger">
+        Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1 minuscola e
+        minimo 8 caratteri)
+      </p>
+      }@else if(signupForm.controls['ripetiPassword'].touched&&
+      signupForm.controls['ripetiPassword'].hasError('required')){
       <p class="text-danger">Campo obbligatorio</p>
-      } @else if(signupForm.controls['password'].valid&&
+      }@else if(signupForm.controls['password'].valid&&
       signupForm.controls['password'].value!=signupForm.controls['ripetiPassword'].value){
       <p class="text-danger">La password non combacia</p>
+      }@else if(signupForm.controls['password'].valid&&
+      signupForm.controls['password'].value==signupForm.controls['ripetiPassword'].value){
+      <p class="text-success">Le password combaciano</p>
       }
     </div>
   </form>
+  }@else if(step == 2){ @for (item of piani; track $index) {
+  <div
+    class="card w-75 m-auto my-2 shadow-sm"
+    [ngClass]="item == choosedPlan ? 'choosed-border' : ''"
+  >
+    <div
+      class="card-header fw-bolder"
+      [ngClass]="
+        item.titolo == 'FREE PLAN'
+          ? 'text-success'
+          : item.titolo == 'MEDIUM PLAN'
+          ? 'text-info'
+          : item.titolo == 'GOLDEN PLAN'
+          ? 'text-warning'
+          : 'text-danger'
+      "
+    >
+      {{ item.titolo }}
+      {{
+        item.titolo == 'FREE PLAN'
+          ? '💸'
+          : item.titolo == 'MEDIUM PLAN'
+          ? '🌊'
+          : item.titolo == 'GOLDEN PLAN'
+          ? '🪙'
+          : '🔥'
+      }}
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ item.prezzo | currency : 'EUR' }}</h5>
+      <p class="card-text">
+        {{ item.description }}
+      </p>
+      <button
+        (click)="choosedPlan = item"
+        class="btn"
+        [ngClass]="
+          item.titolo == 'FREE PLAN'
+            ? 'btn-success'
+            : item.titolo == 'MEDIUM PLAN'
+            ? 'btn-info'
+            : item.titolo == 'GOLDEN PLAN'
+            ? 'btn-warning'
+            : 'btn-danger'
+        "
+      >
+        Choose plan
+      </button>
+    </div>
+  </div>
+  } }
+
   <div class="w-75 m-auto text-center py-4">
+    @if (step>1) {
+    <button class="btn btn-light m-1" (click)="step -=1" pTooltip="Back" tooltipPosition="left">
+      Indietro
+    </button>
+    } @if(step == 1){
     <button
-      class="btn btn-outline-primary"
-      (click)="signup()"
+      class="btn btn-primary m-1"
+      (click)="step +=1"
       [disabled]="signupForm.invalid || passwordMismatch()"
+      pTooltip="Forward"
+    >
+      Avanti
+    </button>
+    }@else if(step==2){
+    <button
+      class="btn btn-primary m-1"
+      (click)="step +=1"
+      [disabled]="!choosedPlan"
+      pTooltip="Forward"
+    >
+      Avanti
+    </button>
+    } @if(step ==3){
+    <button
+      class="btn btn-primary m-1"
+      (click)="signup()"
+      [disabled]="signupForm.invalid || passwordMismatch() || !choosedPlan"
       pTooltip="Register"
     >
       Signup
     </button>
+    }
     <hr />
     <p>or</p>
   </div>

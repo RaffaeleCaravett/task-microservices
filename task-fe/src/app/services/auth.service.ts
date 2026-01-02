@@ -9,6 +9,7 @@ import {
   dimensioni,
   formaGiuridica,
   nazione,
+  piano,
   regione,
   settore,
   UserLogin,
@@ -67,5 +68,8 @@ export class AuthService {
   }
   public getDimensioni(): Observable<dimensioni[]> {
     return this.http.get<dimensioni[]>(API_URL.company + '/indirizzo/dimensioni');
+  }
+  public getPiani(): Observable<piano[]> {
+    return this.http.get<piano[]>(API_URL.company + '/auth/piani');
   }
 }

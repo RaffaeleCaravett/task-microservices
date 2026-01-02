@@ -15,13 +15,15 @@ import {
   dimensioni,
   formaGiuridica,
   nazione,
+  piano,
   regione,
   settore,
 } from '../../interfaces/interfaces';
+import { CurrencyPipe, NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, TooltipModule],
+  imports: [ReactiveFormsModule, TooltipModule, CurrencyPipe, NgClass],
   templateUrl: './signup.html',
   styleUrl: './signup.scss',
 })
@@ -41,6 +43,9 @@ export class SignupComponent implements OnInit {
   settori: settore[] = [];
   forme: formaGiuridica[] = [];
   dimensioni: dimensioni[] = [];
+  step: number = 1;
+  piani: piano[] = [];
+  choosedPlan: piano | null = null;
   ngOnInit(): void {
     this.signupForm = this.formBuilder.group({
       ragioneSociale: new FormControl('', Validators.required),
@@ -122,6 +127,11 @@ export class SignupComponent implements OnInit {
         this.dimensioni = dimensioni;
       },
     });
+    this.authService.getPiani().subscribe({
+      next: (datas: piano[]) => {
+        this.piani = datas;
+      },
+    });
   }
 
   onChangeNations(id: number | null | undefined, type: string) {
@@ -129,17 +139,23 @@ export class SignupComponent implements OnInit {
       this.regioni = [];
       this.citta = [];
       this.cap = [];
+      this.signupForm.controls['indirizzo'].get('regione')?.setValue(null);
+      this.signupForm.controls['indirizzo'].get('citta')?.setValue(null);
+      this.signupForm.controls['indirizzo'].get('cap')?.setValue(null);
+      this.signupForm.controls['indirizzo'].get('regione')?.disable();
+      this.signupForm.controls['indirizzo'].get('citta')?.disable();
+      this.signupForm.controls['indirizzo'].get('cap')?.disable();
     } else {
       this.regioniSede = [];
       this.cittaSede = [];
       this.capSede = [];
+      this.signupForm.controls['sedeOperativa'].get('regione')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('citta')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('cap')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('regione')?.disable();
+      this.signupForm.controls['sedeOperativa'].get('citta')?.disable();
+      this.signupForm.controls['sedeOperativa'].get('cap')?.disable();
     }
-    this.signupForm.controls['indirizzo'].get('regione')?.disable();
-    this.signupForm.controls['sedeOperativa'].get('regione')?.disable();
-    this.signupForm.controls['indirizzo'].get('citta')?.disable();
-    this.signupForm.controls['sedeOperativa'].get('citta')?.disable();
-    this.signupForm.controls['indirizzo'].get('cap')?.disable();
-    this.signupForm.controls['sedeOperativa'].get('cap')?.disable();
     this.signupForm.updateValueAndValidity();
     if (id && id != undefined) {
       this.authService.getRegioni(id).subscribe({
@@ -161,14 +177,18 @@ export class SignupComponent implements OnInit {
     if (type == 'indirizzo') {
       this.citta = [];
       this.cap = [];
+      this.signupForm.controls['indirizzo'].get('citta')?.setValue(null);
+      this.signupForm.controls['indirizzo'].get('cap')?.setValue(null);
+      this.signupForm.controls['indirizzo'].get('citta')?.disable();
+      this.signupForm.controls['indirizzo'].get('cap')?.disable();
     } else {
       this.cittaSede = [];
       this.capSede = [];
+      this.signupForm.controls['sedeOperativa'].get('citta')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('cap')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('citta')?.disable();
+      this.signupForm.controls['sedeOperativa'].get('cap')?.disable();
     }
-    this.signupForm.controls['indirizzo'].get('citta')?.disable();
-    this.signupForm.controls['sedeOperativa'].get('citta')?.disable();
-    this.signupForm.controls['indirizzo'].get('cap')?.disable();
-    this.signupForm.controls['sedeOperativa'].get('cap')?.disable();
     this.signupForm.updateValueAndValidity();
     if (id && id != undefined) {
       this.authService.getCitta(id).subscribe({
@@ -188,11 +208,11 @@ export class SignupComponent implements OnInit {
   onChangeCitta(id: number | null | undefined, type: string) {
     if (type == 'indirizzo') {
       this.cap = [];
+      this.signupForm.controls['indirizzo'].get('cap')?.disable();
     } else {
       this.capSede = [];
+      this.signupForm.controls['sedeOperativa'].get('cap')?.disable();
     }
-    this.signupForm.controls['indirizzo'].get('cap')?.disable();
-    this.signupForm.controls['sedeOperativa'].get('cap')?.disable();
     this.signupForm.updateValueAndValidity();
     if (id && id != undefined) {
       this.authService.getCap(id).subscribe({
@@ -211,7 +231,7 @@ export class SignupComponent implements OnInit {
     }
   }
   updateSedeOperativa() {
-    if (this.signupForm.controls['differentWorkStation'].value) {
+    if (this.signupForm.controls['differentWorkStation'].value == true) {
       this.signupForm.controls['sedeOperativa'].get('nazione')?.setValidators(Validators.required);
       this.signupForm.controls['sedeOperativa'].get('citta')?.setValidators(Validators.required);
       this.signupForm.controls['sedeOperativa'].get('cap')?.setValidators(Validators.required);
@@ -223,6 +243,11 @@ export class SignupComponent implements OnInit {
       this.signupForm.controls['sedeOperativa'].get('cap')?.clearValidators();
       this.signupForm.controls['sedeOperativa'].get('regione')?.clearValidators();
       this.signupForm.controls['sedeOperativa'].get('via')?.clearValidators();
+      this.signupForm.controls['sedeOperativa'].get('nazione')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('citta')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('cap')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('regione')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('via')?.setValue(null);
     }
     this.signupForm.updateValueAndValidity();
   }
