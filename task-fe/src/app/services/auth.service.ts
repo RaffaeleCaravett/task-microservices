@@ -6,6 +6,7 @@ import {
   citta,
   Company,
   CompanySignup,
+  dimensioni,
   formaGiuridica,
   nazione,
   regione,
@@ -63,5 +64,8 @@ export class AuthService {
   }
   public getForme(): Observable<formaGiuridica[]> {
     return this.http.get<formaGiuridica[]>(API_URL.company + '/indirizzo/forme');
+  }
+  public getDimensioni(): Observable<dimensioni[]> {
+    return this.http.get<dimensioni[]>(API_URL.company + '/indirizzo/dimensioni');
   }
 }

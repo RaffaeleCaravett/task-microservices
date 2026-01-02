@@ -1,6 +1,7 @@
 <div class="row text-start">
   <form [formGroup]="signupForm" class="row w-75 m-auto">
-    <div class="col-md-12 py-3">
+    <div class="col-12 text-center"><p class="h2 fw-bold">Create a profile</p></div>
+    <div class="col-md-12 py-1 pt-5">
       <h2>Dati generali</h2>
     </div>
     <div class="col-md-6">
@@ -29,33 +30,75 @@
     </div>
 
     <form formGroupName="indirizzo" class="row p-0 m-0">
-      <div class="col-md-12 py-3">
+      <div class="col-md-12 py-1 pt-5">
         <h2>Indirizzo</h2>
       </div>
       <div class="col-md-12">
         <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>
-        <select formControlName="nazione" class="form-select"></select>
+        <select
+          formControlName="nazione"
+          class="form-select"
+          (change)="
+            onChangeNations(signupForm.controls['indirizzo'].get('nazione')?.value, 'indirizzo')
+          "
+        >
+          @for (item of nazioni; track $index) {
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          }@empty {
+          <option value=""></option>
+          }
+        </select>
         @if(signupForm.controls['indirizzo'].get('nazione')?.touched&&signupForm.controls['indirizzo'].get('nazione')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="regione" class="py-2 fw-bold">Regione*</label>
-        <select formControlName="regione" class="form-select"></select>
+        <select
+          formControlName="regione"
+          class="form-select"
+          (change)="
+            onChangeRegions(signupForm.controls['indirizzo'].get('regione')?.value, 'indirizzo')
+          "
+        >
+          @for (item of regioni; track $index) {
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          }@empty{
+          <option value=""></option>
+          }
+        </select>
         @if(signupForm.controls['indirizzo'].get('regione')?.touched&&signupForm.controls['indirizzo'].get('regione')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="citta" class="py-2 fw-bold">Città*</label>
-        <select formControlName="citta" class="form-select"></select>
+        <select
+          formControlName="citta"
+          class="form-select"
+          (change)="
+            onChangeCitta(signupForm.controls['indirizzo'].get('citta')?.value, 'indirizzo')
+          "
+        >
+          @for (item of citta; track $index) {
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          }@empty {
+          <option value=""></option>
+          }
+        </select>
         @if(signupForm.controls['indirizzo'].get('citta')?.touched&&signupForm.controls['indirizzo'].get('citta')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="cap" class="py-2 fw-bold">Cap*</label>
-        <select formControlName="cap" class="form-select"></select>
+        <select formControlName="cap" class="form-select">
+          @for (item of cap; track $index) {
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          }@empty {
+          <option value=""></option>
+          }
+        </select>
         @if(signupForm.controls['indirizzo'].get('cap')?.touched&&signupForm.controls['indirizzo'].get('cap')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
@@ -89,39 +132,80 @@
           id="settore"
           formControlName="differentWorkStation"
           class="form-check-input mt-2"
+          (change)="updateSedeOperativa()"
         />
         <label for="settore" class="py-2 fw-bold">Sede operativa diversa dalla sede legale</label>
       </div>
     </div>
     @if(signupForm.controls['differentWorkStation'].value){
     <form formGroupName="sedeOperativa" class="row p-0 m-0">
-      <div class="col-md-12">
+      <div class="col-md-12 pt-5 py-1">
         <h2>Sede operativa</h2>
       </div>
-        <div class="col-md-12">
+      <div class="col-md-12">
         <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>
-        <select formControlName="nazione" class="form-select"></select>
+        <select
+          formControlName="nazione"
+          class="form-select"
+          (change)="
+            onChangeNations(signupForm.controls['sedeOperativa'].get('nazione')?.value, 'sede')
+          "
+        >
+          @for (item of nazioniSede; track $index) {
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          }@empty {
+          <option value=""></option>
+          }
+        </select>
         @if(signupForm.controls['sedeOperativa'].get('nazione')?.touched&&signupForm.controls['sedeOperativa'].get('nazione')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="regione" class="py-2 fw-bold">Regione*</label>
-        <select formControlName="regione" class="form-select"></select>
+        <select
+          formControlName="regione"
+          class="form-select"
+          (change)="
+            onChangeRegions(signupForm.controls['sedeOperativa'].get('regione')?.value, 'sede')
+          "
+        >
+          @for (item of regioniSede; track $index) {
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          }@empty {
+          <option value=""></option>
+          }
+        </select>
         @if(signupForm.controls['sedeOperativa'].get('regione')?.touched&&signupForm.controls['sedeOperativa'].get('regione')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="citta" class="py-2 fw-bold">Città*</label>
-        <select formControlName="citta" class="form-select"></select>
+        <select
+          formControlName="citta"
+          class="form-select"
+          (change)="onChangeCitta(signupForm.controls['sedeOperativa'].get('citta')?.value, 'sede')"
+        >
+          @for (item of cittaSede; track $index) {
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          }@empty {
+          <option value=""></option>
+          }
+        </select>
         @if(signupForm.controls['sedeOperativa'].get('citta')?.touched&&signupForm.controls['sedeOperativa'].get('citta')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
       <div class="col-md-4">
         <label for="cap" class="py-2 fw-bold">Cap*</label>
-        <select formControlName="cap" class="form-select"></select>
+        <select formControlName="cap" class="form-select">
+          @for (item of capSede; track $index) {
+          <option value="{{ item.id }}">{{ item.name }}</option>
+          }@empty {
+          <option value=""></option>
+          }
+        </select>
         @if(signupForm.controls['sedeOperativa'].get('cap')?.touched&&signupForm.controls['sedeOperativa'].get('cap')?.invalid){
         <p class="text-danger">Campo obbligatorio</p>
         }

@@ -1,3 +1,5 @@
+import { sizes } from '../enums/enums';
+
 export interface UserLogin {
   email: string;
   password: string;
@@ -50,6 +52,11 @@ export interface cap {
 export interface formaGiuridica {
   id: number;
   name: string;
+}
+export interface dimensioni {
+  id: number;
+  label: string;
+  dimensione: sizes;
 }
 export interface indirizzo {
   id: number;
