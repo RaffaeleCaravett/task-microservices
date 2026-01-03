@@ -1,6 +1,7 @@
 package com.example.task_auth.auth;
 
-import com.example.task_auth.dto.UserLoginDTO;
+import com.example.task_auth.dto.entities.SignupSuccess;
+import com.example.task_auth.dto.entities.UserLoginDTO;
 import com.example.task_auth.exceptions.exception.UnauthorizedException;
 import com.example.task_auth.utils.Token;
 import jakarta.validation.Valid;
@@ -33,7 +34,7 @@ public class AuthController {
     }
 
     @PostMapping("/validate/code/{code}/{id}/{type}")
-    public Token validateCode(@PathVariable String code, @PathVariable Long id, @PathVariable String type) {
+    public SignupSuccess validateCode(@PathVariable String code, @PathVariable Long id, @PathVariable String type) {
         try {
             switch (type) {
                 case "COMPANY":

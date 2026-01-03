@@ -1,6 +1,6 @@
-package com.example.task_company.metodoPagamento;
+package com.example.task_general.metodoPagamento;
 
-import com.example.task_company.company.Company;
+import com.example.task_general.company.Company;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

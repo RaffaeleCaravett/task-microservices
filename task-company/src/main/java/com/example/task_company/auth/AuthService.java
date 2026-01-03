@@ -9,6 +9,7 @@ import com.example.task_company.dimensioni.DimensioneRepository;
 import com.example.task_company.dtos.entitiesDTOS.CompanyDTO;
 import com.example.task_company.dtos.entitiesDTOS.CompanyLoginDTO;
 import com.example.task_company.dtos.entitiesDTOS.CompanySignupDTO;
+import com.example.task_company.dtos.entitiesDTOS.MetodoPagamentoDTO;
 import com.example.task_company.exceptions.SignupException;
 import com.example.task_company.exceptions.UnauthorizedException;
 import com.example.task_company.exceptions.WrongDTOException;
@@ -23,6 +24,8 @@ import com.example.task_company.indirizzo.nazione.NazioneRepository;
 import com.example.task_company.indirizzo.regione.RegioneRepository;
 import com.example.task_company.mailgun.MGSamples;
 import com.example.task_company.mapper.CompanyMapper;
+import com.example.task_company.metodoPagamento.MetodoPagamento;
+import com.example.task_company.metodoPagamento.MetodoPagamentoRepository;
 import com.example.task_company.notification.Notification;
 import com.example.task_company.notification.NotificationRepository;
 import com.example.task_company.notification.NotificationState;
@@ -65,6 +68,7 @@ public class AuthService {
     private final SubscriptionRepository subscriptionRepository;
     private final NotificationRepository notificationRepository;
     private final DimensioneRepository dimensioneRepository;
+    private final MetodoPagamentoRepository metodoPagamentoRepository;
 
     @Transactional
     public CompanyDTO signup(CompanySignupDTO companySignupDTO) {
@@ -140,6 +144,17 @@ public class AuthService {
             notification.setCreatedAt(LocalDate.now());
             notification.setReceiver(company);
             notificationRepository.save(notification);
+
+            MetodoPagamento metodoPagamento = new MetodoPagamento();
+            metodoPagamento.setCompany(company);
+            metodoPagamento.setIsActive(true);
+            metodoPagamento.setAddedAt(LocalDate.now());
+            metodoPagamento.setMonth(companySignupDTO.getMetodoPagamentoDTO().getMonth().toString());
+            metodoPagamento.setYear(companySignupDTO.getMetodoPagamentoDTO().getYear().toString());
+            metodoPagamento.setCardNumber(companySignupDTO.getMetodoPagamentoDTO().getCardNumber());
+            metodoPagamento.setOwner(companySignupDTO.getMetodoPagamentoDTO().getOwner());
+            metodoPagamento.setSecretCode(passwordEncoder.encode(companySignupDTO.getMetodoPagamentoDTO().getSecretCode()));
+            metodoPagamentoRepository.save(metodoPagamento);
             return companyDTO;
         } catch (WrongDTOException e) {
             throw new WrongDTOException(e.getMessage());
@@ -156,6 +171,12 @@ public class AuthService {
                     }
                     if (company.get().getSubscription() != null) {
                         subscriptionRepository.delete(company.get().getSubscription());
+                    }
+                    if (company.get().getNotifications() != null) {
+                        notificationRepository.deleteAll(company.get().getNotifications());
+                    }
+                    if (company.get().getMetodoPagamento() != null) {
+                        metodoPagamentoRepository.deleteAll(company.get().getMetodoPagamento());
                     }
                 }
                 throw new SignupException(e.getMessage());

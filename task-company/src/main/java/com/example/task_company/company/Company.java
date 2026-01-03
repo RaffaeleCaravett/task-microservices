@@ -4,6 +4,8 @@ import com.example.task_company.codiceAccesso.CodiceAccesso;
 import com.example.task_company.dimensioni.Dimensione;
 import com.example.task_company.formaGiuridica.FormaGiuridica;
 import com.example.task_company.indirizzo.Indirizzo;
+import com.example.task_company.metodoPagamento.MetodoPagamento;
+import com.example.task_company.notification.Notification;
 import com.example.task_company.settore.Settore;
 import com.example.task_company.subscription.Subscription;
 import com.example.task_company.user.User;
@@ -50,6 +52,10 @@ public class Company implements UserDetails {
     private List<Indirizzo> indirizzo;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Indirizzo> sedeLegale;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<MetodoPagamento> metodoPagamento;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Notification> notifications;
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToOne(mappedBy = "company",orphanRemoval = true,cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)

@@ -4,11 +4,10 @@ import com.example.task_auth.codiceAccesso.CodiceAccesso;
 import com.example.task_auth.codiceAccesso.CodiceAccessoRepository;
 import com.example.task_auth.company.Company;
 import com.example.task_auth.company.CompanyService;
-import com.example.task_auth.dto.UserLoginDTO;
+import com.example.task_auth.dto.entities.SignupSuccess;
+import com.example.task_auth.dto.entities.UserLoginDTO;
 import com.example.task_auth.exceptions.exception.UnauthorizedException;
-import com.example.task_auth.gateway.CompanyGateway;
 import com.example.task_auth.security.JWTTools;
-import com.example.task_auth.gateway.UserGateway;
 import com.example.task_auth.user.User;
 import com.example.task_auth.user.UserService;
 import com.example.task_auth.utils.Token;
@@ -60,10 +59,10 @@ public class AuthService {
         }
     }
 
-    public Token validateCompanyCode(String code, Long id) {
+    public SignupSuccess validateCompanyCode(String code, Long id) {
         try {
             Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByCompany_Id(id);
-
+            var company = companyService.findById(id);
             String remoteCode = null;
             if (codiceAccesso.isPresent()) {
                 remoteCode = codiceAccesso.get().getCode();
@@ -72,7 +71,7 @@ public class AuthService {
             }
             if (remoteCode.equals(code)) {
                 companyService.deleteAccessCode(id);
-                return jwtTools.createTokens(id, "COMPANY");
+                return new SignupSuccess(jwtTools.createTokens(id, "COMPANY"), company, null);
             } else {
                 throw new Exception();
             }
@@ -81,9 +80,10 @@ public class AuthService {
         }
     }
 
-    public Token validateUserCode(String code, Long id) {
+    public SignupSuccess validateUserCode(String code, Long id) {
         try {
             Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByUser_Id(id);
+            var user = userService.findById(id);
             String remoteCode = null;
             if (codiceAccesso.isPresent()) {
                 remoteCode = codiceAccesso.get().getCode();
@@ -92,7 +92,7 @@ public class AuthService {
             }
             if (remoteCode.equals(code)) {
                 deleteAccessCode(id);
-                return jwtTools.createTokens(id, "USER");
+                return new SignupSuccess(jwtTools.createTokens(id, "USER"), null, user);
             } else {
                 throw new Exception();
             }

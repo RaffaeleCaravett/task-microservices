@@ -58,4 +58,6 @@ public class CompanySignupDTO {
     @Min(value = 30, message = "Valore minimo durata: 30 giorni")
     @Max(value = 365, message = "Valore massimo durata: 365 giorni")
     private Integer subscriptionDays;
+    @NotNull(message = "Non hai aggiunto il metodo di pagamento")
+    private MetodoPagamentoDTO metodoPagamentoDTO;
 }

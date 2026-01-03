@@ -1,4 +1,4 @@
-package com.example.task_company.metodoPagamento;
+package com.example.task_general.metodoPagamento;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
