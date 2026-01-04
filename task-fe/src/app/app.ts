@@ -1,8 +1,7 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NavComponent } from './components/nav/nav';
 import { FootComponent } from './components/foot/foot';
-import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -12,11 +11,6 @@ import { AuthService } from './services/auth.service';
 })
 export class App implements OnInit {
   protected readonly title = signal('task-fe');
-  private authService: AuthService = inject(AuthService);
   ngOnInit(): void {
-    let token: string | null = localStorage.getItem('accessToken');
-    let refresh: string | null = localStorage.getItem('refreshToken');
-    if (token) {
-    }
   }
 }

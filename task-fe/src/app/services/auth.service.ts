@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext, HttpContextToken } from '@angular/common/http';
 import { Token } from '@angular/compiler';
 import { inject, Injectable } from '@angular/core';
 import {
@@ -19,7 +19,10 @@ import {
   UserLogin,
 } from '../interfaces/interfaces';
 import { API_URL } from '../core/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+
+export const SKIP_AUTH_ERROR =
+  new HttpContextToken<boolean>(() => false);
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +34,68 @@ export class AuthService {
   private accesstoken: string | null = null;
   private refreshtoken: string | null = null;
   private http: HttpClient = inject(HttpClient);
+  private authState$ = new BehaviorSubject<'checking' | 'authenticated' | 'unauthenticated'>(
+    'checking'
+  );
+
+  constructor() {
+    setTimeout(() => {
+      this.checkToken();
+    }, 500);
+  }
+  public checkToken() {
+    const token: string | null = localStorage.getItem('accessToken');
+    const refresh: string | null = localStorage.getItem('refreshToken');
+    if (!token) {
+      this.authState$.next('unauthenticated');
+      return;
+    }
+
+    this.verifyAccessToken(token).subscribe({
+      next: (verifySuccess: loginSuccess) => {
+        if (verifySuccess) {
+          this.authState$.next('authenticated');
+          this.setAccessToken(token);
+          this.setRefreshToken(refresh);
+          if (verifySuccess.company) {
+            this.setCompany(verifySuccess.company);
+          } else {
+            this.setUser(verifySuccess.user);
+          }
+          this.setIsLoggedIn(true);
+        }
+      },
+      error: (err: any) => {
+        if (!refresh) {
+          this.authState$.next('unauthenticated');
+          return;
+        }
+        this.verifyRefreshToken(refresh).subscribe({
+          next: (data: loginSuccess) => {
+            if (data) {
+              this.authState$.next('authenticated');
+              this.setAccessToken(token);
+              this.setRefreshToken(refresh);
+              if (data.company) {
+                this.setCompany(data.company);
+              } else {
+                this.setUser(data.user);
+              }
+              this.setIsLoggedIn(true);
+            }
+          },
+          error: (err: any) => {
+            this.authState$.next('unauthenticated');
+            return;
+          },
+        });
+      },
+    });
+  }
+
+  authState() {
+    return this.authState$.asObservable();
+  }
   public getIsLoggedIn(): boolean {
     return this.isLoggedIn;
   }
@@ -117,5 +182,14 @@ export class AuthService {
   }
   public getPiani(): Observable<piano[]> {
     return this.http.get<piano[]>(API_URL.company + '/auth/piani');
+  }
+
+  public verifyAccessToken(token: string): Observable<loginSuccess> {
+    return this.http.get<loginSuccess>(API_URL.auth + '/auth/verifyAccessToken/' + token,{
+      context: new HttpContext().set(SKIP_AUTH_ERROR, true)
+    });
+  }
+  public verifyRefreshToken(token: string): Observable<loginSuccess> {
+    return this.http.get<loginSuccess>(API_URL.auth + '/auth/verifyRefreshToken/' + token);
   }
 }

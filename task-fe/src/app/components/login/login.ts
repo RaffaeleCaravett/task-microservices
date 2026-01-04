@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
         },
       });
     } else {
-      this.toastr.error('Completa il form prima');
+      this.toastr.error('Completa correttamente il form prima');
     }
   }
   goToSignup() {
