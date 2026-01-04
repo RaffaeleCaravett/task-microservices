@@ -15,5 +15,10 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
   background: white; /* Firefox */
+  color: black !important;
+}
+
+::ng-deep.p-inputtext {
+  background: #fff !important;
   color: black!important;
 }

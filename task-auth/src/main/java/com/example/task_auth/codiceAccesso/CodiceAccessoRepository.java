@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface CodiceAccessoRepository extends JpaRepository<CodiceAccesso,Long>, JpaSpecificationExecutor<CodiceAccesso> {
     Optional<CodiceAccesso> findByUser_Id(Long id);
     Optional<CodiceAccesso> findByCompany_Id(Long id);
+    Optional<CodiceAccesso> findByUser_Email(String email);
+    Optional<CodiceAccesso> findByCompany_Email(String email);
 }

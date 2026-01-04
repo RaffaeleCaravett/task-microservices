@@ -28,8 +28,8 @@ export class AuthService {
   private isLoggedIn: boolean = false;
   private user: User | null = null;
   private company: Company | null = null;
-  private accesstoken: string = '';
-  private refreshtoken: string = '';
+  private accesstoken: string | null = null;
+  private refreshtoken: string | null = null;
   private http: HttpClient = inject(HttpClient);
   public getIsLoggedIn(): boolean {
     return this.isLoggedIn;
@@ -37,28 +37,28 @@ export class AuthService {
   public setIsLoggedIn(loggedIn: boolean): void {
     this.isLoggedIn = loggedIn;
   }
-  public setUser(user: User): void {
+  public setUser(user: User | null): void {
     this.user = user;
   }
   public getUser(): any {
     return this.user;
   }
-  public setCompany(company: Company): void {
+  public setCompany(company: Company | null): void {
     this.company = company;
   }
   public getCompany(): any {
     return this.company;
   }
-  public setAccessToken(token: string) {
+  public setAccessToken(token: string | null) {
     this.accesstoken = token;
   }
-  public setRefreshToken(token: string) {
+  public setRefreshToken(token: string | null) {
     this.refreshtoken = token;
   }
-  public getAccessToken(): string {
+  public getAccessToken(): string | null {
     return this.accesstoken;
   }
-  public getRefreshToken(): string {
+  public getRefreshToken(): string | null {
     return this.refreshtoken;
   }
   public isAdmin(): boolean {
@@ -74,15 +74,25 @@ export class AuthService {
     return (this.user && this.user?.role == 'OWNER') || false;
   }
   public signup(body: CompanySignup): Observable<CompanyDTOFromSignup> {
-    return this.http.post<CompanyDTOFromSignup>(API_URL.company + '/company/signup', body);
+    return this.http.post<CompanyDTOFromSignup>(API_URL.company + '/auth/company/signup', body);
   }
-  public verifyCode(companyId: number, code: string): Observable<loginSuccess> {
+  public verifyCode(email: string, code: string, type: string): Observable<loginSuccess> {
     return this.http.get<loginSuccess>(
-      API_URL.company + '/validate/code/' + code + '/' + companyId + '/COMPANY'
+      API_URL.auth +
+        '/auth/validate/code?code=' +
+        code +
+        '&email=' +
+        email +
+        '&type=' +
+        type.toUpperCase()
     );
   }
-  public login(body: UserLogin): Observable<Token> {
-    return this.http.post<Token>(API_URL.auth + '/auth/login', body);
+  public login(body: UserLogin, type: string): Observable<boolean> {
+    if ('user' == type) {
+      return this.http.post<boolean>(API_URL.auth + '/auth/login', body);
+    } else {
+      return this.http.post<boolean>(API_URL.auth + '/auth/company/login', body);
+    }
   }
   public getNazioni(): Observable<nazione[]> {
     return this.http.get<nazione[]>(API_URL.company + '/indirizzo/nazioni');

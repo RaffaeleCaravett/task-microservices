@@ -93,10 +93,11 @@ public class AuthService {
                     )
             ) {
                 throw new WrongDTOException("Le informazioni sulla sede legale sono incomplete");
-            } else {
-                List<Indirizzo> sedi = new ArrayList<>();
-                sedi.add(generateIndirizzo(companySignupDTO, "sede"));
-                company.setSedeLegale(sedi);
+            } else if(null != companySignupDTO.getCapSede() && null != companySignupDTO.getCittaSede() && null != companySignupDTO.getRegioneSede() && null != companySignupDTO.getPaeseDiRegistrazioneSede()
+                    && null != companySignupDTO.getViaSede()){
+                    List<Indirizzo> sedi = new ArrayList<>();
+                    sedi.add(generateIndirizzo(companySignupDTO, "sede"));
+                    company.setSedeLegale(sedi);
             }
             FormaGiuridica formaGiuridica = formaGiuridicaRepository.findById(companySignupDTO.getFormaGiuridica()).orElseThrow(() ->
                     new SignupException("La forma giuridica non è corretta"));

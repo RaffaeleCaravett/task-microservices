@@ -37,7 +37,7 @@
       }
     </div>
 
-    <form formGroupName="indirizzo" class="row p-0 m-0">
+    <div formGroupName="indirizzo" class="row p-0 m-0">
       <div class="col-md-12 py-1 pt-5">
         <h2>Indirizzo</h2>
       </div>
@@ -118,7 +118,7 @@
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
-    </form>
+    </div>
     <div class="col-md-8">
       <label for="settore" class="py-2 fw-bold">Settore*</label>
       <select formControlName="settore" class="form-select">
@@ -158,7 +158,7 @@
       </div>
     </div>
     @if(signupForm.controls['differentWorkStation'].value){
-    <form formGroupName="sedeOperativa" class="row p-0 m-0">
+    <div formGroupName="sedeOperativa" class="row p-0 m-0">
       <div class="col-md-12 pt-5 py-1">
         <h2>Sede operativa</h2>
       </div>
@@ -237,7 +237,7 @@
         <p class="text-danger">Campo obbligatorio</p>
         }
       </div>
-    </form>
+    </div>
     }
     <div class="col-md-12">
       <label for="email" class="py-2 fw-bold">Email*</label>
@@ -288,7 +288,7 @@
   }@else if(step == 2){
   <div class="col-12 text-center"><p class="h2 fw-bold">Choose a plan</p></div>
   @for (item of piani; track $index) {
-    <div class="d-flex justify-content-center">
+    <div class="d-flex  flex-column justify-content-center m-2">
         <div
     class="card w-75 m-auto m-2 shadow-sm"
     [ngClass]="item == choosedPlan ? 'choosed-border' : ''"
@@ -322,7 +322,7 @@
         {{ item.description }}
       </p>
       <button
-        (click)="choosedPlan = item; chosedDays = null;"
+        (click)="choosedPlan = item; chosedDays=choosedPlan.id!=1? '30':null;"
         class="btn"
         [ngClass]="
           item.titolo == 'FREE PLAN'
@@ -339,7 +339,7 @@
     </div>
   </div>
   @if (choosedPlan == item && item.id !=1) {
-    <div class="m-2">
+    <div class="m-2 w-75 m-auto">
     <label for="">Select days of Subscription:</label>
     <select class="form-select" (change)="chosedDays=days.value" #days>
       @for (item of sbDays; track $index) {
@@ -351,51 +351,52 @@
     </div>
 
   } }@else if(step == 3){
-  <div class="col-12 text-center"><p class="h2 fw-bold">Summary & Payment</p></div>
+    <div class="row w-75 m-auto">
+      <div class="col-12 text-center"><p class="h2 fw-bold">Summary & Payment</p></div>
   <div class="col-md-12 py-1 pt-5">
     <h2>Dati generali</h2>
   </div>
   <div class="col-md-6">
-    <label for="ragioneSociale" class="py-2 fw-bold"> Ragione sociale</label>
+    <label  class="py-2 fw-bold"> Ragione sociale</label>
     <p>{{ signupForm.controls['ragioneSociale'].value }}</p>
   </div>
   <div class="col-md-6">
-    <label for="partitaIva" class="py-2 fw-bold">Partita Iva</label>
+    <label  class="py-2 fw-bold">Partita Iva</label>
     <p>{{ signupForm.controls['partitaIva'].value }}</p>
   </div>
   <div class="col-md-12">
-    <label for="formaGiuridica" class="py-2 fw-bold"> Forma giuridica</label>
+    <label  class="py-2 fw-bold"> Forma giuridica</label>
     <p>{{ getForma(signupForm.controls['formaGiuridica'].value) }}</p>
   </div>
   <div class="col-md-12 py-1 pt-5">
     <h2>Indirizzo</h2>
   </div>
   <div class="col-md-12">
-    <label for="nazione" class="py-2 fw-bold"> Paese di registrazione</label>
+    <label class="py-2 fw-bold"> Paese di registrazione</label>
     <p>{{ getNation(signupForm.controls['indirizzo'].get('nazione')?.value) }}</p>
   </div>
   <div class="col-md-4">
-    <label for="regione" class="py-2 fw-bold">Regione</label>
+    <label class="py-2 fw-bold">Regione</label>
     <p>{{ getRegion(signupForm.controls['indirizzo'].get('regione')?.value) }}</p>
   </div>
   <div class="col-md-4">
-    <label for="citta" class="py-2 fw-bold">Città</label>
+    <label class="py-2 fw-bold">Città</label>
     <p>{{ getCitta(signupForm.controls['indirizzo'].get('citta')?.value) }}</p>
   </div>
   <div class="col-md-4">
-    <label for="cap" class="py-2 fw-bold">Cap</label>
+    <label  class="py-2 fw-bold">Cap</label>
     <p>{{ getCap(signupForm.controls['indirizzo'].get('cap')?.value) }}</p>
   </div>
   <div class="col-12">
-    <label for="via" class="py-2 fw-bold">Via</label>
+    <label class="py-2 fw-bold">Via</label>
     <p>{{ signupForm.controls['indirizzo'].get('via')?.value }}</p>
   </div>
   <div class="col-md-8">
-    <label for="settore" class="py-2 fw-bold">Settore</label>
+    <label class="py-2 fw-bold">Settore</label>
     <p>{{ getSettore(signupForm.controls['settore'].value) }}</p>
   </div>
   <div class="col-md-4">
-    <label for="dimensioniAzienda" class="py-2 fw-bold">Dimensioni</label>
+    <label  class="py-2 fw-bold">Dimensioni</label>
     <p>{{ getDimensione(signupForm.controls['dimensioniAzienda'].value) }}</p>
   </div>
   @if(signupForm.controls['differentWorkStation'].value){
@@ -403,35 +404,37 @@
     <h2>Sede operativa</h2>
   </div>
   <div class="col-md-12">
-    <label for="nazione" class="py-2 fw-bold"> Paese di registrazione</label>
+    <label  class="py-2 fw-bold"> Paese di registrazione</label>
     <p>{{ getNation(signupForm.controls['sedeOperativa'].get('nazione')?.value, true) }}</p>
   </div>
   <div class="col-md-4">
-    <label for="regione" class="py-2 fw-bold">Regione</label>
+    <label class="py-2 fw-bold">Regione</label>
     <p>{{ getRegion(signupForm.controls['sedeOperativa'].get('regione')?.value, true) }}</p>
   </div>
   <div class="col-md-4">
-    <label for="citta" class="py-2 fw-bold">Città</label>
+    <label class="py-2 fw-bold">Città</label>
     <p>{{ getCitta(signupForm.controls['sedeOperativa'].get('citta')?.value, true) }}</p>
   </div>
   <div class="col-md-4">
-    <label for="cap" class="py-2 fw-bold">Cap</label>
+    <label  class="py-2 fw-bold">Cap</label>
     <p>{{ getCap(signupForm.controls['sedeOperativa'].get('cap')?.value, true) }}</p>
   </div>
   <div class="col-12">
-    <label for="via" class="py-2 fw-bold">Via</label>
+    <label class="py-2 fw-bold">Via</label>
     <p>{{ signupForm.controls['sedeOperativa'].get('via')?.value }}</p>
   </div>
   }
   <div class="col-md-12">
-    <label for="email" class="py-2 fw-bold">Email</label>
+    <label  class="py-2 fw-bold">Email</label>
     <p>{{ signupForm.controls['email'].value }}</p>
   </div>
   <div class="col-md-6">
-    <label for="password" class="py-2 fw-bold">Password</label>
+    <label  class="py-2 fw-bold">Password</label>
     <p>{{ signupForm.controls['password'].value }}</p>
   </div>
 
+    </div>
+  
   <div class="row py-5">
     <div class="col-12 text-center"><p class="h2 fw-bold">Choosed plan</p></div>
     <div class="card w-75 m-auto my-2 choosed-border">
@@ -464,6 +467,9 @@
           {{ choosedPlan!.description }}
         </p>
       </div>
+    </div>
+    <div class="my-2 w-75 m-auto">
+      Choosed days : {{chosedDays}}
     </div>
   </div>
 
@@ -523,7 +529,8 @@
                @if(paymentForm.controls['securityCode'].hasError('required')&& paymentForm.controls['securityCode'].touched){ Il campo è richiesto.
                 }@else if(paymentForm.controls['securityCode'].hasError('min')&& paymentForm.controls['securityCode'].dirty){ Lunghezza minima 3 cifre }
                  @else if(paymentForm.controls['securityCode'].hasError('max')&& paymentForm.controls['securityCode'].dirty){
-                Inserisci massimo 3 cifre }@else if(paymentForm.controls['securityCode'].valid) {
+                Inserisci massimo 3 cifre }@else if(paymentForm.controls['securityCode'].hasError('pattern')&& paymentForm.controls['securityCode'].dirty){
+                Inserisci solo numeri }@else if(paymentForm.controls['securityCode'].valid) {
                   <p class="text-success">Campo corretto</p>
                 }
               </p>
@@ -545,15 +552,15 @@
               </p>
             </div>
             <div class="col-12 text-left py-5">
-              <button class="btn" pTooltip="Add" (click)="pay()"><i class="pi pi-plus"></i> Add payment method</button>
+              <button class="btn" pTooltip="Add" [disabled]="paymentForm.invalid" (click)="pay()"><i class="pi pi-plus"></i> Add payment method</button>
             </div>
             <div class="col-12">
               *** If you chose a free plan, we never take money from your payment method at any time. If you chose a non-free plan we process
               the transaction after the subscription, and the renewal is not automatic.
             </div>
            @if(paymentIsLoading){
-                  <div class="spinner-border" role="status">
-  <span>Loading...</span>
+                  <div class="spinner-border m-auto" role="status">
+  <span class="visually-hidden">Loading...</span>
 </div>
               }@else{ 
                 
@@ -561,8 +568,8 @@
               @if (paymentAccepted) {
               <p class="text-right text-success fw-bold">
                 ✅ Payment method accepted
-                <span class="mx-5"> <button class="btn-outline-danger" (click)="paymentMethod = null;">Remove method</button></span>
-              </p>}@else {
+                <span class="mx-5"> <button class="btn-outline-danger" (click)="paymentMethod = null; paymentAccepted=false; paymentForm.reset();paymentSubmitted=false">Remove method</button></span>
+              </p>}@else if(!paymentAccepted && paymentSubmitted){
 <p class="text-right text-danger fw-bold">
                 ❌ Payment method refused
               </p>
@@ -580,18 +587,20 @@
 </div>
   </div>
 }@else if(section == 'access-code' && !showSpinner){
-  <p class="h2">Inserisci il codice che ti abbiamo mandato per mail!</p>
-  <div class="card flex justify-center">
-    <p-inputotp [(ngModel)]="value" size="large" [length]="6"/>
+  <p class="h2 w-75 m-auto">{{registredCompany?.nomeAzienda}}, inserisci il codice che ti abbiamo mandato per mail!</p>
+  <div class="card flex justify-center border-0">
+    <p-inputotp [(ngModel)]="value" size="large" class="m-auto" [length]="6"/>
 </div>
 @if (value.length == 6) {
-<div class="py-4 text-center">
+<div class="py-4 text-center m-auto">
   <button class="btn" (click)="verifyCode(value)">Verifica codice</button>
 </div>
 }
 }
+
   <div class="w-75 m-auto text-center py-4">
-    @if (step>1) {
+   @if(section!='access-code'){
+   @if (step>1) {
     <button class="btn btn-light m-1" (click)="step -=1" pTooltip="Back" tooltipPosition="left">
       Indietro
     </button>
@@ -608,7 +617,7 @@
     <button
       class="btn btn-primary m-1"
       (click)="step +=1"
-      [disabled]="!choosedPlan"
+      [disabled]="!choosedPlan || (!chosedDays && choosedPlan.id!=1)"
       pTooltip="Forward"
     >
       Avanti
@@ -623,6 +632,7 @@
       Signup
     </button>
     }
+}
     <hr />
     <p>or</p>
   </div>

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -65,6 +65,8 @@ export class SignupComponent implements OnInit {
   protected showSpinner: boolean = false;
   protected value: string = '';
   protected registredCompany: CompanyDTOFromSignup | null = null;
+  protected paymentSubmitted: boolean = false;
+  protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   ngOnInit(): void {
     this.currentYear = Number(new Date().getFullYear().toString().substring(2, 4));
     this.signupForm = this.formBuilder.group({
@@ -91,11 +93,11 @@ export class SignupComponent implements OnInit {
       dimensioniAzienda: new FormControl('', Validators.required),
       differentWorkStation: new FormControl(0),
       sedeOperativa: this.formBuilder.group({
-        nazione: new FormControl({ value: '', disabled: this.nazioniSede.length == 0 }),
-        citta: new FormControl({ value: '', disabled: this.cittaSede.length == 0 }),
-        cap: new FormControl({ value: '', disabled: this.capSede.length == 0 }),
-        regione: new FormControl({ value: '', disabled: this.regioniSede.length == 0 }),
-        via: new FormControl(''),
+        nazione: new FormControl({ value: null, disabled: this.nazioniSede.length == 0 }),
+        citta: new FormControl({ value: null, disabled: this.cittaSede.length == 0 }),
+        cap: new FormControl({ value: null, disabled: this.capSede.length == 0 }),
+        regione: new FormControl({ value: null, disabled: this.regioniSede.length == 0 }),
+        via: new FormControl(null),
       }),
       email: new FormControl('', [
         Validators.required,
@@ -133,6 +135,7 @@ export class SignupComponent implements OnInit {
         Validators.required,
         Validators.min(111),
         Validators.max(999),
+        Validators.pattern(/^[0-9]{3}$/),
       ]),
       cardHolder: new FormControl('', [Validators.required, Validators.pattern('^.+\\s.+$')]),
     });
@@ -151,18 +154,23 @@ export class SignupComponent implements OnInit {
 
       this.authService.signup(companySignupDTO).subscribe({
         next: (datas: CompanyDTOFromSignup) => {
-          this.showSpinner = true;
-          setTimeout(() => {
-            this.section = 'access-code';
-            this.showSpinner = false;
-            this.registredCompany = datas;
-          }, 3000);
+          if (datas) {
+            this.showSpinner = true;
+            setTimeout(() => {
+              this.showSpinner = false;
+              this.registredCompany = datas;
+              this.section = 'access-code';
+              this.cdr.markForCheck();
+            }, 3000);
+          } else {
+            this.toastr.error("E' successo qualcosa nell'elaborazione della richiesta");
+          }
         },
       });
     }
   }
   verifyCode(code: string) {
-    this.authService.verifyCode(this.registredCompany!.id, code).subscribe({
+    this.authService.verifyCode(this.registredCompany!.email, code, 'COMPANY').subscribe({
       next: (data: loginSuccess) => {
         if (data && data.token.accessToken) {
           localStorage.setItem('accessToken', data.token.accessToken);
@@ -185,14 +193,15 @@ export class SignupComponent implements OnInit {
       ragioneSociale: this.signupForm.controls['ragioneSociale'].value,
       partitaIva: this.signupForm.controls['partitaIva'].value,
       formaGiuridica: this.signupForm.controls['formaGiuridica'].value,
-      nazione: this.signupForm.controls['indirizzo'].get('nazione')?.value,
+      paeseDiRegistrazione: this.signupForm.controls['indirizzo'].get('nazione')?.value,
       citta: this.signupForm.controls['indirizzo'].get('citta')?.value,
       cap: this.signupForm.controls['indirizzo'].get('cap')?.value,
       regione: this.signupForm.controls['indirizzo'].get('regione')?.value,
       via: this.signupForm.controls['indirizzo'].get('via')?.value,
       settore: this.signupForm.controls['settore'].value,
+      nomeAzienda: this.signupForm.controls['ragioneSociale'].value,
       dimensioniAzienda: this.signupForm.controls['dimensioniAzienda'].value,
-      nazioneSede: this.signupForm.controls['sedeOperativa'].get('nazione')?.value,
+      paeseDiRegistrazioneSede: this.signupForm.controls['sedeOperativa'].get('nazione')?.value,
       cittaSede: this.signupForm.controls['sedeOperativa'].get('citta')?.value,
       capSede: this.signupForm.controls['sedeOperativa'].get('cap')?.value,
       regioneSede: this.signupForm.controls['sedeOperativa'].get('regione')?.value,
@@ -200,6 +209,8 @@ export class SignupComponent implements OnInit {
       pianoId: this.choosedPlan!.id,
       subscriptionDays: Number(this.chosedDays),
       metodoPagamentoDTO: this.paymentMethod!,
+      email: this.signupForm.controls['email'].value,
+      password: this.signupForm.controls['password'].value,
     };
   }
   passwordMismatch(): boolean {
@@ -361,31 +372,32 @@ export class SignupComponent implements OnInit {
   }
 
   getNation(id: number, isSede?: boolean) {
-    if (isSede) return this.nazioniSede.filter((n) => (n.id = id))[0].name;
-    return this.nazioni.filter((n) => (n.id = id))[0].name;
+    if (isSede) return this.nazioniSede.filter((n) => n.id == id)[0].name;
+    return this.nazioni.filter((n) => n.id == id)[0].name;
   }
   getRegion(id: number, isSede?: boolean) {
-    if (isSede) return this.regioniSede.filter((n) => (n.id = id))[0].name;
-    return this.regioni.filter((n) => (n.id = id))[0].name;
+    if (isSede) return this.regioniSede.filter((n) => n.id == id)[0].name;
+    return this.regioni.filter((n) => n.id == id)[0].name;
   }
   getCitta(id: number, isSede?: boolean) {
-    if (isSede) return this.cittaSede.filter((n) => (n.id = id))[0].name;
-    return this.citta.filter((n) => (n.id = id))[0].name;
+    if (isSede) return this.cittaSede.filter((n) => n.id == id)[0].name;
+    return this.citta.filter((n) => n.id == id)[0].name;
   }
   getCap(id: number, isSede?: boolean) {
-    if (isSede) return this.capSede.filter((n) => (n.id = id))[0].name;
-    return this.cap.filter((n) => (n.id = id))[0].name;
+    if (isSede) return this.capSede.filter((n) => n.id == id)[0].name;
+    return this.cap.filter((n) => n.id == id)[0].name;
   }
   getSettore(id: number) {
-    return this.settori.filter((n) => (n.id = id))[0].name;
+    return this.settori.filter((n) => n.id == id)[0].name;
   }
   getForma(id: number) {
-    return this.forme.filter((n) => (n.id = id))[0].name;
+    return this.forme.filter((n) => n.id == id)[0].name;
   }
   getDimensione(id: number) {
-    return this.dimensioni.filter((n) => (n.id = id))[0].label;
+    return this.dimensioni.filter((n) => n.id == id)[0].label;
   }
   pay() {
+    this.paymentSubmitted = true;
     this.paymentIsLoading = true;
     setTimeout(() => {
       this.paymentIsLoading = false;
@@ -412,6 +424,7 @@ export class SignupComponent implements OnInit {
       } else {
         this.toastr.error('Dati mancanti o incorretti.');
       }
+      this.cdr.markForCheck();
     }, 2000);
   }
   adeguateCardNumberValue(event: any) {

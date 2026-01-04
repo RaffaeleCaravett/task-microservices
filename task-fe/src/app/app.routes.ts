@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { DashboardRoutes } from './components/dashboard/dashboard/dashboard.routes';
 import { HomeRoutes } from './components/home/home.routes';
 import { AuthGuard } from './core/auth.guard';
+import { ErrorComponent } from './core/error/error';
 
 export const routes: Routes = [
   {
@@ -18,5 +19,9 @@ export const routes: Routes = [
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
+  },
+  {
+    path: '**',
+    component: ErrorComponent,
   },
 ];

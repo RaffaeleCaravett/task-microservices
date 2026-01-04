@@ -17,18 +17,23 @@ export interface loginSuccess {
   company: Company | null;
   user: User | null;
 }
+export interface login {
+  email: string;
+  password: string;
+}
 export interface CompanySignup {
   ragioneSociale: string;
   partitaIva: string;
   formaGiuridica: number;
-  nazione: number;
+  paeseDiRegistrazione: number;
   citta: number;
   cap: number;
   regione: number;
   via: string;
   settore: number;
+  nomeAzienda: string;
   dimensioniAzienda: number;
-  nazioneSede: number;
+  paeseDiRegistrazioneSede: number;
   cittaSede: string;
   capSede: string;
   regioneSede: string;
@@ -36,6 +41,8 @@ export interface CompanySignup {
   pianoId: number;
   subscriptionDays: number;
   metodoPagamentoDTO: metodoPagamento;
+  email: string;
+  password: string;
 }
 export interface CompanyDTOFromSignup {
   id: number;

@@ -33,23 +33,20 @@ public class AuthController {
         return authService.companyLogin(userLoginDTO);
     }
 
-    @PostMapping("/validate/code/{code}/{id}/{type}")
-    public SignupSuccess validateCode(@PathVariable String code, @PathVariable Long id, @PathVariable String type) {
+    @GetMapping("/validate/code")
+    public SignupSuccess validateCode(@RequestParam String code, @RequestParam String email, @RequestParam String type) {
         try {
-            switch (type) {
-                case "COMPANY":
-                    return authService.validateCompanyCode(code, id);
-                case "USER":
-                    return authService.validateUserCode(code, id);
-                default:
-                    throw new Exception();
-            }
+            return switch (type) {
+                case "COMPANY" -> authService.validateCompanyCode(code, email);
+                case "USER" -> authService.validateUserCode(code, email);
+                default -> throw new Exception();
+            };
         } catch (Exception e) {
             throw new UnauthorizedException("Impossibile verificare il codice di accesso");
         }
     }
 
-    @PostMapping("/refreshAccessToken/{refreshToken}/{type}")
+    @GetMapping("/refreshAccessToken/{refreshToken}/{type}")
     public Token refreshAccess(@PathVariable String refreshToken, @PathVariable String type) {
         return authService.refreshAccessToken(refreshToken, type);
     }

@@ -59,10 +59,10 @@ public class AuthService {
         }
     }
 
-    public SignupSuccess validateCompanyCode(String code, Long id) {
+    public SignupSuccess validateCompanyCode(String code, String email) {
         try {
-            Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByCompany_Id(id);
-            var company = companyService.findById(id);
+            Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByCompany_Email(email);
+            var company = companyService.findByEmail(email);
             String remoteCode = null;
             if (codiceAccesso.isPresent()) {
                 remoteCode = codiceAccesso.get().getCode();
@@ -70,8 +70,8 @@ public class AuthService {
                 throw new Exception();
             }
             if (remoteCode.equals(code)) {
-                companyService.deleteAccessCode(id);
-                return new SignupSuccess(jwtTools.createTokens(id, "COMPANY"), company, null);
+                companyService.deleteAccessCode(company.getId());
+                return new SignupSuccess(jwtTools.createTokens(company.getId(), "COMPANY"), company, null);
             } else {
                 throw new Exception();
             }
@@ -80,10 +80,10 @@ public class AuthService {
         }
     }
 
-    public SignupSuccess validateUserCode(String code, Long id) {
+    public SignupSuccess validateUserCode(String code, String email) {
         try {
-            Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByUser_Id(id);
-            var user = userService.findById(id);
+            Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByUser_Email(email);
+            var user = userService.findByEmail(email);
             String remoteCode = null;
             if (codiceAccesso.isPresent()) {
                 remoteCode = codiceAccesso.get().getCode();
@@ -91,8 +91,8 @@ public class AuthService {
                 throw new Exception();
             }
             if (remoteCode.equals(code)) {
-                deleteAccessCode(id);
-                return new SignupSuccess(jwtTools.createTokens(id, "USER"), null, user);
+                deleteAccessCode(user.getId());
+                return new SignupSuccess(jwtTools.createTokens(user.getId(), "USER"), null, user);
             } else {
                 throw new Exception();
             }

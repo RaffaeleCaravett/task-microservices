@@ -131,4 +131,15 @@
     <MESSAGE value="ready to do fe now" />
     <option name="LAST_COMMIT_MESSAGE" value="ready to do fe now" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/example/task_company/dtos/entitiesDTOS/CompanySignupDTO.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
 </project>
