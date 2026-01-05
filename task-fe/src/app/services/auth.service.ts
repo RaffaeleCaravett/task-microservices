@@ -20,9 +20,9 @@ import {
 } from '../interfaces/interfaces';
 import { API_URL } from '../core/environment';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
-export const SKIP_AUTH_ERROR =
-  new HttpContextToken<boolean>(() => false);
+export const SKIP_AUTH_ERROR = new HttpContextToken<boolean>(() => false);
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +37,7 @@ export class AuthService {
   private authState$ = new BehaviorSubject<'checking' | 'authenticated' | 'unauthenticated'>(
     'checking'
   );
-
+  protected router: Router = inject(Router);
   constructor() {
     setTimeout(() => {
       this.checkToken();
@@ -63,6 +63,9 @@ export class AuthService {
             this.setUser(verifySuccess.user);
           }
           this.setIsLoggedIn(true);
+          if (this.router.url == '/home/login' || this.router.url == '/home/signup') {
+            this.router.navigate(['dashboard/landing']);
+          }
         }
       },
       error: (err: any) => {
@@ -82,6 +85,9 @@ export class AuthService {
                 this.setUser(data.user);
               }
               this.setIsLoggedIn(true);
+              if (this.router.url == '/home/login' || this.router.url == '/home/signup') {
+                this.router.navigate(['dashboard/landing']);
+              }
             }
           },
           error: (err: any) => {
@@ -185,8 +191,8 @@ export class AuthService {
   }
 
   public verifyAccessToken(token: string): Observable<loginSuccess> {
-    return this.http.get<loginSuccess>(API_URL.auth + '/auth/verifyAccessToken/' + token,{
-      context: new HttpContext().set(SKIP_AUTH_ERROR, true)
+    return this.http.get<loginSuccess>(API_URL.auth + '/auth/verifyAccessToken/' + token, {
+      context: new HttpContext().set(SKIP_AUTH_ERROR, true),
     });
   }
   public verifyRefreshToken(token: string): Observable<loginSuccess> {

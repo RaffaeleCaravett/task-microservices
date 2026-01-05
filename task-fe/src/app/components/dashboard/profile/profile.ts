@@ -20,6 +20,8 @@ export class ProfileComponent implements OnInit {
   protected user: User | null = null;
   protected company: Company | null = null;
   protected users: User[] = [];
+  protected projects: project[] = [];
+
   ngOnInit(): void {
     this.menuService.setMenu([
       'Generale',

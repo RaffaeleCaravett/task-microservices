@@ -1,4 +1,4 @@
-import { sizes } from '../enums/enums';
+import { ProjectState, sizes, TaskState } from '../enums/enums';
 
 export interface UserLogin {
   email: string;
@@ -127,6 +127,25 @@ export interface User {
   email: string;
   companies: Company[];
   immagine: immagine[];
+}
+export interface project{
+  id:number,
+  createdAt:string,
+  state:ProjectState,
+  user:User[],
+  manager:User,
+  task:task,
+  name:string,
+  description:string
+}
+export interface task{
+  id:number,
+  creator:User,
+  title:string,
+  developers:User[],
+  state:TaskState,
+  createdAt:string,
+  description:string
 }
 export interface metodoPagamento {
   cardNumber: string;

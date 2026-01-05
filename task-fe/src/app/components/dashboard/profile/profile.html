@@ -15,7 +15,9 @@
       <span class="fw-bold">Registred :</span>
       {{ company?.createdAt | date : 'dd-MM-yyyy' }}
       <span class="fw-bold">Utenti :</span>
-      {{ users?.length }}
+      {{ users.length }}
+      <span class="fw-bold">Active projects :</span>
+      {{ projects.length }}
     </p>
   </div>
   } }@else {wow}

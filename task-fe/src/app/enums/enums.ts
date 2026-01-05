@@ -4,3 +4,12 @@ export enum sizes {
   LARGE = 'LARGE',
   EXTRA_LARGE = 'EXTRA_LARGE',
 }
+export enum ProjectState {
+  STARTED = 'STARTED',
+  COMPLETED = 'COMPLETED',
+}
+export enum TaskState {
+  CREATED = 'CREATED',
+  ON_GOING = 'ON_GOING',
+  COMPLETED = 'COMPLETED',
+}
