@@ -108,6 +108,8 @@ export interface Company {
   sedeOperativa?: indirizzo;
   email: string;
   immagine: immagine[];
+  projects: project[];
+  users: User[];
 }
 export interface immagine {
   name: string;
@@ -128,24 +130,24 @@ export interface User {
   companies: Company[];
   immagine: immagine[];
 }
-export interface project{
-  id:number,
-  createdAt:string,
-  state:ProjectState,
-  user:User[],
-  manager:User,
-  task:task,
-  name:string,
-  description:string
+export interface project {
+  id: number;
+  createdAt: string;
+  state: ProjectState;
+  user: User[];
+  manager: User;
+  task: task[];
+  name: string;
+  description: string;
 }
-export interface task{
-  id:number,
-  creator:User,
-  title:string,
-  developers:User[],
-  state:TaskState,
-  createdAt:string,
-  description:string
+export interface task {
+  id: number;
+  creator: User;
+  title: string;
+  developers: User[];
+  state: TaskState;
+  createdAt: string;
+  description: string;
 }
 export interface metodoPagamento {
   cardNumber: string;

@@ -1,4 +1,4 @@
-<div class="row p-5">
+<div class="row p-5 equal-height">
   @if(section=='Generale'){ @if(user){ }@else {
   <div class="col-12 d-flex justify-content-start align-items-end">
     <img
@@ -10,15 +10,142 @@
     />
     <p class="h1 mx-1">{{ company?.ragioneSociale }}</p>
   </div>
-  <div class="col-12">
+  <div class="col-12 pt-1">
     <p>
       <span class="fw-bold">Registred :</span>
       {{ company?.createdAt | date : 'dd-MM-yyyy' }}
       <span class="fw-bold">Utenti :</span>
       {{ users.length }}
       <span class="fw-bold">Active projects :</span>
-      {{ projects.length }}
+      {{ company?.projects?.length || 0 }}
     </p>
+  </div>
+  <div class="col-md-6">
+    <div class="row m-auto">
+      <div class="col-md-12 py-1 pt-5">
+        <h2>Dati generali</h2>
+      </div>
+      <div class="col-md-6">
+        <label class="py-2 fw-bold"> Ragione sociale</label>
+        <p>{{ company?.ragioneSociale }}</p>
+      </div>
+      <div class="col-md-6">
+        <label class="py-2 fw-bold">Partita Iva</label>
+        <p>{{ company?.partitaIva }}</p>
+      </div>
+      <div class="col-md-12">
+        <label class="py-2 fw-bold"> Forma giuridica</label>
+        <p>{{ company?.formaGiuridica?.name }}</p>
+      </div>
+      <div class="col-md-12 py-1 pt-5">
+        <h2>Indirizzo</h2>
+      </div>
+      <div class="col-md-12">
+        <label class="py-2 fw-bold"> Paese di registrazione</label>
+        <p>{{ company?.indirizzo?.nazione?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Regione</label>
+        <p>{{ company?.indirizzo?.regione?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Città</label>
+        <p>{{ company?.indirizzo?.citta?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Cap</label>
+        <p>{{ company?.indirizzo?.cap?.name }}</p>
+      </div>
+      <div class="col-12">
+        <label class="py-2 fw-bold">Via</label>
+        <p>{{ company?.indirizzo?.via }}</p>
+      </div>
+      <div class="col-md-8">
+        <label class="py-2 fw-bold">Settore</label>
+        <p>{{ company?.settore?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Dimensioni</label>
+        <p>{{ company?.dimensioniAzienda?.label }}</p>
+      </div>
+      @if(company?.sedeOperativa){
+      <div class="col-md-12 pt-5 py-1">
+        <h2>Sede operativa</h2>
+      </div>
+      <div class="col-md-12">
+        <label class="py-2 fw-bold"> Paese di registrazione</label>
+        <p>{{ company?.sedeOperativa?.nazione?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Regione</label>
+        <p>{{ company?.sedeOperativa?.regione?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Città</label>
+        <p>{{ company?.sedeOperativa?.citta?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Cap</label>
+        <p>{{ company?.sedeOperativa?.cap?.name }}</p>
+      </div>
+      <div class="col-12">
+        <label class="py-2 fw-bold">Via</label>
+        <p>{{ company?.sedeOperativa?.via }}</p>
+      </div>
+      }
+      <div class="col-md-12">
+        <label class="py-2 fw-bold">Email</label>
+        <p>{{ company?.email }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 overflow-scroll">
+    <div class="text-center py-1 pt-5">
+      <h2>Your projects</h2>
+      <form [formGroup]="searchProjectForm" class="d-flex m-auto w-75">
+        <input
+          type="text"
+          class="form-control text-end"
+          formControlName="search"
+          placeholder="search a project ..."
+        />
+        <button
+          class="btn mx-2 fs-3 pt-1"
+          [disabled]="
+            !company?.projects ||
+            company?.projects == undefined ||
+            (company?.projects && company?.projects?.length == 0)
+          "
+          (click)="search()"
+        >
+          🔎
+        </button>
+      </form>
+    </div>
+    @for (item of projectsToShow; track $index) {
+    <div class="w-100 m-3 bg-light shadow-sm p-3" [style.height]="'fit-content'">
+      <p class="text-center h2">{{ item?.name }}</p>
+      <p class="d-flex justify-content-around">
+        <span><span class="fw-bold">Manager : </span> {{ item?.manager?.email }}</span>
+        <span><span class="fw-bold">Stato : </span>{{ item?.state?.toLocaleUpperCase() }}</span>
+      </p>
+      <p class="py-2 text-start">{{ item?.description }}</p>
+      <p class="text-end">{{ item?.createdAt }}</p>
+    </div>
+    }@empty {
+    <div class="w-100 m-3 bg-light shadow-sm p-3" [style.height]="'fit-content'">
+      <p class="text-center h2">Nothing yet</p>
+      <p class="d-flex justify-content-around">
+        <span><span class="fw-bold">Manager : </span> /</span>
+        <span><span class="fw-bold">Stato : </span>/</span>
+      </p>
+      <p class="py-2 text-left">No description</p>
+      <p class="text-right">No creation date</p>
+    </div>
+    }
+  </div>
+  <div class="col-md-12 pt-5">
+    <h2 class="text-center py-1">Users</h2>
   </div>
   } }@else {wow}
 </div>
