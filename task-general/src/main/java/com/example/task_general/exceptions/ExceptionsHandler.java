@@ -21,7 +21,12 @@ public class ExceptionsHandler {
 
     @ExceptionHandler(EntityNotPresentException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorWithListDTO handleSignup(EntityNotPresentException e) {
+    public ErrorWithListDTO handleEntityNotPresent(EntityNotPresentException e) {
+        return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
+    }
+  @ExceptionHandler(BadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorWithListDTO handleBadRequestException(BadRequestException e) {
         return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
     }
 }

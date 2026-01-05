@@ -4,6 +4,7 @@ import com.example.task_general.dimensioni.Dimensione;
 import com.example.task_general.formaGiuridica.FormaGiuridica;
 import com.example.task_general.indirizzo.Indirizzo;
 import com.example.task_general.metodoPagamento.MetodoPagamento;
+import com.example.task_general.project.Project;
 import com.example.task_general.settore.Settore;
 import com.example.task_general.user.Role;
 import com.example.task_general.user.User;
@@ -54,9 +55,12 @@ public class Company extends UserInfos implements UserDetails {
             name = "companies_users",
             joinColumns = @JoinColumn(name = "company_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
+
     private List<User> users;
     @Enumerated(EnumType.STRING)
     private Role role;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Project> projects;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
