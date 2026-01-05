@@ -1,4 +1,4 @@
-import { Component, effect, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { Company, Page, User } from '../../interfaces/interfaces';
@@ -24,12 +24,14 @@ export class NavComponent implements OnInit {
   protected companyService: CompanyService = inject(CompanyService);
   protected router: Router = inject(Router);
   protected dialog: MatDialog = inject(MatDialog);
+  private cdr:ChangeDetectorRef = inject(ChangeDetectorRef);
   protected user: User | null = null;
   protected company: Company | null = null;
   protected users!: Page<User>;
   protected messageService: MessageService = inject(MessageService);
   isDark: boolean = false;
   protected modeService: ModeService = inject(ModeService);
+  isLoggedIn:boolean = false;
   ngOnInit(): void {
   }
   goToRoute(route: string) {
@@ -70,5 +72,9 @@ export class NavComponent implements OnInit {
     effect(() => {
       this.isDark = this.modeService.isDark();
     });
+    effect(()=>{
+      this.isLoggedIn = this.authService.isLoggedIn()
+      this.cdr.markForCheck();
+    })
   }
 }

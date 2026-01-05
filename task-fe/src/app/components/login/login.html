@@ -1,94 +1,142 @@
-<div class="row">
-  <div class="col-12">
-    <p class="h2 fw-bold">Access the platform</p>
-    @if (section=='login' && !isLoginLoading) {
-    <form [formGroup]="loginForm" class="m-auto py-5 w-75 row text-start">
-      <label class="fw-bold">Seleziona il tipo</label>
-      @for (item of types; track $index) {
-      <div class="form-check mx-3">
-        <input
-          class="form-check-input"
-          type="radio"
-          formControlName="type"
-          name="type"
-          [value]="item"
-          id="radioDefault{{ $index }}"
-          (change)="type = loginForm.controls['type'].value"
-        />
-        <label class="form-check-label" for="radioDefault{{ $index }}"> {{ item }} </label>
-      </div>
-      } @if (loginForm.controls['type'].hasError('required')) {
-      <p class="text-danger">Scegli il tipo. E' obbligatorio.</p>
-      }
-      <label for="Email" class="py-3 fw-bold">Email</label>
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1">@</span>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Email"
-          aria-label="Email"
-          aria-describedby="basic-addon1"
-          formControlName="email"
-        />
-      </div>
-      <label for="Password" class="py-3 fw-bold">Password</label>
-      <div class="input-group mb-3">
-        <span class="input-group-text" id="basic-addon1"><i class="pi pi-key"></i></span>
-        <input
-          type="password"
-          class="form-control"
-          placeholder="Password"
-          aria-label="Password"
-          aria-describedby="basic-addon1"
-          formControlName="password"
-        />
-      </div>
-    </form>
-    }@else if(section == 'access-code' && !isLoginLoading){
-    <div class="py-5">
-      <label>Choose a type</label>
-      <select name="type" id="type" class="form-select w-75 m-auto">
-        @for (item of types; track $index) {
-        <option value="{{ item }}">{{ item }}</option>
+<div class="text-end px-5">
+  <p-button
+    label="Don't have an account"
+    variant="outlined"
+    severity="warn"
+    pTooltip="Go to signup"
+    (click)="goToSignup()"
+  >
+  </p-button>
+</div>
+<div class="d-flex justify-content-center align-items-center position-relative pt-5 mt-5 cloud">
+  <div class="background position-absolute top-0 start-0 h-100 w-100"></div>
+  <div class="py-5 text-center z-index">
+    @if (section == 'login' && !isLoginLoading) {
+      <form [formGroup]="loginForm" class="m-auto py-5 row text-center">
+        <div class="d-flex gap-3 align-items-center justify-content-center pt-3 type-container">
+          @for (item of types; track $index) {
+            <p
+              class="fs-2 text-center option p-3"
+              [ngClass]="
+                type == item ? (isDark ? ['selected-dark-button'] : ['selected-light-button']) : ''
+              "
+              (click)="type = item"
+            >
+              {{ item }} login
+            </p>
+          }
+        </div>
+        <div [ngStyle]="type == '' ? { visibility: 'hidden' } : {}">
+          <div
+            class="border-bottom m-auto fake-input rounded border-secondary d-flex align-items-center justify-content-center mt-5"
+          >
+            <span class="fs-3 email px-3 fw-bold">Email </span>
+            <input
+              type="text"
+              class="form-control w-75 border-0 bg-transparent outline-0"
+              placeholder="Email"
+              formControlName="email"
+            />
+          </div>
+          <div
+            class="border-bottom m-auto fake-input rounded border-secondary d-flex align-items-center justify-content-center mt-5"
+          >
+            <span class="fs-3 email px-3 fw-bold">Password </span>
+            <input
+              type="password"
+              class="form-control border-0 bg-transparent outline-0"
+              placeholder="Password"
+              formControlName="password"
+            />
+          </div>
+          <div
+            class="border-bottom m-auto fake-input rounded border-secondary d-flex align-items-center justify-content-center mt-5"
+            [ngStyle]="type && type == 'user' ? {} : {'visibility':'hidden'}"
+          >
+            <span class="fs-3 email px-3 fw-bold">Code</span>
+            <input
+              type="text"
+              class="form-control border-0 bg-transparent outline-0"
+              placeholder="Access code"
+              formControlName="accessCode"
+            />
+          </div>
+        </div>
+        @if (loginForm.valid && type && type != '') {
+          <button
+            (click)="login()"
+            class="bg-transparent px-5 p-2 w-auto m-auto mt-5 fw-bold text-uppercase"
+            [ngClass]="isDark ? ['selected-dark-button'] : ['selected-light-button']"
+          >
+            Login
+          </button>
         }
-      </select>
-    </div>
-    <p class="h2">Inserisci il codice che ti abbiamo mandato per mail!</p>
-    <div class="card flex justify-center border-0 bg-light">
-      <p-inputotp [(ngModel)]="value" size="large" class="m-auto" [length]="6" />
-    </div>
-    @if (value.length == 6) {
-    <div class="py-4 text-center m-auto">
-      <button class="btn" (click)="verifyCode(value)">Verifica codice</button>
-    </div>
-    } }@else if(isLoginLoading){
-    <div class="row m-auto w-75 py-5 my-5">
-      <div class="spinner-border text-primary m-auto" role="status"></div>
-      <p class="text-primary text-center pt-4">Loading...</p>
-    </div>
+      </form>
+    } @else if (section == 'access-code' && type == 'company' && !isLoginLoading) {
+      <div class="py-5 my-5">
+        <p class="h2">
+          Insert the access code. <br />
+          We've sent one to your email address.
+        </p>
+        <div class="card bg-transparent flex justify-center border-0 py-3">
+          <p-inputotp [(ngModel)]="value" size="large" class="m-auto" [length]="6" />
+        </div>
+      </div>
+
+      @if (value.length == 6) {
+        <div class="py-4 text-center m-auto">
+          <button class="btn" (click)="verifyCode(value)">Verifica codice</button>
+        </div>
+      }
+    } @else if (isLoginLoading) {
+      <div class="row m-auto w-75 py-5 my-5">
+        <div
+          class="spinner-border m-auto"
+          role="status"
+          [ngClass]="isDark ? 'text-danger' : 'text-success'"
+        ></div>
+        <p class="text-center pt-4" [ngClass]="isDark ? 'text-danger' : 'text-success'">
+          Loading...
+        </p>
+      </div>
     }
-    <button
-      class="btn btn-primary shadow-sm my-5 m-1"
-      pTooltip="Signin"
-      (click)="section == 'login' ? login() : (section = 'login')"
-    >
-      Access
-    </button>
-    <button
-      class="btn m-1 my-5"
-      (click)="section == 'login' ? (section = 'access-code') : verifyCode(value)"
-    >
-      Insert access code
-    </button>
-    <hr class="w-50 m-auto" />
-    <p class="h5 pt-5 pb-3">or</p>
-    <button
-      class="btn btn-outline-warning shadow-sm"
-      pTooltip="Go to signup"
-      (click)="goToSignup()"
-    >
-      Register
-    </button>
+   
   </div>
 </div>
+ <div class="text-center" [ngStyle]="type == '' ? { visibility: 'hidden' } : {}">
+      @if (section == 'login' && type != 'user') {
+        @if (isDark) {
+          <p-button
+            label="Alreay have a code"
+            variant="outlined"
+            severity="danger"
+            (click)="section == 'login' ? (section = 'access-code') : verifyCode(value)"
+          />
+        } @else {
+          <p-button
+            label="Already have a code"
+            variant="outlined"
+            severity="success"
+            (click)="section == 'login' ? (section = 'access-code') : verifyCode(value)"
+          />
+        }
+      } @else {
+        @if (type != 'user') {
+          @if (isDark) {
+            <p-button
+              label="Back to login"
+              variant="outlined"
+              severity="danger"
+              (click)="section == 'login' ? login() : (section = 'login')"
+            />
+          } @else {
+            <p-button
+              label="Back to login"
+              variant="outlined"
+              severity="success"
+              (click)="section == 'login' ? login() : (section = 'login')"
+            />
+          }
+        }
+      }
+    </div>

@@ -37,7 +37,6 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-profile',
   imports: [
-    DatePipe,
     ReactiveFormsModule,
     TableModule,
     TagModule,

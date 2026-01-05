@@ -2,11 +2,10 @@ import { AfterViewInit, ChangeDetectorRef, Component, inject } from '@angular/co
 import { RouterOutlet } from '@angular/router';
 import { MenuService } from '../../../services/menu.service';
 import { filter } from 'rxjs';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [RouterOutlet, NgClass],
+  imports: [RouterOutlet],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
 })

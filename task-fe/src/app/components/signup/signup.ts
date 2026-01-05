@@ -155,7 +155,7 @@ export class SignupComponent implements OnInit {
     });
     this.getDatas();
     const email = this.activatedRoute.snapshot.params['email'];
-    if (email) {
+    if (email && email!= 'page') {
       this.signupForm.patchValue({
         email: email,
       });
@@ -250,7 +250,7 @@ export class SignupComponent implements OnInit {
     );
   }
   goToLogin() {
-    this.router.navigate(['home/login']);
+    this.router.navigate(['/login']);
   }
   getDatas() {
     this.authService.getNazioni().subscribe({

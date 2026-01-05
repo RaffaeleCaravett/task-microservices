@@ -1,6 +1,6 @@
 import { HttpClient, HttpContext, HttpContextToken } from '@angular/common/http';
 import { Token } from '@angular/compiler';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import {
   cap,
   citta,
@@ -28,7 +28,7 @@ export const SKIP_AUTH_ERROR = new HttpContextToken<boolean>(() => false);
   providedIn: 'root',
 })
 export class AuthService {
-  private isLoggedIn: boolean = false;
+  isLoggedIn: WritableSignal<boolean> = signal(false);
   private user: User | null = null;
   private company: Company | null = null;
   private accesstoken: string | null = null;
@@ -63,8 +63,12 @@ export class AuthService {
             this.setUser(verifySuccess.user);
           }
           this.setIsLoggedIn(true);
-          if (this.router.url == '/home/login' || this.router.url == '/home/signup') {
-            this.router.navigate(['dashboard/landing']);
+          if (
+            this.router.url == '/login' ||
+            this.router?.url?.startsWith('/signup') ||
+            this.router?.url == '/home'
+          ) {
+            this.router.navigate(['dashboard']);
           }
         }
       },
@@ -86,8 +90,12 @@ export class AuthService {
                 this.setUser(data.user);
               }
               this.setIsLoggedIn(true);
-              if (this.router.url == '/home/login' || this.router.url == '/home/signup') {
-                this.router.navigate(['dashboard/landing']);
+              if (
+                this.router.url == '/login' ||
+                this.router?.url?.startsWith('/signup') ||
+                this.router?.url == '/home'
+              ) {
+                this.router.navigate(['dashboard']);
               }
             }
           },
@@ -104,10 +112,10 @@ export class AuthService {
     return this.authState$.asObservable();
   }
   public getIsLoggedIn(): boolean {
-    return this.isLoggedIn;
+    return this.isLoggedIn();
   }
   public setIsLoggedIn(loggedIn: boolean): void {
-    this.isLoggedIn = loggedIn;
+    this.isLoggedIn.set(loggedIn);
   }
   public setUser(user: User | null): void {
     this.user = user;
@@ -159,9 +167,13 @@ export class AuthService {
         type.toUpperCase(),
     );
   }
-  public login(body: UserLogin, type: string): Observable<boolean> {
+  public login(
+    body: UserLogin,
+    type: string,
+    accessCode: string | null,
+  ): Observable<boolean | loginSuccess> {
     if ('user' == type) {
-      return this.http.post<boolean>(API_URL.auth + '/auth/login', body);
+      return this.http.post<boolean>(API_URL.auth + '/auth/user/login?code=' + accessCode, body);
     } else {
       return this.http.post<boolean>(API_URL.auth + '/auth/company/login', body);
     }
