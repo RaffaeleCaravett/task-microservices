@@ -1,15 +1,33 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MenuService } from '../../../services/menu.service';
 import { filter, map } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import { Company, project, User } from '../../../interfaces/interfaces';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { CompanyService } from '../../../services/company.service';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Table } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
+import { TableModule } from 'primeng/table';
 @Component({
   selector: 'app-profile',
-  imports: [DatePipe, ReactiveFormsModule],
+  imports: [
+    DatePipe,
+    ReactiveFormsModule,
+    TableModule,
+    TagModule,
+    IconFieldModule,
+    InputTextModule,
+    InputIconModule,
+    MultiSelectModule,
+    SelectModule,
+    FormsModule,
+  ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
@@ -25,6 +43,10 @@ export class ProfileComponent implements OnInit {
   protected searchProjectForm = new FormGroup({
     search: new FormControl(''),
   });
+  status: string[] = ['ACTIVE', 'INACTIVE'];
+  loading: boolean = true;
+  activityValues: number[] = [0, 100];
+  protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   ngOnInit(): void {
     this.menuService.setMenu([
       'Generale',
@@ -32,7 +54,47 @@ export class ProfileComponent implements OnInit {
       'Cambio password',
       'Elimina profilo',
     ]);
-
+ this.users = [
+              {
+                email: 'cial@gmail.com',
+                nome: 'Jonny',
+                cognome: 'bravo',
+                isConfirmed: true,
+                id: 1,
+                createdAt: '',
+                isActive: true,
+                deleteddAt: '',
+                role: 'USER',
+                companies: [this.company!],
+                immagine: [{ name: '', image: '', uploadedAt: '', isCurrent: true }],
+              },
+              {
+                email: 'cial@gmail.com',
+                nome: 'Jonny',
+                cognome: 'bravo',
+                isConfirmed: true,
+                id: 1,
+                createdAt: '',
+                isActive: true,
+                deleteddAt: '',
+                role: 'USER',
+                companies: [this.company!],
+                immagine: [{ name: '', image: '', uploadedAt: '', isCurrent: true }],
+              },
+              {
+                email: 'cial@gmail.com',
+                nome: 'Jonny',
+                cognome: 'bravo',
+                isConfirmed: true,
+                id: 1,
+                createdAt: '',
+                isActive: true,
+                deleteddAt: '',
+                role: 'USER',
+                companies: [this.company!],
+                immagine: [{ name: '', image: '', uploadedAt: '', isCurrent: true }],
+              },
+            ];
     this.menuService
       .getVoice()
       .pipe(filter((v) => v != ''))
@@ -41,12 +103,15 @@ export class ProfileComponent implements OnInit {
       });
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
-
+    setTimeout(() => {
+      this.loading = false;
+      this.cdr.detectChanges();
+    }, 1000);
     if (this.company) {
       this.companyService.getUsers(this.company.id).subscribe({
         next: (data: User[]) => {
           if (data) {
-            this.users = data;
+            // this.users = data;
           }
         },
       });
@@ -76,6 +141,20 @@ export class ProfileComponent implements OnInit {
       } else {
         this.projectsToShow = this.company?.projects || [];
       }
+    }
+  }
+  clear(table: Table) {
+    table.clear();
+  }
+
+  getSeverity(status: boolean) {
+    switch (status) {
+      case true:
+        return 'success';
+      case false:
+        return 'danger';
+      default:
+        return null;
     }
   }
 }

@@ -100,8 +100,8 @@
     </div>
   </div>
   <div class="col-md-6 overflow-scroll">
-    <div class="text-center py-1 pt-5">
-      <h2>Your projects</h2>
+    <div class="text-center py-1 pb-5">
+      <h2 class="py-5">Your projects</h2>
       <form [formGroup]="searchProjectForm" class="d-flex m-auto w-75">
         <input
           type="text"
@@ -145,7 +145,108 @@
     }
   </div>
   <div class="col-md-12 pt-5">
-    <h2 class="text-center py-1">Users</h2>
+    <h2 class="text-center py-5">Users</h2>
+    <p-table
+      #dt2
+      [value]="users || []"
+      dataKey="id"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [loading]="loading"
+      [paginator]="true"
+      [globalFilterFields]="['email', 'fullname', 'stato']"
+      class="w-75 m-auto"
+    >
+      <ng-template #caption>
+        <div class="flex">
+          <p-iconfield iconPosition="left" class="ml-auto">
+            <p-inputicon>
+              <i class="pi pi-search"></i>
+            </p-inputicon>
+            <input
+              pInputText
+              type="text"
+              (input)="dt2.filterGlobal($event.target.value, 'contains')"
+              placeholder="Search keyword"
+            />
+          </p-iconfield>
+        </div>
+      </ng-template>
+      <ng-template #header>
+        <tr>
+          <th>Email</th>
+          <th>Fullname</th>
+          <th>Stato User</th>
+        </tr>
+        <tr>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="email"
+              placeholder="Type to search"
+              ariaLabel="Filter Email"
+              filterOn="input"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter
+              type="text"
+              field="fullname"
+              placeholder="Enter key to search"
+              ariaLabel="Filter Name"
+            ></p-columnFilter>
+          </th>
+          <th>
+            <p-columnFilter field="stato" matchMode="in" [showMenu]="false">
+              <ng-template #filter let-value let-filter="filterCallback">
+                <p-multiselect
+                  [ngModel]="value"
+                  [options]="status"
+                  placeholder="Any"
+                  (onChange)="filter($event.value)"
+                  optionLabel="state"
+                  style="min-width: 14rem"
+                  [panelStyle]="{ minWidth: '16rem' }"
+                >
+                  <ng-template let-option #item>
+                    <div class="flex items-center gap-2">
+                      <span>{{ option }}</span>
+                    </div>
+                  </ng-template>
+                </p-multiselect>
+              </ng-template>
+            </p-columnFilter>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template #body let-user>
+        <tr>
+          <td>
+            {{ user.email }}
+          </td>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              <div
+                class="p-1 rounded-circle border shadow-sm d-flex align-items-center justify-content-center bg-danger"
+                [style.width]="'50px'"
+                [style.height]="'50px'"
+              >
+                RC
+              </div>
+              <span>{{ user.nome + ' ' + user.cognome }}</span>
+            </div>
+          </td>
+          <td>
+            <p-tag [value]="user.isConfirmed" [severity]="getSeverity(user.status)" />
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template #emptymessage>
+        <tr>
+          <td colspan="5">No users found.</td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
   } }@else {wow}
 </div>
