@@ -1,6 +1,7 @@
 package com.example.task_auth.auth;
 
-import com.example.task_auth.dto.UserLoginDTO;
+import com.example.task_auth.dto.entities.SignupSuccess;
+import com.example.task_auth.dto.entities.UserLoginDTO;
 import com.example.task_auth.exceptions.exception.UnauthorizedException;
 import com.example.task_auth.utils.Token;
 import jakarta.validation.Valid;
@@ -32,24 +33,27 @@ public class AuthController {
         return authService.companyLogin(userLoginDTO);
     }
 
-    @PostMapping("/validate/code/{code}/{id}/{type}")
-    public Token validateCode(@PathVariable String code, @PathVariable Long id, @PathVariable String type) {
+    @GetMapping("/validate/code")
+    public SignupSuccess validateCode(@RequestParam String code, @RequestParam String email, @RequestParam String type) {
         try {
-            switch (type) {
-                case "COMPANY":
-                    return authService.validateCompanyCode(code, id);
-                case "USER":
-                    return authService.validateUserCode(code, id);
-                default:
-                    throw new Exception();
-            }
+            return switch (type) {
+                case "COMPANY" -> authService.validateCompanyCode(code, email);
+                case "USER" -> authService.validateUserCode(code, email);
+                default -> throw new Exception();
+            };
         } catch (Exception e) {
             throw new UnauthorizedException("Impossibile verificare il codice di accesso");
         }
     }
 
-    @PostMapping("/refreshAccessToken/{refreshToken}/{type}")
-    public Token refreshAccess(@PathVariable String refreshToken, @PathVariable String type) {
-        return authService.refreshAccessToken(refreshToken, type);
+    @GetMapping("/verifyRefreshToken/{refreshToken}")
+    public SignupSuccess refreshAccess(@PathVariable String refreshToken) {
+        return authService.refreshRefreshToken(refreshToken);
+    }
+
+    @GetMapping("/verifyAccessToken/{token}")
+    public SignupSuccess verifyAccessToken(@PathVariable String token) {
+        return authService.verifyAccessToken(token);
     }
 }
+

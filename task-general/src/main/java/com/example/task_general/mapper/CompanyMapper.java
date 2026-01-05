@@ -11,12 +11,12 @@ import org.mapstruct.Mapping;
 public interface CompanyMapper {
 
 
-
     CompanyDTO toCompanyDTO(Company company);
 
     @Mapping(target = "indirizzo", ignore = true)
     @Mapping(target = "sedeLegale", ignore = true)
     @Mapping(target = "formaGiuridica", ignore = true)
     @Mapping(target = "settore", ignore = true)
+    @Mapping(target = "dimensioniAzienda", ignore = true)
     Company toCompany(CompanySignupDTO csu);
 }

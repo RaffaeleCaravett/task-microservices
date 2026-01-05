@@ -3,6 +3,7 @@ package com.example.task_general.company;
 import com.example.task_general.dimensioni.Dimensione;
 import com.example.task_general.formaGiuridica.FormaGiuridica;
 import com.example.task_general.indirizzo.Indirizzo;
+import com.example.task_general.metodoPagamento.MetodoPagamento;
 import com.example.task_general.settore.Settore;
 import com.example.task_general.user.Role;
 import com.example.task_general.user.User;
@@ -46,6 +47,8 @@ public class Company extends UserInfos implements UserDetails {
     private List<Indirizzo> indirizzo;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Indirizzo> sedeLegale;
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<MetodoPagamento> metodoPagamento;
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "companies_users",

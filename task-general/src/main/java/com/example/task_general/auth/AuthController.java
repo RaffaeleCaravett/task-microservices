@@ -26,7 +26,7 @@ public class AuthController {
         return authService.findByEmail(userLoginDTO);
     }
 
-    @GetMapping("/accessCodee/{id}")
+    @GetMapping("/accessCode/{id}")
     public String findAccessCodeByUSerId(@PathVariable Long id) {
         Optional<CodiceAccesso> codiceAccesso = codiceAccessoRepository.findByUser_Id(id);
         if (codiceAccesso.isPresent() && !codiceAccesso.get().getIsUsed()) {

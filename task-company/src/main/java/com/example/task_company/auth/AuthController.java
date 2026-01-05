@@ -7,12 +7,14 @@ import com.example.task_company.dtos.entitiesDTOS.CompanyLoginDTO;
 import com.example.task_company.dtos.entitiesDTOS.CompanySignupDTO;
 import com.example.task_company.exceptions.SignupException;
 import com.example.task_company.exceptions.UnauthorizedException;
+import com.example.task_company.piano.Piano;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -59,5 +61,10 @@ public class AuthController {
     @GetMapping("/accessCode/delete/{id}")
     public Boolean deleteAccessCodeByUSerId(@PathVariable Long id) {
         return authService.deleteAccessCode(id);
+    }
+
+    @GetMapping("/piani")
+    public List<Piano> getPiani() {
+        return authService.getPiani();
     }
 }
