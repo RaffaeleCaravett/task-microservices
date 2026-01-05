@@ -46,8 +46,14 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/refreshAccessToken/{refreshToken}/{type}")
-    public Token refreshAccess(@PathVariable String refreshToken, @PathVariable String type) {
-        return authService.refreshAccessToken(refreshToken, type);
+    @GetMapping("/verifyRefreshToken/{refreshToken}")
+    public SignupSuccess refreshAccess(@PathVariable String refreshToken) {
+        return authService.refreshRefreshToken(refreshToken);
+    }
+
+    @GetMapping("/verifyAccessToken/{token}")
+    public SignupSuccess verifyAccessToken(@PathVariable String token) {
+        return authService.verifyAccessToken(token);
     }
 }
+

@@ -1,1 +1,22 @@
-<p>profile works!</p>
+<div class="row p-5">
+  @if(section=='Generale'){ @if(user){ }@else {
+  <div class="col-12 d-flex justify-content-start align-items-end">
+    <img
+      src="{{ getImage() }}"
+      alt="profile_image_not_found"
+      [style.width]="'100px'"
+      [style.height]="'100px'"
+      class="mx-1"
+    />
+    <p class="h1 mx-1">{{ company?.ragioneSociale }}</p>
+  </div>
+  <div class="col-12">
+    <p>
+      <span class="fw-bold">Registred :</span>
+      {{ company?.createdAt | date : 'dd-MM-yyyy' }}
+      <span class="fw-bold">Utenti :</span>
+      {{ users?.length }}
+    </p>
+  </div>
+  } }@else {wow}
+</div>

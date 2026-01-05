@@ -7,6 +7,7 @@ import com.example.task_auth.company.CompanyService;
 import com.example.task_auth.dto.entities.SignupSuccess;
 import com.example.task_auth.dto.entities.UserLoginDTO;
 import com.example.task_auth.exceptions.exception.UnauthorizedException;
+import com.example.task_auth.mailgun.MGSamples;
 import com.example.task_auth.security.JWTTools;
 import com.example.task_auth.user.User;
 import com.example.task_auth.user.UserService;
@@ -27,12 +28,18 @@ public class AuthService {
     private final PasswordEncoder bcrypt;
     private final CodiceAccessoRepository codiceAccessoRepository;
     private final CompanyService companyService;
+    private final MGSamples mgSamples;
 
     public Boolean login(UserLoginDTO userLoginDTO) {
         try {
             User user = userService.findByEmail(userLoginDTO.email());
             if (bcrypt.matches(userLoginDTO.password(), user.getPassword())) {
-                createUserAccessCode(user.getId());
+                var code = createUserAccessCode(user.getId());
+                mgSamples.sendSimpleMessage("", user.getEmail(), "Codice di accesso login - TaskMaster",
+                        "Hai effettuato il login, \n" +
+                                "questo è il codice di accesso : \n" +
+                                code.getCode() + "\n" +
+                                "Buon lavoro!");
                 return true;
             } else {
                 throw new Exception();
@@ -49,7 +56,13 @@ public class AuthService {
                 if (codiceAccessoRepository.findByCompany_Id(company.getId()).isPresent()) {
                     throw new Exception("Hai già ricevuto un codice di accesso sulla tua email. Aspetta 10 minuti per riceverne un altro.");
                 }
-                companyService.createAccessCode(company.getId(), company);
+                var code = companyService.createAccessCode(company.getId(), company);
+                mgSamples.sendSimpleMessage(company.getNomeAzienda(), company.getEmail(), "Codice di accesso login - TaskMaster",
+                        "Hai effettuato il login, \n" +
+                                "questo è il codice di accesso : \n" +
+                                code.getCode() + "\n" +
+                                "Buon lavoro!");
+
                 return true;
             } else {
                 throw new Exception("Credenziali non valide");
@@ -101,18 +114,20 @@ public class AuthService {
         }
     }
 
-    public Token refreshAccessToken(String token, String type) {
-        return jwtTools.verifyRefreshToken(token, type);
+    public SignupSuccess refreshRefreshToken(String token) {
+        return jwtTools.verifyRefreshToken(token);
     }
-
-    public void createUserAccessCode(Long id) {
+    public SignupSuccess verifyAccessToken(String token) {
+        return jwtTools.verifyAccessToken(token);
+    }
+    public CodiceAccesso createUserAccessCode(Long id) {
         CodiceAccesso codiceAccesso = new CodiceAccesso();
         codiceAccesso.setCreationTime(Instant.now());
         codiceAccesso.setUser(userService.findById(id));
         codiceAccesso.setIsUsed(false);
         codiceAccesso.setCompany(null);
         codiceAccesso.setCode(createAccessCode());
-        codiceAccessoRepository.save(codiceAccesso);
+        return codiceAccessoRepository.save(codiceAccesso);
     }
 
     public String createAccessCode() {

@@ -41,18 +41,18 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
         String token = authHeader.substring(7);
         // 2. Verifico che il token non sia nè scaduto nè sia stato manipolato
-
-        jwtTools.verifyToken(token);
+        Object currentUser;
         String type = jwtTools.extractTypeFromToken(token);
+
+        if ("USER".equalsIgnoreCase(type)) {
+            currentUser = jwtTools.verifyToken(token);
+        } else {
+            currentUser = jwtTools.verifyToken(token);// 3.2 Segnalo a Spring Security che l'utente ha il permesso di procedere
+        }
+
         // 3. Se è tutto OK
         // 3.1 Cerco l'utente nel database tramite id (l'id sta nel payload del token, quindi devo estrarlo da lì)
-        String id = jwtTools.extractIdFromToken(token);
-        Object currentUser;
-        if ("USER".equalsIgnoreCase(type)) {
-            currentUser = userService.findById(Long.parseLong(id));
-        } else {
-            currentUser = companyService.findById(Long.parseLong(id));// 3.2 Segnalo a Spring Security che l'utente ha il permesso di procedere
-        }
+
         // Se non facciamo questa procedura, ci verrà comunque tornato 403
 //                System.out.println(currentUser);
 

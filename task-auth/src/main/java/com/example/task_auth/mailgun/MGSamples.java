@@ -1,6 +1,6 @@
-package com.example.task_company.mailgun;
+package com.example.task_auth.mailgun;
 
-import com.example.task_company.exceptions.SignupException;
+
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;

@@ -107,6 +107,13 @@ export interface Company {
   dimensioniAzienda: dimensioni;
   sedeOperativa?: indirizzo;
   email: string;
+  immagine: immagine[];
+}
+export interface immagine {
+  name: string;
+  image: string;
+  uploadedAt: string;
+  isCurrent: boolean;
 }
 export interface User {
   id: number;
@@ -119,6 +126,7 @@ export interface User {
   cognome: string;
   email: string;
   companies: Company[];
+  immagine: immagine[];
 }
 export interface metodoPagamento {
   cardNumber: string;

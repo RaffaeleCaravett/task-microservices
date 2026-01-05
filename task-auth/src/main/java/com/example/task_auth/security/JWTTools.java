@@ -1,10 +1,16 @@
 package com.example.task_auth.security;
 
+import com.example.task_auth.company.Company;
+import com.example.task_auth.company.CompanyService;
+import com.example.task_auth.dto.entities.SignupSuccess;
 import com.example.task_auth.exceptions.exception.UnauthorizedException;
+import com.example.task_auth.user.User;
+import com.example.task_auth.user.UserService;
 import com.example.task_auth.utils.Token;
 import com.example.task_auth.utils.TokenType;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +21,12 @@ import java.util.Map;
 import io.jsonwebtoken.Jwts;
 
 @Component
+@RequiredArgsConstructor
 public class JWTTools {
     @Value("${spring.jwt.secret}")
     private String secret;
+    private final CompanyService companyService;
+    private final UserService userService;
 
     public Token createTokens(Long id, String type) {
 
@@ -46,22 +55,53 @@ public class JWTTools {
     }
 
 
-    public Token verifyRefreshToken(String token, String type) {
+    public SignupSuccess verifyRefreshToken(String token) {
         try {
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
                     .build()
                     .parseClaimsJws(token)
                     .getBody();
-            if (!TokenType.REFRESH.name().equals(claims.get("type")) || !"task-auth".equals(claims.getIssuer())
-                    || !type.equals(claims.get("userType"))) {
+            if (!TokenType.REFRESH.name().equals(claims.get("type")) || !"task-auth".equals(claims.getIssuer())) {
                 throw new UnauthorizedException("Accedi nuovamente.");
             }
             String entityId = claims.getSubject();
 
-            Token token1 = this.createTokens(Long.valueOf(entityId), type);
+            Token token1 = this.createTokens(Long.valueOf(entityId), claims.get("userType").toString().toUpperCase());
             token1.setRefreshToken(token);
-            return token1;
+            Company company = null;
+            User user = null;
+            if ("COMPANY".equals(claims.get("userType"))) {
+                company = companyService.findById(Long.valueOf(entityId));
+            } else {
+                user = userService.findById(Long.valueOf(entityId));
+            }
+            return new SignupSuccess(token1, company, user);
+        } catch (Exception e) {
+            throw new UnauthorizedException("Accedi nuovamente.");
+        }
+    }
+
+    public SignupSuccess verifyAccessToken(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(secret.getBytes()))
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+            if (!TokenType.ACCESS.name().equals(claims.get("type")) || !"task-auth".equals(claims.getIssuer())) {
+                throw new UnauthorizedException("Accedi nuovamente.");
+            }
+            String entityId = claims.getSubject();
+
+            Company company = null;
+            User user = null;
+            if ("COMPANY".equals(claims.get("userType"))) {
+                company = companyService.findById(Long.valueOf(entityId));
+            } else {
+                user = userService.findById(Long.valueOf(entityId));
+            }
+            return new SignupSuccess(null, company, user);
         } catch (Exception e) {
             throw new UnauthorizedException("Accedi nuovamente.");
         }

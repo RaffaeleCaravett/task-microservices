@@ -64,6 +64,13 @@ export class LoginComponent implements OnInit {
             setTimeout(() => {
               this.section = 'access-code';
               this.isLoginLoading = false;
+              this.type = this.loginForm.controls['type'].value;
+              setTimeout(() => {
+                let sel = document.getElementById('type');
+                console.log(sel);
+                (sel as HTMLSelectElement).value = this.type;
+                this.cdr.markForCheck();
+              }, 500);
               this.cdr.markForCheck();
             }, 2000);
           }
@@ -81,6 +88,7 @@ export class LoginComponent implements OnInit {
       .verifyCode(this.loginForm.controls['email'].value, code, this.type.toUpperCase())
       .subscribe({
         next: (data: loginSuccess) => {
+          debugger;
           if (data && data.token.accessToken) {
             localStorage.setItem('accessToken', data.token.accessToken);
             localStorage.setItem('refreshToken', data.token.refreshToken);
