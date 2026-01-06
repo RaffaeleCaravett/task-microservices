@@ -1,6 +1,8 @@
 package com.example.task_general.company;
 
 import com.example.task_general.auth.AuthService;
+import com.example.task_general.codiceAccesso.CodiceAccesso;
+import com.example.task_general.dtos.entitiesDTO.FirstUserLoginDTO;
 import com.example.task_general.dtos.entitiesDTO.UserLoginDTO;
 import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.user.User;
@@ -28,11 +30,11 @@ public class CompanyController {
 
     @GetMapping("/users/{id}")
     public Page<User> getUsers(@PathVariable Long id, @PageableDefault Pageable pageable) {
-        return companyService.getUsersByCompanyId(id,pageable);
+        return companyService.getUsersByCompanyId(id, pageable);
     }
 
     @PostMapping("/user")
-    public List<User> addUserToCompany(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult, @AuthenticationPrincipal Company company) {
+    public CodiceAccesso addUserToCompany(@RequestBody @Valid FirstUserLoginDTO userLoginDTO, BindingResult bindingResult, @AuthenticationPrincipal Company company) {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }

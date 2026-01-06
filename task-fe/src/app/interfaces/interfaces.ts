@@ -185,3 +185,9 @@ export interface Sort {
   sorted: boolean;
   unsorted: boolean;
 }
+export interface accessCode {
+  id: number;
+  code: string;
+  creationTime: string;
+  isUsed: boolean;
+}

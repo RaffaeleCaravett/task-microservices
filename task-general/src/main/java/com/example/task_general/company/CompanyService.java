@@ -29,7 +29,7 @@ public class CompanyService {
     }
 
     public Page<User> getUsersByCompanyId(Long id, Pageable pageable) {
-        return userService.filterByCompanyId(id, new UserLightFilters("", "", ""), pageable);
+        return userService.filterByCompanyId(id, new UserLightFilters(null, null, null), pageable);
     }
 
 

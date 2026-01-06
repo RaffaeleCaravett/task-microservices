@@ -4,7 +4,12 @@ import com.example.task_general.dtos.entitiesDTO.UserLightFilters;
 import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.SignupException;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
 import org.mapstruct.control.MappingControl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.springframework.data.jpa.domain.Specification.where;
 
 @Service
 @RequiredArgsConstructor
@@ -50,10 +57,22 @@ public class UserService {
 
     public Page<User> filterByCompanyId(Long id, UserLightFilters userLightFilters, Pageable pageable) {
         try {
-            return userRepository.findAll(Specification.where(UserRepository.emailContains(userLightFilters.email())
-                    .and(UserRepository.fullnameContains(userLightFilters.fullname()))
-                    .and(UserRepository.statusEquals(userLightFilters.status().equals("ACTIVE")))
-            ), pageable);
+            Specification<User> spec = new Specification<User>() {
+                @Override
+                public @Nullable Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                    return null;
+                }
+            };
+            if (userLightFilters.email() != null) {
+                spec = UserRepository.emailContains(userLightFilters.email());
+            }
+            if (userLightFilters.fullname() != null) {
+                spec = spec.and(UserRepository.fullnameContains(userLightFilters.fullname()));
+            }
+            if (userLightFilters.status() != null) {
+                spec = spec.and(UserRepository.statusEquals(userLightFilters.status().equals("ACTIVE")));
+            }
+            return userRepository.findAll(spec, pageable);
         } catch (Exception e) {
             throw new InternalServerException("Qualcosa è successo internamente. Risolviamo subito.");
         }
