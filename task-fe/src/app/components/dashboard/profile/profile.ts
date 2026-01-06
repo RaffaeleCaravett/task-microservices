@@ -838,22 +838,6 @@ export class ProfileComponent implements OnInit {
     return user.nome.substring(0, 1).toUpperCase() + user.cognome.substring(0, 1).toUpperCase();
   }
 
-  getColor(): string {
-    var backgrounds: string[] = [
-      'bg-light',
-      'bg-warning',
-      'bg-success',
-      'bg-danger',
-      'bg-primary',
-      'bg-info',
-    ];
-
-    var random = Math.floor(Math.random() * backgrounds.length);
-    if (random > backgrounds.length) {
-      random = random - 1;
-    }
-    return backgrounds[random];
-  }
   check() {
     let email: string = this.searchUserForm.controls['email'].value;
     let fullname: string = this.searchUserForm.controls['fullname'].value;

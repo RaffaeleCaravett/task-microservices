@@ -2,6 +2,9 @@ import { Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard';
 import { ProfileComponent } from '../profile/profile';
 import { AuthGuard } from '../../../core/auth.guard';
+import { ProjectsComponent } from '../projects/projects';
+import { TeamComponent } from '../team/team';
+import { SettingsComponent } from '../settings/settings';
 
 export const DashboardRoutes: Routes = [
   {
@@ -18,6 +21,18 @@ export const DashboardRoutes: Routes = [
       {
         path: 'landing',
         component: ProfileComponent,
+      },
+      {
+        path: 'progetti',
+        component: ProjectsComponent,
+      },
+      {
+        path: 'team',
+        component: TeamComponent,
+      },
+      {
+        path: 'landing/impostazioni',
+        component: SettingsComponent,
       },
     ],
   },

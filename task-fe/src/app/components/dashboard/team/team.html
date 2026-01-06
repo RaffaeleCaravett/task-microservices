@@ -1,1 +1,69 @@
-<p>team works!</p>
+<div class="container text-center">
+  <div class="row">
+    <div class="col-12 py-5">
+      <h2>Your team</h2>
+    </div>
+    <div class="col-12 text-end">
+      <button class="btn btn-primary" (click)="addSomeone = true">+ Add someone</button>
+    </div>
+    @if (addSomeone) {
+    <div class="row">
+      <div class="w-75 m-auto p-3 bg-white">
+        <h2>Add someone</h2>
+        <form [formGroup]="addForm" class="row">
+          <div class="col-md-6">
+            <label for="email" class="p-3">Email</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label for="password" class="p-3">Password</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label for="nome" class="p-3">Nome</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="col-md-6">
+            <label for="cognome" class="p-3">Cognome</label>
+            <input type="text" class="form-control" />
+          </div>
+        </form>
+      </div>
+    </div>
+    } @for (item of users?.content; track $index) {
+    <div class="col-lg-3 col-md-4 col-sm-6">
+      <div class="col-lg-3 col-md-4 col-sm-6 p-3 m-auto">
+        <div class="card" style="width: 18rem">
+          <div
+            class="card-img-top p-5 bg-secondary d-flex justify-content-center align-items-center fs-2"
+          ></div>
+          <div class="card-body">
+            <h5 class="card-title">{{ item.nome + ' ' + item.cognome }}</h5>
+            <p class="card-text">
+              {{ item.email }}
+              <br />
+              created at: {{ item.createdAt | date : ' dd-MM-yyyy' }}
+            </p>
+            <button class="btn btn-primary">Overview</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    }@empty {
+    <div class="col-lg-3 col-md-4 col-sm-6 p-3 m-auto">
+      <div class="card" style="width: 18rem">
+        <div
+          class="card-img-top p-5 bg-secondary d-flex justify-content-center align-items-center fs-2"
+        >
+          No one
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Still empty</h5>
+          <p class="card-text">Actually you haven't add someone to your team.</p>
+          <button class="btn btn-primary">Add someone</button>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+</div>
