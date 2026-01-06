@@ -1,9 +1,14 @@
 package com.example.task_general.user;
 
+import com.example.task_general.dtos.entitiesDTO.UserLightFilters;
 import com.example.task_general.exceptions.BadRequestException;
+import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.SignupException;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.control.MappingControl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,5 +46,16 @@ public class UserService {
 
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    public Page<User> filterByCompanyId(Long id, UserLightFilters userLightFilters, Pageable pageable) {
+        try {
+            return userRepository.findAll(Specification.where(UserRepository.emailContains(userLightFilters.email())
+                    .and(UserRepository.fullnameContains(userLightFilters.fullname()))
+                    .and(UserRepository.statusEquals(userLightFilters.status().equals("ACTIVE")))
+            ), pageable);
+        } catch (Exception e) {
+            throw new InternalServerException("Qualcosa è successo internamente. Risolviamo subito.");
+        }
     }
 }

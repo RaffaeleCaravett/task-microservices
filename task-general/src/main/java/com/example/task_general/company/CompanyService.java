@@ -1,5 +1,6 @@
 package com.example.task_general.company;
 
+import com.example.task_general.dtos.entitiesDTO.UserLightFilters;
 import com.example.task_general.dtos.entitiesDTO.UserLoginDTO;
 import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.EntityNotPresentException;
@@ -8,6 +9,8 @@ import com.example.task_general.user.Role;
 import com.example.task_general.user.User;
 import com.example.task_general.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +28,8 @@ public class CompanyService {
         return companyRepository.findById(id).orElseThrow(() -> new EntityNotPresentException("Company " + id + " non presente in db"));
     }
 
-    public List<User> getUsersByCompanyId(Long id) {
-        var company = findById(id);
-        return company.getUsers().stream().filter(u -> u.getIsActive() && u.getIsConfirmed()).toList();
+    public Page<User> getUsersByCompanyId(Long id, Pageable pageable) {
+        return userService.filterByCompanyId(id, new UserLightFilters("", "", ""), pageable);
     }
 
 

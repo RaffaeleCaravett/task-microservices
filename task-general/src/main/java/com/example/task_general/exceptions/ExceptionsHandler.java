@@ -24,9 +24,16 @@ public class ExceptionsHandler {
     public ErrorWithListDTO handleEntityNotPresent(EntityNotPresentException e) {
         return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
     }
-  @ExceptionHandler(BadRequestException.class)
+
+    @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorWithListDTO handleBadRequestException(BadRequestException e) {
+        return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
+    }
+
+    @ExceptionHandler(InternalServerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorWithListDTO handleBadRequestException(InternalServerException e) {
         return new ErrorWithListDTO(e.getMessage(), new ArrayList<>());
     }
 }

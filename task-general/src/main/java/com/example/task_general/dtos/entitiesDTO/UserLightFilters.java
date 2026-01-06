@@ -1,4 +1,11 @@
 package com.example.task_general.dtos.entitiesDTO;
 
-public record UserLightFilters() {
+import lombok.NoArgsConstructor;
+
+
+public record UserLightFilters(
+        String email,
+        String fullname,
+        String status
+) {
 }

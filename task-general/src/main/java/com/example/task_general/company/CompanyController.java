@@ -7,6 +7,9 @@ import com.example.task_general.user.User;
 import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -24,8 +27,8 @@ public class CompanyController {
     private final AuthService authService;
 
     @GetMapping("/users/{id}")
-    public List<User> getUsers(@PathVariable Long id) {
-        return companyService.getUsersByCompanyId(id);
+    public Page<User> getUsers(@PathVariable Long id, @PageableDefault Pageable pageable) {
+        return companyService.getUsersByCompanyId(id,pageable);
     }
 
     @PostMapping("/user")
