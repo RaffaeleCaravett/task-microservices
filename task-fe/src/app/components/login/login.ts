@@ -67,7 +67,6 @@ export class LoginComponent implements OnInit {
               this.type = this.loginForm.controls['type'].value;
               setTimeout(() => {
                 let sel = document.getElementById('type');
-                console.log(sel);
                 (sel as HTMLSelectElement).value = this.type;
                 this.cdr.markForCheck();
               }, 500);
@@ -88,19 +87,14 @@ export class LoginComponent implements OnInit {
       .verifyCode(this.loginForm.controls['email'].value, code, this.type.toUpperCase())
       .subscribe({
         next: (data: loginSuccess) => {
-          debugger;
           if (data && data.token.accessToken) {
             localStorage.setItem('accessToken', data.token.accessToken);
             localStorage.setItem('refreshToken', data.token.refreshToken);
-            this.authService.setAccessToken(data.token.accessToken);
-            this.authService.setRefreshToken(data.token.refreshToken);
-            this.authService.setIsLoggedIn(true);
-            if (data.company) {
-              this.authService.setCompany(data.company!);
-            } else if (data.user) {
-              this.authService.setUser(data.user);
-            }
-            this.router.navigate(['/dashboard']);
+            setTimeout(() => {
+              this.authService.checkToken();
+              this.router.navigate(['/dashboard']);
+              this.cdr.detectChanges();
+            }, 1000);
           }
         },
       });

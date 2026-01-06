@@ -129,6 +129,7 @@ export interface User {
   email: string;
   companies: Company[];
   immagine: immagine[];
+  color?: string;
 }
 export interface project {
   id: number;
@@ -155,4 +156,32 @@ export interface metodoPagamento {
   year: number;
   secretCode: number;
   owner: string;
+}
+export interface Page<T> {
+  content: T[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: Sort;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface Pageable {
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+  sort: Sort;
+}
+
+export interface Sort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
 }

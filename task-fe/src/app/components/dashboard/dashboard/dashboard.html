@@ -51,7 +51,7 @@
       @for(v of menuVoices; track v){
       <li>
         <button
-          class="btn"
+          class="btn text-start"
           [ngClass]="v == 'Elimina profilo' ? 'text-danger fw-bold' : ''"
           (click)="next(v); closeButton.click()"
         >

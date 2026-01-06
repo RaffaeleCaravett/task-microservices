@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
-import { Company, User } from '../../interfaces/interfaces';
+import { Company, Page, User } from '../../interfaces/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { AddProjectComponent } from '../../dialogs/add-project-component/add-project-component';
 import { CompanyService } from '../../services/company.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-nav',
@@ -22,7 +23,7 @@ export class NavComponent {
   protected dialog: MatDialog = inject(MatDialog);
   protected user: User | null = null;
   protected company: Company | null = null;
-  protected users: User[] = [];
+  protected users!: Page<User>;
   protected messageService: MessageService = inject(MessageService);
   goToRoute(route: string) {
     this.router.navigate([`${route}`]);
@@ -44,7 +45,7 @@ export class NavComponent {
     } else if (this.authService.getCompany()) {
       this.company = this.authService.getCompany();
       this.companyService.getUsers(this.company!.id).subscribe({
-        next: (data: User[]) => {
+        next: (data: Page<User>) => {
           if (data) {
             this.users = data;
           }
@@ -60,7 +61,7 @@ export class NavComponent {
   }
 
   addNewProject() {
-    if (this.users.length > 0) {
+    if (this.users.content.length > 0) {
       const dialog = this.dialog.open(AddProjectComponent, { data: this.company });
     } else {
       this.messageService.add({
