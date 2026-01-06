@@ -77,9 +77,11 @@ export class LoginComponent implements OnInit {
             this.isLoginLoading = true;
             this.cdr.markForCheck();
             setTimeout(() => {
+              debugger
               if (this.type == 'company') {
                 this.section = 'access-code';
                 this.isLoginLoading = false;
+                this.cdr.markForCheck();
               } else {
                 this.verifyCode(null, data as loginSuccess)
               }
@@ -112,7 +114,6 @@ export class LoginComponent implements OnInit {
           },
         });
     } else {
-      debugger
       if (data && data.token.accessToken) {
         localStorage.setItem('accessToken', data.token.accessToken);
         localStorage.setItem('refreshToken', data.token.refreshToken);

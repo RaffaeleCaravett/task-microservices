@@ -87,7 +87,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
-    this.search();
+    if (this.company) {
+      this.search();
+    }
     setTimeout(() => {
       this.loading = false;
       this.cdr.detectChanges();
@@ -96,10 +98,10 @@ export class ProfileComponent implements OnInit {
 
   search() {
     const projectName = this.searchProjectForm.controls['search'].value;
-      let filters = this.buildFilters(projectName);
-      this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
-        next: (data: any) => {},
-      });
+    let filters = this.buildFilters(projectName);
+    this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
+      next: (data: any) => {},
+    });
   }
 
   buildFilters(projectName: string | null): CompanyProjectsFilters {
