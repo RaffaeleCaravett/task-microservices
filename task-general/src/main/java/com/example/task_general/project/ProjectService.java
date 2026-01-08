@@ -4,10 +4,18 @@ import com.example.task_general.company.Company;
 import com.example.task_general.company.CompanyService;
 import com.example.task_general.dtos.entitiesDTO.ProjectDTO;
 import com.example.task_general.exceptions.EntityNotPresentException;
+import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.UnauthorizedException;
-import com.example.task_general.user.User;
 import com.example.task_general.user.UserService;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -115,5 +123,25 @@ public class ProjectService {
         }
         project.setProjectState(projectState);
         return projectRepository.save(project);
+    }
+
+    public Page<Project> filterByCompanyIdAndName(Long id, String name, Pageable pageable){
+        try {
+            Specification<Project> spec = new Specification<Project>() {
+                @Override
+                public @Nullable Predicate toPredicate(Root<Project> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+                    return null;
+                }
+            };
+            if (id != null) {
+                spec = ProjectRepository.companyIdEquals(id);
+            }
+            if (name != null) {
+                spec = spec.and(ProjectRepository.nameContains(name));
+            }
+            return projectRepository.findAll(spec, pageable);
+        } catch (Exception e) {
+            throw new InternalServerException("Qualcosa è successo internamente. Risolviamo subito.");
+        }
     }
 }

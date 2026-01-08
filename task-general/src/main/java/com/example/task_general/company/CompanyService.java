@@ -5,6 +5,8 @@ import com.example.task_general.dtos.entitiesDTO.UserLoginDTO;
 import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.EntityNotPresentException;
 import com.example.task_general.exceptions.UnauthorizedException;
+import com.example.task_general.project.Project;
+import com.example.task_general.project.ProjectService;
 import com.example.task_general.user.Role;
 import com.example.task_general.user.User;
 import com.example.task_general.user.UserService;
@@ -21,6 +23,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
+
     private final CompanyRepository companyRepository;
     private final UserService userService;
 
@@ -31,7 +34,6 @@ public class CompanyService {
     public Page<User> getUsersByCompanyId(Long id, Pageable pageable) {
         return userService.filterByCompanyId(id, new UserLightFilters(null, null, null), pageable);
     }
-
 
     public List<User> removeUserFromCompany(Long userId, Company company) {
         var user = userService.findById(userId);
