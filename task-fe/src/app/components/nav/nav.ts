@@ -10,7 +10,8 @@ import { MessageService } from 'primeng/api';
 import { take } from 'rxjs';
 import { ModeService } from '../../services/mode.service';
 import { NgClass } from '@angular/common';
-import { Tooltip } from "primeng/tooltip";
+import { Tooltip } from 'primeng/tooltip';
+import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-nav',
@@ -24,15 +25,19 @@ export class NavComponent implements OnInit {
   protected companyService: CompanyService = inject(CompanyService);
   protected router: Router = inject(Router);
   protected dialog: MatDialog = inject(MatDialog);
-  private cdr:ChangeDetectorRef = inject(ChangeDetectorRef);
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected user: User | null = null;
   protected company: Company | null = null;
   protected users!: Page<User>;
   protected messageService: MessageService = inject(MessageService);
   isDark: boolean = false;
   protected modeService: ModeService = inject(ModeService);
-  isLoggedIn:boolean = false;
+  protected menuService: MenuService = inject(MenuService);
+  isLoggedIn: boolean = false;
+  protected showMenu: boolean = false;
+  protected menuVoices: string[] = [];
   ngOnInit(): void {
+    this.menuVoices = this.menuService.getMenu();
   }
   goToRoute(route: string) {
     this.router.navigate([`${route}`]);
@@ -63,18 +68,22 @@ export class NavComponent implements OnInit {
   }
 
   addNewProject() {
-      const dialog = this.dialog.open(AddProjectComponent, { data: this.company });
+    const dialog = this.dialog.open(AddProjectComponent, { data: this.company });
   }
-  protected toggleMode(){
+  protected toggleMode() {
     this.modeService.toggleMode();
   }
   constructor() {
     effect(() => {
       this.isDark = this.modeService.isDark();
     });
-    effect(()=>{
-      this.isLoggedIn = this.authService.isLoggedIn()
+    effect(() => {
+      this.isLoggedIn = this.authService.isLoggedIn();
       this.cdr.markForCheck();
-    })
+    });
+  }
+
+  toggleMenu() {
+    this.showMenu = !this.showMenu;
   }
 }
