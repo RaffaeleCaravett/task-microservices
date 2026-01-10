@@ -15,18 +15,5 @@ export class DashboardComponent implements AfterViewInit {
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   constructor() {}
   ngAfterViewInit(): void {
-    this.menuService
-      .getMenu()
-      .pipe(filter((data: string[]) => data.length > 0))
-      .subscribe({
-        next: (data: string[]) => {
-          this.menuVoices = data;
-          this.cdr.detectChanges();
-        },
-      });
-  }
-
-  next(value: string) {
-    this.menuService.setVoice(value);
   }
 }

@@ -17,8 +17,8 @@
               ></i>
             </p>
             <div class="position-absolute menu">
-              @for (let v of menuVoices; track $identifier) {
-                <p class="fs-3">{{ v }}</p>
+              @for (v of menuVoices; track v.id) {
+                <p class="fs-3">{{ v.value }}</p>
               }
             </div>
           </div>
