@@ -2,34 +2,44 @@
   class="navbar navbar-expand-lg border-secondary sticky-top z-6 p-5"
   [ngClass]="isDark ? '' : 'light-navbar'"
 >
-  <div class="container d-flex justify-content-between">
+  <div class="w-100 d-flex justify-content-between">
     <!-- Brand -->
     @if (isLoggedIn) {
-      <div class="d-flex justify-content-between w-100">
+      <div class="d-flex justify-content-between align-items-start w-100">
         <div class="w-75 text-center">
-          <div class="position-relative">
-            <p class="fs-2" [ngClass]="isDark ? 'text-danger' : 'text-success'">
+          <div class="positione-relative">
+            <p
+              class="fs-2 d-flex justify-content-end gap-2 align-items-center position-absolute menu-title"
+              [ngClass]="isDark ? 'text-danger' : 'text-success'"
+            >
               Succeed
               <i
-                class="pi toggle-i"
+                class="pi toggle-i fs-4"
                 (click)="toggleMenu()"
                 [ngClass]="showMenu ? 'pi-chevron-up' : 'pi-chevron-down'"
               ></i>
             </p>
-            <div class="position-absolute menu">
-              @for (v of menuVoices; track v.id) {
-                <p class="fs-3">{{ v.value }}</p>
-              }
+            <div class="position-relative menu-container overflow-hidden">
+              <div
+                [ngClass]="showMenu ? isDark ? ['menu','dark-menu'] : ['menu','light-menu'] : ['menu-hidden']"
+                class="position-absolute text-start rounded p-3"
+              >
+                @for (v of menuVoices; track v.id) {
+                  <p class="fs-3 d-flex align-items-end gap-2"><i class="fs-5 pi {{v.icon}}"></i> {{ v.value }}</p>
+                }
+              </div>
             </div>
           </div>
         </div>
-        <button class="btn" type="button" (click)="toggleMode()">
-          @if (isDark) {
-            <i class="pi pi-sun fs-3 text-danger" pTooltip="Light mode"></i>
-          } @else {
-            <i class="pi pi-moon fs-3 text-success" pTooltip="Dark mode"></i>
-          }
-        </button>
+        <div class="w-25 position-relative mode-container">
+          <button class="btn" type="button" (click)="toggleMode()">
+            @if (isDark) {
+              <i class="pi pi-sun fs-3 text-danger" pTooltip="Light mode"></i>
+            } @else {
+              <i class="pi pi-moon fs-3 text-success" pTooltip="Dark mode"></i>
+            }
+          </button>
+        </div>
       </div>
     }
   </div>

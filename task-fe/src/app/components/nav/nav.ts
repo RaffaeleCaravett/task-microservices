@@ -35,9 +35,10 @@ export class NavComponent implements OnInit {
   protected menuService: MenuService = inject(MenuService);
   isLoggedIn: boolean = false;
   protected showMenu: boolean = false;
-  protected menuVoices: {id:number,value:string}[] = [];
+  protected menuVoices: {id:number,value:string, icon:string}[] = [];
   ngOnInit(): void {
     this.menuVoices = this.menuService.getMenu();
+    this.showMenu = false;
   }
   goToRoute(route: string) {
     this.router.navigate([`${route}`]);
