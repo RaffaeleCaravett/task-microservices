@@ -21,11 +21,22 @@
             </p>
             <div class="position-relative menu-container overflow-hidden">
               <div
-                [ngClass]="showMenu ? isDark ? ['menu','dark-menu'] : ['menu','light-menu'] : ['menu-hidden']"
+                [ngClass]="
+                  showMenu
+                    ? isDark
+                      ? ['menu', 'dark-menu']
+                      : ['menu', 'light-menu']
+                    : ['menu-hidden']
+                "
                 class="position-absolute text-start rounded p-3"
               >
                 @for (v of menuVoices; track v.id) {
-                  <p class="fs-3 d-flex align-items-end gap-2"><i class="fs-5 pi {{v.icon}}"></i> {{ v.value }}</p>
+                  <p
+                    class="fs-3 d-flex align-items-end gap-2"
+                    [ngStyle]="user && v.value == 'people' ? { display: 'none' } : {}"
+                  >
+                    <i class="fs-5 pi {{ v.icon }}"></i> {{ v.value }}
+                  </p>
                 }
               </div>
             </div>

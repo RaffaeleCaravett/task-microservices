@@ -9,13 +9,13 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { take } from 'rxjs';
 import { ModeService } from '../../services/mode.service';
-import { NgClass } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { Tooltip } from 'primeng/tooltip';
 import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLinkActive, RouterLink, ToastModule, NgClass, Tooltip],
+  imports: [RouterLinkActive, RouterLink, ToastModule, NgClass, Tooltip, NgStyle],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
   providers: [MessageService],

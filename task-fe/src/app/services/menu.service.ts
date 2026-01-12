@@ -16,6 +16,7 @@ export class MenuService {
       { id: 6, value: 'Achieved', icon: 'pi-list-check' },
       { id: 7, value: 'Motivation', icon: 'pi-plus' },
       { id: 8, value: 'About us', icon: 'pi-info-circle' },
+      { id: 9, value: 'Leave', icon: 'pi-sign-out' },
     ]);
   }
 
