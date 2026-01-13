@@ -4,7 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="94856bcc-874f-4f96-ab73-a157275a6477" name="Changes" comment="ready to do fe now" />
+    <list default="true" id="94856bcc-874f-4f96-ab73-a157275a6477" name="Changes" comment="ready to do fe now">
+      <change beforePath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/auth/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-auth/src/main/java/com/example/task_auth/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/auth/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/task_company/dtos/entitiesDTOS/CompanySignupDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/task_company/dtos/entitiesDTOS/CompanySignupDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-fe/src/app/components/nav/nav.html" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/components/nav/nav.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/Company.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/Company.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/CompanyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/CompanyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/CompanyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/CompanyService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/user/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/user/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/user/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/user/UserService.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -23,18 +38,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "RaffaeleCaravett"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;RaffaeleCaravett&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/RaffaeleCaravett/task-microservices.git",
-    "accountId": "a41cdd38-2705-412f-a924-3515de4fb584"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/RaffaeleCaravett/task-microservices.git&quot;,
+    &quot;accountId&quot;: &quot;a41cdd38-2705-412f-a924-3515de4fb584&quot;
   }
-}]]></component>
+}</component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
@@ -42,24 +57,25 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="37ZadcPyPQGf0MqX3BmtH0ADPNP" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.TaskCompanyApplication.executor": "Debug",
-    "Maven.task-company [clean].executor": "Run",
-    "Maven.task-company [install].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/raffaele.caravetta/Desktop/Task-Microservices/task-company/src/main/java/com/example/task_company"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.TaskCompanyApplication.executor&quot;: &quot;Debug&quot;,
+    &quot;Maven.task-company [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.task-company [install].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/dashboard&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/raffaele.caravetta/Desktop/Task-Microservices/task-company/src/main/java/com/example/task_company&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\raffaele.caravetta\Desktop\Task-Microservices\task-company\src\main\java\com\example\task_company" />

@@ -85,16 +85,12 @@ public class AuthService {
             List<Indirizzo> indirizzos = new ArrayList<>();
             indirizzos.add(generateIndirizzo(companySignupDTO, "indirizzo"));
             company.setIndirizzo(indirizzos);
-            if (
-                    (null != companySignupDTO.getCapSede() || null != companySignupDTO.getCittaSede() || null != companySignupDTO.getRegioneSede() || null != companySignupDTO.getPaeseDiRegistrazioneSede()
-                            || null != companySignupDTO.getViaSede()) && (
-                            null == companySignupDTO.getCapSede() || null == companySignupDTO.getCittaSede() || null == companySignupDTO.getRegioneSede() || null == companySignupDTO.getPaeseDiRegistrazioneSede()
-                                    || null == companySignupDTO.getViaSede()
-                    )
+            if (companySignupDTO.getIsDifferentWorkStation()&&
+                    (null == companySignupDTO.getCapSede() || null == companySignupDTO.getCittaSede() || null == companySignupDTO.getRegioneSede() || null == companySignupDTO.getPaeseDiRegistrazioneSede()
+                            || null == companySignupDTO.getViaSede())
             ) {
                 throw new WrongDTOException("Le informazioni sulla sede legale sono incomplete");
-            } else if(null != companySignupDTO.getCapSede() && null != companySignupDTO.getCittaSede() && null != companySignupDTO.getRegioneSede() && null != companySignupDTO.getPaeseDiRegistrazioneSede()
-                    && null != companySignupDTO.getViaSede()){
+            } else if(companySignupDTO.getIsDifferentWorkStation()) {
                     List<Indirizzo> sedi = new ArrayList<>();
                     sedi.add(generateIndirizzo(companySignupDTO, "sede"));
                     company.setSedeLegale(sedi);
