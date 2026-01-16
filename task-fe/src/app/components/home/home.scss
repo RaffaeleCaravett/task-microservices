@@ -80,6 +80,9 @@
   .d-flex {
     flex-direction: column !important;
   }
+  .dark-btn-signup,.light-btn-signup{
+    overflow: hidden;
+  }
 }
 
 .dark-home-card {
