@@ -9,7 +9,14 @@ import {
 import { MenuService } from '../../../services/menu.service';
 import { filter, take } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
-import { Company, Page, project, task, User } from '../../../interfaces/interfaces';
+import {
+  Company,
+  CompanyProjectsFilters,
+  Page,
+  project,
+  task,
+  User,
+} from '../../../interfaces/interfaces';
 import { DatePipe, NgClass } from '@angular/common';
 import { CompanyService } from '../../../services/company.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -64,7 +71,6 @@ export class ProfileComponent implements OnInit {
     search: new FormControl(''),
   });
   protected isDark: boolean = false;
-  protected searchUserForm: FormGroup = new FormGroup({});
   status: string[] = ['ACTIVE', 'INACTIVE'];
   loading: boolean = true;
   protected tasks: task[] = [];
@@ -75,11 +81,14 @@ export class ProfileComponent implements OnInit {
   protected sizes: number[] = [10, 20, 50];
   protected paginationForm: FormGroup = new FormGroup({});
   protected page: number = 0;
-  protected size: number = 10;
+  protected size: number = 20;
+  protected sort: string = 'id';
+  protected order: string = 'asc';
   protected usersForCount: number = 0;
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
+    this.search();
     setTimeout(() => {
       this.loading = false;
       this.cdr.detectChanges();
@@ -87,7 +96,21 @@ export class ProfileComponent implements OnInit {
   }
 
   search() {
-    
+    const projectName = this.searchProjectForm.controls['search'].value;
+      let filters = this.buildFilters(projectName);
+      this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
+        next: (data: any) => {},
+      });
+  }
+
+  buildFilters(projectName: string | null): CompanyProjectsFilters {
+    return {
+      page: this.page,
+      size: this.size,
+      sort: this.sort,
+      order: this.order,
+      projectName: projectName,
+    };
   }
 
   constructor() {

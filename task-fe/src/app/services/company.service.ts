@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { API_URL } from '../core/environment';
 import { map, Observable } from 'rxjs';
-import { accessCode, Page, User } from '../interfaces/interfaces';
+import { accessCode, CompanyProjectsFilters, Page, User } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +49,16 @@ export class CompanyService {
       random = random - 1;
     }
     return backgrounds[random];
+  }
+
+  getCompanyProjects(filters: CompanyProjectsFilters, companyId: number) {
+    let requestParams: string = '';
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value) {
+        requestParams += `${key}=${value}` + '&';
+      }
+    });
+    requestParams = requestParams.substring(0, requestParams.length - 1);
+    return this.http.get(API_URL.general + '/project/' + companyId + '?' + requestParams);
   }
 }

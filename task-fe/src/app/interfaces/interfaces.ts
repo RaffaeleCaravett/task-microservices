@@ -206,5 +206,5 @@ export interface BasicPageFilter {
   order: string;
 }
 export interface CompanyProjectsFilters extends BasicPageFilter {
-  projectName: string;
+  projectName: string | null;
 }

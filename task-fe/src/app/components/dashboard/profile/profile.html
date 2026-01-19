@@ -7,14 +7,14 @@
           <div class="col-md-12 py-5 fw-bold text-uppercase text-center rounded-top title">
             <h2><i class="pi pi-sitemap fs-2"></i> Your projects</h2>
           </div>
-          <div class="col-md-3 py-5y">
-            <form [formGroup]="searchProjectForm" class="d-flex m-auto w-75">
+          <div class="col-lg-3 py-5y">
+            <form [formGroup]="searchProjectForm" class="d-flex m-auto">
               <input
                 type="text"
                 class="form-control text-end"
                 formControlName="search"
-                placeholder="Search a project ..."
-              />
+                placeholder="Search ..."
+              /> 
               <button
                 class="btn mx-2 pt-1"
                 [disabled]="
@@ -29,7 +29,7 @@
               </button>
             </form>
           </div>
-          <div class="col-md-9 py-5">
+          <div class="col-lg-9 py-5">
             @for (item of projectsToShow; track $index) {
               <div
                 class="m-1 m-auto bg-light shadow-sm p-3 border rounded"
