@@ -31,10 +31,11 @@
         @if (!addMode()) {
           <div class="col-12 text-muted text-end px-3 d-flex justify-content-end">
             <button
-              class="btn fs-4 d-flex align-items-center gap-2"
+              class="btn d-flex align-items-center gap-2"
               (click)="filtersOpened.set(!filtersOpened())"
             >
-              Filters
+            <label class="fs-4 text-uppercase text-muted fw-bold">Filters</label>
+              
               @if (filtersOpened()) {
                 <i class="pi pi-chevron-up fs-4"></i>
               } @else {
@@ -43,7 +44,7 @@
             </button>
           </div>
           <div
-            class="col-12 py-5 overflow-hidden"
+            class="col-12 overflow-hidden"
             [ngClass]="
               projectsToShow?.content?.length === 0 || !projectsToShow
                 ? 'd-none'
