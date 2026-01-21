@@ -3,47 +3,134 @@
   } @else {
     <div class="col-12 overflow-auto p-3">
       <div class="row" [style.height]="'100%'">
-        <div class="col-md-12 py-5 fw-bold text-uppercase text-center rounded-top title">
+        <div class="col-md-12 py-5 fw-bold text-muted text-uppercase text-center rounded-top title">
           <h4 class="w-75 m-auto">
-            If you don’t have a plan for yourself, someone else has one for you.
+            <i class="pi pi-lightbulb fs-4 fw-bold text-warning"></i> You must have a project,
+            otherwise someone else has one for you. And guess what? Not so much is in that project.
           </h4>
         </div>
         @if (!addMode()) {
-          <div
-            class="col-lg-3 py-5"
-            [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow ? 'd-none' : ''"
-          >
-            <form [formGroup]="searchProjectForm" class="d-flex m-auto">
-              <input
-                type="text"
-                class="form-control text-end"
-                formControlName="search"
-                placeholder="Search between your project..."
-              />
-            </form>
+          <div class="col-12 text-muted text-end px-3 d-flex justify-content-end">
+            <button
+              class="btn fs-4 d-flex align-items-center gap-2"
+              (click)="filtersOpened.set(!filtersOpened())"
+            >
+              Filters
+              @if (filtersOpened()) {
+                <i class="pi pi-chevron-up fs-4"></i>
+              } @else {
+                <i class="pi pi-chevron-down fs-4"></i>
+              }
+            </button>
           </div>
           <div
-            class="col-lg-3"
-            [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow ? '' : 'd-none'"
-          ></div>
-          <div class="col-lg-9 py-5">
-            @for (item of projectsToShow?.content; track $index) {
-              <div
-                class="m-1 m-auto bg-light shadow-sm p-3 border rounded"
-                [style.height]="'fit-content'"
-              >
-                <p class="text-center h2">{{ item?.name }}</p>
-                <p class="d-flex justify-content-around">
-                  <span><span class="fw-bold">Manager : </span> {{ item?.manager?.email }}</span>
-                  <span
-                    ><span class="fw-bold">Stato : </span
-                    >{{ item?.state?.toLocaleUpperCase() }}</span
-                  >
-                </p>
-                <p class="py-2 text-start">{{ item?.description }}</p>
-                <p class="text-end">{{ item?.createdAt }}</p>
+            class="col-12 py-5 overflow-hidden"
+            [ngClass]="
+              projectsToShow?.content?.length === 0 || !projectsToShow
+                ? 'd-none'
+                : filtersOpened()
+                  ? 'opened-filters'
+                  : 'closed-filters'
+            "
+          >
+            <form [formGroup]="searchProjectForm" class="row">
+              <div class="col-md-3 my-5">
+                <input
+                  type="text"
+                  class="form-control m-auto"
+                  formControlName="title"
+                  placeholder="Search by title..."
+                  [style.maxWidth]="'350px'"
+                />
               </div>
-            }
+              <div class="col-md-3 my-5">
+                <input
+                  type="text"
+                  class="form-control m-auto"
+                  formControlName="description"
+                  placeholder="Search by description..."
+                  [style.maxWidth]="'350px'"
+                />
+              </div>
+              <div class="col-md-3 my-5">
+                <input
+                  type="text"
+                  class="form-control m-auto"
+                  formControlName="managerId"
+                  placeholder="Search by manager..."
+                  [style.maxWidth]="'350px'"
+                />
+              </div>
+              <div class="col-md-3 my-5">
+                <input
+                  type="text"
+                  class="form-control m-auto"
+                  formControlName="projectState"
+                  placeholder="Search by state..."
+                  [style.maxWidth]="'350px'"
+                />
+              </div>
+              <div class="col-md-3 my-5">
+                <input
+                  type="text"
+                  class="form-control m-auto"
+                  formControlName="projectType"
+                  placeholder="Search by type..."
+                  [style.maxWidth]="'350px'"
+                />
+              </div>
+              <div class="col-md-3 my-5">
+                <input
+                  type="text"
+                  class="form-control m-auto"
+                  formControlName="createdAt"
+                  placeholder="Search by creation date..."
+                  [style.maxWidth]="'350px'"
+                />
+              </div>
+            </form>
+            <div class="text-end">
+              <button class="btn border border-primary px-5 m-1">
+               <i class="pi pi-times me-2"></i> Reset</button>
+              <button class="btn btn-primary px-5 m-1">
+                <i class="pi pi-search me-2"></i>Search</button>
+            </div>
+            <hr class="mt-4">
+          </div>
+          <div class="col-lg-12 py-5">
+            <div class="row">
+              @for (item of projectsToShow?.content; track $index) {
+                <div class="col-md-4" [style.height]="'fit-content'">
+                  <div class="border shadowpanel rounded">
+                    <div
+                      class="panel_title bg-primary d-flex align-items-center gap-2 rounded-top text-white p-3 fs-4"
+                    >
+                      <div><i class="pi pi-briefcase fs-4"></i> {{ item.title }}</div>
+                    </div>
+                    <div class="panel_body rounded-bottom shadow p-3">
+                      <div>
+                        <span class="fw-bold text-muted text-uppercase">Manager progetto </span
+                        ><br />
+                        {{ item?.manager?.nome + ' ' + item?.manager?.cognome }}
+                      </div>
+                      <div>
+                        <span class="fw-bold text-muted text-uppercase">Stato </span> <br />{{
+                          item?.projectState?.toLocaleUpperCase()
+                        }}
+                      </div>
+                      <div class="border rounded p-2 mt-2 shadow-sm">
+                        {{ item?.description }}
+                      </div>
+                      <div class="text-end pt-2">
+                        <label class="fw-bold text-uppercase text-muted">Creato in data</label>
+                        {{ item?.createdAt }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+
             <div class="text-center py-5">
               <button class="btn btn-primary my-5" (click)="switchToAddMode()">
                 + Add project

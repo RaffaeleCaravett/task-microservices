@@ -57,3 +57,11 @@ textarea {
 .pi-times {
   cursor: pointer;
 }
+
+
+.opened-filters{
+  height: fit-content;
+}
+.closed-filters{
+  height: 0;
+}

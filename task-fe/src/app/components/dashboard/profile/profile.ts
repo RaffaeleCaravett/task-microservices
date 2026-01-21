@@ -73,7 +73,12 @@ export class ProfileComponent implements OnInit {
   protected users!: Page<User>;
   protected projectsToShow!: Page<project>;
   protected searchProjectForm = new FormGroup({
-    search: new FormControl(''),
+    title: new FormControl(''),
+    description: new FormControl(''),
+    managerId: new FormControl(''),
+    projectState: new FormControl(''),
+    createdAt: new FormControl(''),
+    projectType: new FormControl(''),
   });
   protected isDark: boolean = false;
   status: string[] = ['ACTIVE', 'INACTIVE'];
@@ -100,6 +105,7 @@ export class ProfileComponent implements OnInit {
   protected types: projectType[] = [];
   protected states: string[] = [];
   protected messageService: MessageService = inject(MessageService);
+  protected filtersOpened: WritableSignal<boolean> = signal(false);
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
@@ -133,8 +139,8 @@ export class ProfileComponent implements OnInit {
   }
 
   search() {
-    const projectName = this.searchProjectForm.controls['search'].value;
-    let filters = this.buildFilters(projectName);
+    const title = this.searchProjectForm.controls['title'].value;
+    let filters = this.buildFilters(title);
     this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
       next: (data: Page<project>) => {
         this.projectsToShow = data;

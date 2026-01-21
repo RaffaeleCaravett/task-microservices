@@ -135,12 +135,17 @@ export interface User {
 export interface project {
   id: number;
   createdAt: string;
-  state: ProjectState;
+  projectState: ProjectState;
   user: User[];
   manager: User;
   task: task[];
   name: string;
   description: string;
+  title: string;
+  projectType: {
+    id: number;
+    tipoProgetto: string;
+  };
 }
 
 export interface projectDTO {
