@@ -29,7 +29,7 @@
         }
 
         @if (!addMode()) {
-          <div class="col-12 text-muted text-end px-3 d-flex justify-content-end">
+          <div class="col-12 text-muted text-end mt-4 px-3 d-flex justify-content-end">
             <button
               class="btn d-flex align-items-center gap-2"
               (click)="filtersOpened.set(!filtersOpened())"
@@ -138,13 +138,13 @@
             <div class="row">
               @for (item of projectsToShow?.content; track $index) {
                 <div class="col-md-4" [style.height]="'fit-content'">
-                  <div class="border shadowpanel rounded">
+                  <div class="border shadow panel ">
                     <div
-                      class="panel_title bg-primary d-flex align-items-center gap-2 rounded-top text-white p-3 fs-4"
+                      class="panel_title bg-primary d-flex align-items-center gap-2 text-white p-3 fs-4"
                     >
                       <div><i class="pi pi-briefcase fs-4"></i> {{ item.title }}</div>
                     </div>
-                    <div class="panel_body rounded-bottom shadow p-3">
+                    <div class="panel_body shadow p-3">
                       <div>
                         <span class="fw-bold text-muted text-uppercase">Manager progetto </span
                         ><br />
