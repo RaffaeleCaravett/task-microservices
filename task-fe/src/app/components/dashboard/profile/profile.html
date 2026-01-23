@@ -96,6 +96,10 @@
                     formControlName="projectState"
                     [style.maxWidth]="'350px'"
                   >
+                  <option value=""></option>
+                  @for (item of states; track $index) {
+                    <option value="{{item}}">{{item}}</option>
+                  }
                   </select>
                 </div>
               </div>
@@ -107,7 +111,10 @@
                     class="form-select border-0"
                     formControlName="projectType"
                     [style.maxWidth]="'350px'"
-                  >
+                  ><option value=""></option>
+                  @for (item of types; track $index) {
+                    <option value="{{item.id}}">{{item.tipoProgetto}}</option>
+                  }
                   </select>
                 </div>
               </div>
