@@ -213,6 +213,9 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
+  applyFilters() {
+    
+  }
   constructor() {
     effect(() => {
       this.isDark = this.modeService.isDark();

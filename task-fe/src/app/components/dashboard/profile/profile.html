@@ -61,6 +61,7 @@
                     type="text"
                     class="form-control border-0"
                     formControlName="title"
+                    [maxlength]="10"
                     [style.maxWidth]="'350px'"
                   />
                 </div>
@@ -70,6 +71,7 @@
                   <label class="fw-bold text-uppercase text-muted text-center">description</label>
                   <input
                     type="text"
+                    [maxlength]="100"
                     class="form-control border-0"
                     formControlName="description"
                     [style.maxWidth]="'350px'"
@@ -81,6 +83,7 @@
                   <label class="fw-bold text-uppercase text-muted text-center">manager</label>
                   <input
                     type="text"
+                    [maxlength]="10"
                     class="form-control border-0"
                     formControlName="managerId"
                     [style.maxWidth]="'350px'"
@@ -135,7 +138,7 @@
               <button class="btn border border-primary px-5 m-1">
                 <i class="pi pi-times me-2"></i> Reset
               </button>
-              <button class="btn btn-primary px-5 m-1">
+              <button class="btn btn-primary px-5 m-1" (click)="applyFilters()">
                 <i class="pi pi-search me-2"></i>Search
               </button>
             </div>
