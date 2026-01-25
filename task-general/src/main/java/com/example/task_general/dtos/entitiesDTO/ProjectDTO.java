@@ -21,8 +21,9 @@ public class ProjectDTO {
     private List<Long> developers;
     @NotNull(message = "Manca il manager")
     private Long managerId;
-    @NotNull(message = "Mana l'azienda")
+    @NotNull(message = "Manca l'azienda")
     private Long companyId;
+    @NotNull(message = "Manca il tipo")
     private Long typeId;
     private String state;
 }

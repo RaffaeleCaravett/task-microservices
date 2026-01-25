@@ -44,7 +44,9 @@ public class ProjectService {
            project.setDescription(projectDTO.getDescription());
            project.setCompany(companyService.findById(projectDTO.getCompanyId()));
            project.setManager(userService.findById(projectDTO.getManagerId()));
-           project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
+           if(null != projectDTO.getDevelopers()) {
+               project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
+           }
            project.setTasks(new ArrayList<>());
            project.setProjectType(projectTypeService.findById(projectDTO.getTypeId()));
            return projectRepository.save(project);

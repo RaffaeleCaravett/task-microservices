@@ -148,7 +148,7 @@ export interface projectDTO {
   managerId: number;
   title: string;
   description: string;
-  type: number;
+  typeId: number;
   companyId: number;
 }
 export interface projectType {

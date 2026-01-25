@@ -187,7 +187,7 @@ export class ProfileComponent implements OnInit {
       title: this.addProject.controls['title'].value,
       description: this.addProject.controls['description'].value,
       managerId: this.selectedManager.id,
-      type: this.addProject.controls['typeId'].value,
+      typeId: this.addProject.controls['typeId'].value,
       state: this.addProject.controls['state'].value,
       companyId: this.company?.id || 0,
     };
@@ -201,6 +201,8 @@ export class ProfileComponent implements OnInit {
             life: 3000,
           });
         }
+        this.addMode.set(false);
+        this.loadDatas();
       },
     });
   }
