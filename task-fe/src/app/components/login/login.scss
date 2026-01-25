@@ -1,7 +1,24 @@
 ::ng-deep.p-inputtext {
   background: transparent !important;
   color: black !important;
-  border: 1px solid black!important;
+  border: 1px solid black !important;
+}
+.title {
+  font-size: clamp(3.4rem, 3vw, 3vw);
+  line-height: 1.1;
+}
+.title-container{
+  width: 80%;
+  margin: auto;
+}
+@media screen and (max-width: 1070px) {
+  .title {
+  font-size: clamp(2.4rem, 3vw, 3vw);
+  line-height: 1.1;
+}
+.left,.right {
+  left: 0%!important;
+}
 }
 .type-menu-container {
   overflow: hidden;
@@ -19,7 +36,7 @@
 }
 .option {
   cursor: pointer;
-  border:3px solid transparent;
+  border: 3px solid transparent;
   &:hover {
     scale: 1.005;
     transition: 0.3s;
@@ -43,13 +60,13 @@
   }
 }
 
-.selected-dark-button{
-  border:3px solid rgb(84, 24, 24);
+.selected-dark-button {
+  border: 3px solid rgb(84, 24, 24);
   color: rgb(84, 24, 24);
   scale: 1.005;
 }
-.selected-light-button{
-  border:3px solid green;
+.selected-light-button {
+  border: 3px solid green;
   color: green;
   scale: 1.005;
 }
@@ -61,7 +78,7 @@
   opacity: 0.08;
   rotate: 0deg;
   z-index: 0 !important;
-  animation: opacity-back 0.6s cubic-bezier(.22,.61,.36,1);
+  animation: opacity-back 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   transform-origin: center;
 }
 @keyframes opacity-back {
@@ -73,6 +90,12 @@
   }
 }
 
-.z-index{
-  z-index: 1000!important;
+.z-index {
+  z-index: 1000 !important;
+}
+.left {
+  left: -10%;
+}
+.right {
+  left: 10%;
 }

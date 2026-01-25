@@ -38,19 +38,20 @@
   //   }
 }
 .dark-btn-login {
-  transition: 0.4s;
+  transition: 0.2s;
   background-color: black;
   &:hover {
-    transition: 0.4s;
-    background-color: rgba(71, 72, 73, 0.2) !important;
+    transition: 0.2s;
+    background-color: rgba(71, 72, 73, 0.6) !important;
   }
 }
 .dark-btn-signup {
-  transition: 0.5s;
+  transition: 0.2s;
   background-color: #dc3545 !important;
   -webkit-text-fill-color: #353739 !important;
   &:hover {
-    transition: 0.5s;
+    transition: 0.2s;
+    color:black!important;
     background-color: #a71f2d !important;
   }
 }

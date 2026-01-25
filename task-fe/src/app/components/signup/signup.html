@@ -3,11 +3,11 @@
     <div class="stepper w-75 m-auto">
       <div class="stepper-bar p-1 w-100 d-flex">
         <div
-          class="bg-success p-2 rounded-start"
+          class="bg-success p-2 rounded-start shadow"
           [ngStyle]="{ width: step == 1 ? '0' : step == 2 ? '33%' : step == 3 ? '66%' : '' }"
         ></div>
         <div
-          class="{{ isDark ? '' : 'bg-opacity-10' }} bg-secondary p-2 rounded-end"
+          class="bg-light p-2 rounded-end shadow"
           [ngStyle]="{ width: step == 1 ? '100%' : step == 2 ? '67%' : step == 3 ? '34%' : '' }"
         ></div>
       </div>
@@ -15,14 +15,11 @@
     @if (step == 1) {
       <form [formGroup]="signupForm" class="row w-75 m-auto d-flex align-items-stretch">
         <div class="col-12 text-center py-5">
-          <p class="title fw-bold">Join us <i class="pi pi-user-plus fs-1"></i></p>
-          <p class="fs-2 fw-bold">And start planning your dreams.</p>
+          <p class="title">It's not what you'll got </p>
+          <p class="fs-2">It's who you need to be <i class="pi pi-star fs-1 text-warning"></i></p>
         </div>
-        <div class="col-md-6">
-          <div
-            class="section row border border-secondary p-5 rounded shadow m-1"
-            [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
-          >
+        <div class="col-md-6 p-3">
+          <div class="section row border border p-5 rounded shadow m-1">
             <div class="col-md-12 py-1 pt-5">
               <h1 class="text-secondary text-uppercase">
                 Signup datas
@@ -130,11 +127,8 @@
             </div>
           </div>
         </div>
-        <div class="col-md-6">
-          <div
-            class="section row border border-secondary p-5 rounded shadow m-1"
-            [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
-          >
+        <div class="col-md-6 p-3">
+          <div class="section row border border p-5 rounded shadow m-1">
             <div class="col-md-12 py-1 pt-5">
               <h1 class="text-secondary text-uppercase">
                 General datas
@@ -222,11 +216,8 @@
             </div>
           </div>
         </div>
-        <div class="col-md-12">
-          <div
-            class="section row border border-secondary p-5 rounded shadow m-1 my-4"
-            [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
-          >
+        <div class="col-md-12 p-3">
+          <div class="section row border border p-5 rounded shadow m-1 my-4">
             <div formGroupName="indirizzo" class="row p-0 m-0">
               <div class="col-md-12 py-1 pt-5">
                 <h1 class="text-secondary text-uppercase">
@@ -690,7 +681,9 @@
           <p class="title fw-bold">Summary & payment <i class="pi pi-credit-card fs-1"></i></p>
         </div>
         <div [ngClass]="isDark ? 'dark-card' : 'light-card'" class="my-3">
-          <div class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top">
+          <div
+            class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top"
+          >
             <h2 class="p-0 m-0 fw-bold text-uppercase">
               General datas <i class="pi pi-server fs-2"></i>
             </h2>
@@ -712,7 +705,9 @@
         </div>
 
         <div [ngClass]="isDark ? 'dark-card' : 'light-card'" class="my-3">
-          <div class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top">
+          <div
+            class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top"
+          >
             <h2 class="fw-bold text-uppercase">
               Indirizzo <i class="pi pi-address-book fs-2"></i>
             </h2>
@@ -788,7 +783,9 @@
           </div>
         </div>
         <div [ngClass]="isDark ? 'dark-card' : 'light-card'" class="my-3">
-          <div class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top">
+          <div
+            class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top"
+          >
             <h2 class="fw-bold text-uppercase">Login infos <i class="pi pi-sign-in fs-2"></i></h2>
           </div>
           <div class="row card-body shadow w-100 m-auto rounded-bottom border border-top-0">
@@ -1057,11 +1054,22 @@
       {{ registredCompany?.nomeAzienda }}, inserisci il codice che ti abbiamo mandato per mail!
     </p>
     <div class="flex justify-center border-0 my-5">
-      <p-inputotp [(ngModel)]="value" size="large" class="m-auto d-flex justify-content-center" [length]="6" />
+      <p-inputotp
+        [(ngModel)]="value"
+        size="large"
+        class="m-auto d-flex justify-content-center"
+        [length]="6"
+      />
     </div>
     @if (value.length == 6) {
       <div class="py-4 text-center m-auto">
-        <button class="btn" [ngClass]="isDark?'dark-btn-signup':'light-btn-signup'" (click)="verifyCode(value)">Verifica codice</button>
+        <button
+          class="btn"
+          [ngClass]="isDark ? 'dark-btn-signup' : 'light-btn-signup'"
+          (click)="verifyCode(value)"
+        >
+          Verifica codice
+        </button>
       </div>
     }
   }
