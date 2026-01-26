@@ -142,6 +142,15 @@ export interface project {
   name: string;
   description: string;
 }
+
+export interface projectDTO {
+  state: ProjectState;
+  managerId: number;
+  title: string;
+  description: string;
+  type: number;
+  companyId: number;
+}
 export interface projectType {
   id: number;
   tipoProgetto: string;

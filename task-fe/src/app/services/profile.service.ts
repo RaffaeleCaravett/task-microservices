@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { EnvironmentInjector, inject, Injectable } from '@angular/core';
 import { API_URL } from '../core/environment';
 import { map, Observable } from 'rxjs';
-import { Page, projectType, User } from '../interfaces/interfaces';
+import { Page, project, projectDTO, projectType, User } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +49,9 @@ export class ProfileService {
 
   getProjectTypes(): Observable<projectType[]> {
     return this.http.get<projectType[]>(API_URL.general + '/company/types');
+  }
+
+  createProject(projectDTO: projectDTO): Observable<project> {
+    return this.http.post<project>(API_URL.general + '/project', projectDTO);
   }
 }

@@ -88,6 +88,7 @@
                       placeholder="Choose a manager"
                       class="form-control border-bottom-0"
                       (click)="showManagers.set(true)"
+                      (input)="showManagers.set(true)"
                     />
                     <div class="d-flex gap-2">
                       @if (addProject.controls['managerId'].value.length > 0) {

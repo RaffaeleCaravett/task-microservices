@@ -16,6 +16,7 @@ import {
   CompanyProjectsFilters,
   Page,
   project,
+  projectDTO,
   projectType,
   task,
   User,
@@ -39,6 +40,7 @@ import { TableModule } from 'primeng/table';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ProfileService } from '../../../services/profile.service';
 import { ModeService } from '../../../services/mode.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-profile',
@@ -97,6 +99,7 @@ export class ProfileComponent implements OnInit {
   protected filteredUsers: User[] = [];
   protected types: projectType[] = [];
   protected states: string[] = [];
+  protected messageService: MessageService = inject(MessageService);
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
@@ -175,11 +178,31 @@ export class ProfileComponent implements OnInit {
     this.states = ['PENDING', 'STARTED', 'STOPPED', 'COMPLETED'];
   }
 
-  createProject(){
+  createProject() {
     this.addProjectFormSubmitted = true;
-    if(this.addProject.invalid){
+    if (this.addProject.invalid || !this.selectedManager) {
       return;
     }
+    let project: projectDTO = {
+      title: this.addProject.controls['title'].value,
+      description: this.addProject.controls['description'].value,
+      managerId: this.selectedManager.id,
+      type: this.addProject.controls['typeId'].value,
+      state: this.addProject.controls['state'].value,
+      companyId: this.company?.id || 0,
+    };
+    this.profileService.createProject(project).subscribe({
+      next: (data: project) => {
+        if (data && data.id) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Project added',
+            detail: 'Congratulations, you\ve succesfuly added your project. Go work for it!',
+            life: 3000,
+          });
+        }
+      },
+    });
   }
   constructor() {
     effect(() => {

@@ -6,10 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="94856bcc-874f-4f96-ab73-a157275a6477" name="Changes" comment="ready to do fe now">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-fe/src/app/components/dashboard/profile/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/components/dashboard/profile/profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../task-fe/src/app/components/dashboard/profile/profile.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/components/dashboard/profile/profile.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/CompanyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/CompanyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/CompanyService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/CompanyService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/projectType/ProjectTypeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/projectType/ProjectTypeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-fe/src/app/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/interfaces/interfaces.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-fe/src/app/services/profile.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/services/profile.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
