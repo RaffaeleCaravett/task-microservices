@@ -5,7 +5,9 @@ export enum sizes {
   EXTRA_LARGE = 'EXTRA_LARGE',
 }
 export enum ProjectState {
+  PENDING = 'PENDING',
   STARTED = 'STARTED',
+  STOPPED = 'STOPPED',
   COMPLETED = 'COMPLETED',
 }
 export enum TaskState {

@@ -90,16 +90,20 @@
                       (click)="showManagers.set(true)"
                     />
                     <div class="d-flex gap-2">
-                      @if(addProject.controls['managerId'].value.length > 0){
-                        <i class="pi pi-times" (click)="addProject.controls['managerId'].setValue('')"></i>
+                      @if (addProject.controls['managerId'].value.length > 0) {
+                        <i
+                          class="pi pi-times"
+                          (click)="
+                            addProject.controls['managerId'].setValue(''); selectedManager = null
+                          "
+                        ></i>
                       }
                       @if (!showManagers()) {
-                      <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
-                    } @else {
-                      <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
-                    }
+                        <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
+                      } @else {
+                        <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
+                      }
                     </div>
-                    
                   </div>
                   @if (showManagers()) {
                     <div class="position-relative bg-white">
@@ -111,16 +115,14 @@
                           <div (click)="chooseManager(item)">
                             {{ item.nome + ' ' + item.cognome }}
                           </div>
-                        }@empty {
-                          <div >
-                            No managers ...
-                          </div>
+                        } @empty {
+                          <div>No managers ...</div>
                         }
                       </div>
                     </div>
                   }
                   @if (
-                    addProjectFormSubmitted && addProject.controls['managerID'].hasError('required')
+                    addProjectFormSubmitted && addProject.controls['managerId'].hasError('required')
                   ) {
                     <div>
                       <p class="text-danger">Scegli il manager per questo progetto</p>
@@ -205,7 +207,7 @@
                   }
                 </div>
                 <div class="col-12 text-end py-3">
-                  <button class="btn btn-primary">
+                  <button class="btn btn-primary" (click)="createProject()">
                     <i class="pi pi-plus"></i>
                     Add project
                   </button>

@@ -174,6 +174,13 @@ export class ProfileComponent implements OnInit {
     });
     this.states = ['PENDING', 'STARTED', 'STOPPED', 'COMPLETED'];
   }
+
+  createProject(){
+    this.addProjectFormSubmitted = true;
+    if(this.addProject.invalid){
+      return;
+    }
+  }
   constructor() {
     effect(() => {
       this.isDark = this.modeService.isDark();
