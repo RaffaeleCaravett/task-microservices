@@ -68,16 +68,7 @@ export class NavComponent implements OnInit {
   }
 
   addNewProject() {
-    if (this.users.content.length > 0) {
       const dialog = this.dialog.open(AddProjectComponent, { data: this.company });
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Attention',
-        detail: "You don't have users to add yet. Invite some users first!",
-        life: 3000,
-      });
-    }
   }
   protected toggleMode(){
     this.modeService.toggleMode();

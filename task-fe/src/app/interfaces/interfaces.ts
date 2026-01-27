@@ -199,3 +199,12 @@ export interface HomeCars {
   description: string;
   icon: string;
 }
+export interface BasicPageFilter {
+  page: number;
+  size: number;
+  sort: string;
+  order: string;
+}
+export interface CompanyProjectsFilters extends BasicPageFilter {
+  projectName: string;
+}
