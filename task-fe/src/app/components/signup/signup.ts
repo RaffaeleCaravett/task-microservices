@@ -24,14 +24,22 @@ import {
   settore,
   token,
 } from '../../interfaces/interfaces';
-import { CurrencyPipe, NgClass } from '@angular/common';
+import { CurrencyPipe, NgClass, NgStyle } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { InputOtp } from 'primeng/inputotp';
 import { FormsModule } from '@angular/forms';
 import { ModeService } from '../../services/mode.service';
 @Component({
   selector: 'app-signup',
-  imports: [ReactiveFormsModule, TooltipModule, CurrencyPipe, NgClass, FormsModule, InputOtp],
+  imports: [
+    ReactiveFormsModule,
+    TooltipModule,
+    CurrencyPipe,
+    NgClass,
+    FormsModule,
+    InputOtp,
+    NgStyle,
+  ],
   templateUrl: './signup.html',
   styleUrl: './signup.scss',
 })
@@ -103,7 +111,7 @@ export class SignupComponent implements OnInit {
         cap: new FormControl({ value: null, disabled: this.capSede.length == 0 }),
         regione: new FormControl({ value: null, disabled: this.regioniSede.length == 0 }),
         via: new FormControl(null),
-        numeroCivico: new FormControl('', Validators.required),
+        numeroCivico: new FormControl(null),
       }),
       email: new FormControl('', [
         Validators.required,
@@ -168,8 +176,10 @@ export class SignupComponent implements OnInit {
         next: (datas: CompanyDTOFromSignup) => {
           if (datas) {
             this.showSpinner = true;
+            this.cdr.markForCheck();
             setTimeout(() => {
               this.showSpinner = false;
+              this.cdr.markForCheck();
               this.registredCompany = datas;
               this.section = 'access-code';
               this.cdr.markForCheck();
@@ -184,12 +194,14 @@ export class SignupComponent implements OnInit {
   verifyCode(code: string) {
     this.authService.verifyCode(this.registredCompany!.email, code, 'COMPANY').subscribe({
       next: (data: loginSuccess) => {
+        debugger;
         if (data && data.token.accessToken) {
           localStorage.setItem('accessToken', data.token.accessToken);
           localStorage.setItem('refreshToken', data.token.refreshToken);
           this.authService.setAccessToken(data.token.accessToken);
           this.authService.setRefreshToken(data.token.refreshToken);
           this.authService.setIsLoggedIn(true);
+          this.authService.setAuthState('authenticated');
           if (data.company) {
             this.authService.setCompany(data.company!);
           } else if (data.user) {
@@ -229,6 +241,7 @@ export class SignupComponent implements OnInit {
       metodoPagamentoDTO: this.paymentMethod!,
       email: this.signupForm.controls['email'].value,
       password: this.signupForm.controls['password'].value,
+      isDifferentWorkStation: this.signupForm.controls['differentWorkStation'].value,
     };
   }
   passwordMismatch(): boolean {
@@ -374,17 +387,22 @@ export class SignupComponent implements OnInit {
       this.signupForm.controls['sedeOperativa'].get('cap')?.setValidators(Validators.required);
       this.signupForm.controls['sedeOperativa'].get('regione')?.setValidators(Validators.required);
       this.signupForm.controls['sedeOperativa'].get('via')?.setValidators(Validators.required);
+      this.signupForm.controls['sedeOperativa']
+        .get('numeroCivico')
+        ?.setValidators(Validators.required);
     } else {
       this.signupForm.controls['sedeOperativa'].get('nazione')?.clearValidators();
       this.signupForm.controls['sedeOperativa'].get('citta')?.clearValidators();
       this.signupForm.controls['sedeOperativa'].get('cap')?.clearValidators();
       this.signupForm.controls['sedeOperativa'].get('regione')?.clearValidators();
       this.signupForm.controls['sedeOperativa'].get('via')?.clearValidators();
+      this.signupForm.controls['sedeOperativa'].get('numeroCivico')?.clearValidators();
       this.signupForm.controls['sedeOperativa'].get('nazione')?.setValue(null);
       this.signupForm.controls['sedeOperativa'].get('citta')?.setValue(null);
       this.signupForm.controls['sedeOperativa'].get('cap')?.setValue(null);
       this.signupForm.controls['sedeOperativa'].get('regione')?.setValue(null);
       this.signupForm.controls['sedeOperativa'].get('via')?.setValue(null);
+      this.signupForm.controls['sedeOperativa'].get('numeroCivico')?.setValue(null);
     }
     this.signupForm.updateValueAndValidity();
   }

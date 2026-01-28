@@ -1,36 +1,26 @@
 <div class="row text-start fs-3 pt-5" [ngClass]="isDark ? '' : 'light-signup'">
   @if (section != 'access-code' && !showSpinner) {
-    <div class="stepper sticky-top pt-5 w-75 m-auto text-center">
-      <div
-        [style.display]="'inline-block'"
-        class="border-bottom pb-2 m-3 border-success bg-secondary shadow rounded-top p-1"
-      >
-        Signup form
-      </div>
-      <div
-        [style.display]="'inline-block'"
-        class="border-bottom pb-2 mx-3 bg-secondary rounded-top p-1 shadow"
-        [ngClass]="step > 1 ? 'border-success' : ''"
-      >
-        Personal plan
-      </div>
-      <div
-        [style.display]="'inline-block'"
-        class="border-bottom pb-2 mx-3 bg-secondary rounded-top p-1 shadow"
-        [ngClass]="step > 2 ? 'border-success' : ''"
-      >
-        Summary
+    <div class="stepper w-75 m-auto">
+      <div class="stepper-bar p-1 w-100 d-flex">
+        <div
+          class="bg-success p-2 rounded-start"
+          [ngStyle]="{ width: step == 1 ? '0' : step == 2 ? '33%' : step == 3 ? '66%' : '' }"
+        ></div>
+        <div
+          class="{{ isDark ? '' : 'bg-opacity-10' }} bg-secondary p-2 rounded-end"
+          [ngStyle]="{ width: step == 1 ? '100%' : step == 2 ? '67%' : step == 3 ? '34%' : '' }"
+        ></div>
       </div>
     </div>
     @if (step == 1) {
-      <form [formGroup]="signupForm" class="row w-75 m-auto">
+      <form [formGroup]="signupForm" class="row w-75 m-auto d-flex align-items-stretch">
         <div class="col-12 text-center py-5">
           <p class="title fw-bold">Join us <i class="pi pi-user-plus fs-1"></i></p>
           <p class="fs-2 fw-bold">And start planning your dreams.</p>
         </div>
         <div class="col-md-6">
           <div
-            class="section row border border-secondary p-5 rounded shadow"
+            class="section row border border-secondary p-5 rounded shadow m-1"
             [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
           >
             <div class="col-md-12 py-1 pt-5">
@@ -77,7 +67,7 @@
                 <p class="text-success">Campo valido</p>
               }
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-12">
               <label for="password" class="py-2 fw-bold">Password*</label>
               <input
                 formControlName="password"
@@ -105,8 +95,8 @@
                 <p class="text-success">Le password combaciano</p>
               }
             </div>
-            <div class="col-md-6">
-              <label for="password" class="py-2 fw-bold">Ripeti password*</label>
+            <div class="col-lg-12">
+              <label for="password" class="py-2 fw-bold">Password*</label>
               <input
                 formControlName="ripetiPassword"
                 placeholder="Ripeti la password"
@@ -142,7 +132,7 @@
         </div>
         <div class="col-md-6">
           <div
-            class="section row border border-secondary p-5 rounded shadow"
+            class="section row border border-secondary p-5 rounded shadow m-1"
             [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
           >
             <div class="col-md-12 py-1 pt-5">
@@ -160,8 +150,8 @@
                 ></i>
               </h1>
             </div>
-            <div class="col-md-6">
-              <label for="ragioneSociale" class="py-2 fw-bold"> Ragione sociale*</label>
+            <div class="col-lg-12">
+              <label for="ragioneSociale" class="py-2 fw-bold">Rag. sociale*</label>
               <input
                 type="text"
                 formControlName="ragioneSociale"
@@ -181,7 +171,7 @@
                 <p class="text-success">Campo valido</p>
               }
             </div>
-            <div class="col-md-6">
+            <div class="col-lg-12">
               <label for="partitaIva" class="py-2 fw-bold">Partita Iva*</label>
               <input
                 type="text"
@@ -234,14 +224,23 @@
         </div>
         <div class="col-md-12">
           <div
-            class="section row border border-secondary p-5 rounded shadow"
+            class="section row border border-secondary p-5 rounded shadow m-1 my-4"
             [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
           >
             <div formGroupName="indirizzo" class="row p-0 m-0">
               <div class="col-md-12 py-1 pt-5">
                 <h1 class="text-secondary text-uppercase">
-                  Address <i class="fs-3 pi pi-map-marker"
-                  [ngClass]="signupForm.controls['indirizzo'].valid?'text-success':'text-danger'"></i>
+                  Address
+                  <i
+                    class="fs-3 pi pi-map-marker"
+                    [ngClass]="
+                      signupForm.controls['indirizzo'].valid &&
+                      signupForm.controls['settore'].valid &&
+                      signupForm.controls['dimensioniAzienda'].valid
+                        ? 'text-success'
+                        : 'text-danger'
+                    "
+                  ></i>
                 </h1>
               </div>
               <div class="col-md-12">
@@ -268,7 +267,11 @@
                   signupForm.controls['indirizzo'].get('nazione')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
-                }@else if(signupForm.controls['indirizzo'].valid){
+                } @else if (
+                  signupForm.controls['indirizzo'].valid &&
+                  signupForm.controls['settore'].valid &&
+                  signupForm.controls['dimensioniAzienda'].valid
+                ) {
                   <p class="text-success">Campo valido</p>
                 }
               </div>
@@ -297,7 +300,11 @@
                   signupForm.controls['indirizzo'].get('regione')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
-                }@else if(signupForm.controls['indirizzo'].valid){
+                } @else if (
+                  signupForm.controls['indirizzo'].valid &&
+                  signupForm.controls['settore'].valid &&
+                  signupForm.controls['dimensioniAzienda'].valid
+                ) {
                   <p class="text-success">Campo valido</p>
                 }
               </div>
@@ -322,7 +329,11 @@
                   signupForm.controls['indirizzo'].get('citta')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
-                }@else if(signupForm.controls['indirizzo'].valid){
+                } @else if (
+                  signupForm.controls['indirizzo'].valid &&
+                  signupForm.controls['settore'].valid &&
+                  signupForm.controls['dimensioniAzienda'].valid
+                ) {
                   <p class="text-success">Campo valido</p>
                 }
               </div>
@@ -341,7 +352,11 @@
                   signupForm.controls['indirizzo'].get('cap')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
-                }@else if(signupForm.controls['indirizzo'].valid){
+                } @else if (
+                  signupForm.controls['indirizzo'].valid &&
+                  signupForm.controls['settore'].valid &&
+                  signupForm.controls['dimensioniAzienda'].valid
+                ) {
                   <p class="text-success">Campo valido</p>
                 }
               </div>
@@ -358,7 +373,11 @@
                   signupForm.controls['indirizzo'].get('via')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
-                }@else if(signupForm.controls['indirizzo'].valid){
+                } @else if (
+                  signupForm.controls['indirizzo'].valid &&
+                  signupForm.controls['settore'].valid &&
+                  signupForm.controls['dimensioniAzienda'].valid
+                ) {
                   <p class="text-success">Campo valido</p>
                 }
               </div>
@@ -375,7 +394,11 @@
                   signupForm.controls['indirizzo'].get('numeroCivico')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
-                }@else if(signupForm.controls['indirizzo'].valid){
+                } @else if (
+                  signupForm.controls['indirizzo'].valid &&
+                  signupForm.controls['settore'].valid &&
+                  signupForm.controls['dimensioniAzienda'].valid
+                ) {
                   <p class="text-success">Campo valido</p>
                 }
               </div>
@@ -394,7 +417,11 @@
                 signupForm.controls['settore'].touched && signupForm.controls['settore'].invalid
               ) {
                 <p class="text-danger">Campo obbligatorio</p>
-              }@else if(signupForm.controls['indirizzo'].valid){
+              } @else if (
+                signupForm.controls['indirizzo'].valid &&
+                signupForm.controls['settore'].valid &&
+                signupForm.controls['dimensioniAzienda'].valid
+              ) {
                 <p class="text-success">Campo valido</p>
               }
             </div>
@@ -413,7 +440,11 @@
                 signupForm.controls['dimensioniAzienda'].invalid
               ) {
                 <p class="text-danger">Campo obbligatorio</p>
-              }@else if(signupForm.controls['indirizzo'].valid){
+              } @else if (
+                signupForm.controls['indirizzo'].valid &&
+                signupForm.controls['settore'].valid &&
+                signupForm.controls['dimensioniAzienda'].valid
+              ) {
                 <p class="text-success">Campo valido</p>
               }
             </div>
@@ -435,7 +466,13 @@
               <div formGroupName="sedeOperativa" class="row p-0 m-0">
                 <div class="col-md-12 pt-5 py-1">
                   <h1 class="text-secondary">
-                    Sede operativa <i class="fs-pi pi-building text-black"></i>
+                    Sede operativa
+                    <i
+                      class="pi pi-building fs-2"
+                      [ngClass]="
+                        signupForm.controls['sedeOperativa'].valid ? 'text-success' : 'text-danger'
+                      "
+                    ></i>
                   </h1>
                 </div>
                 <div class="col-md-12">
@@ -461,6 +498,8 @@
                     signupForm.controls['sedeOperativa'].get('nazione')?.invalid
                   ) {
                     <p class="text-danger">Campo obbligatorio</p>
+                  } @else if (signupForm.controls['sedeOperativa'].valid) {
+                    <p class="text-success">Campo valido</p>
                   }
                 </div>
                 <div class="col-md-4">
@@ -486,6 +525,8 @@
                     signupForm.controls['sedeOperativa'].get('regione')?.invalid
                   ) {
                     <p class="text-danger">Campo obbligatorio</p>
+                  } @else if (signupForm.controls['sedeOperativa'].valid) {
+                    <p class="text-success">Campo valido</p>
                   }
                 </div>
                 <div class="col-md-4">
@@ -511,6 +552,8 @@
                     signupForm.controls['sedeOperativa'].get('citta')?.invalid
                   ) {
                     <p class="text-danger">Campo obbligatorio</p>
+                  } @else if (signupForm.controls['sedeOperativa'].valid) {
+                    <p class="text-success">Campo valido</p>
                   }
                 </div>
                 <div class="col-md-4">
@@ -527,6 +570,8 @@
                     signupForm.controls['sedeOperativa'].get('cap')?.invalid
                   ) {
                     <p class="text-danger">Campo obbligatorio</p>
+                  } @else if (signupForm.controls['sedeOperativa'].valid) {
+                    <p class="text-success">Campo valido</p>
                   }
                 </div>
                 <div class="col-6">
@@ -537,6 +582,8 @@
                     signupForm.controls['sedeOperativa'].get('via')?.invalid
                   ) {
                     <p class="text-danger">Campo obbligatorio</p>
+                  } @else if (signupForm.controls['sedeOperativa'].valid) {
+                    <p class="text-success">Campo valido</p>
                   }
                 </div>
                 <div class="col-6">
@@ -547,6 +594,8 @@
                     signupForm.controls['sedeOperativa'].get('numeroCivico')?.invalid
                   ) {
                     <p class="text-danger">Campo obbligatorio</p>
+                  } @else if (signupForm.controls['sedeOperativa'].valid) {
+                    <p class="text-success">Campo valido</p>
                   }
                 </div>
               </div>
@@ -555,15 +604,19 @@
         </div>
       </form>
     } @else if (step == 2) {
-      <div class="col-12 text-center"><p class="h2 fw-bold">Choose a plan</p></div>
+      <div class="col-12 text-center d-flex justify-content-center align-items-center py-5">
+        <p class="title fw-bold">Choose a plan</p>
+        <i class="pi pi-book fs-1"></i>
+      </div>
       @for (item of piani; track $index) {
-        <div class="d-flex flex-column justify-content-center m-2">
+        <div class="d-flex flex-column justify-content-center my-5">
           <div
             class="card w-75 m-auto m-2 shadow-sm"
             [ngClass]="item == choosedPlan ? 'choosed-border' : ''"
+            [ngClass]="isDark ? 'dark-card' : 'light-card'"
           >
             <div
-              class="card-header fw-bolder"
+              class="card-header fw-bolder d-flex justify-content-between align-items-center"
               [ngClass]="
                 item.titolo == 'FREE PLAN'
                   ? 'text-success'
@@ -574,8 +627,8 @@
                       : 'text-danger'
               "
             >
-              {{ item.titolo }}
-              {{
+              <span>{{ item.titolo }}</span>
+              <span>{{
                 item.titolo == 'FREE PLAN'
                   ? '💸'
                   : item.titolo == 'MEDIUM PLAN'
@@ -583,16 +636,21 @@
                     : item.titolo == 'GOLDEN PLAN'
                       ? '🪙'
                       : '🔥'
-              }}
+              }}</span>
             </div>
             <div class="card-body">
-              <h5 class="card-title">{{ item.prezzo | currency: 'EUR' }}</h5>
+              <h5 class="card-title">
+                {{ item.prezzo | currency: 'EUR' }}
+                <span class="fs-6">{{
+                  item.titolo == 'FREE PLAN' ? '(No credit card required)' : ''
+                }}</span>
+              </h5>
               <p class="card-text">
                 {{ item.description }}
               </p>
               <button
                 (click)="choosedPlan = item; chosedDays = choosedPlan.id != 1 ? '30' : null"
-                class="btn"
+                class="btn w-100 p-2 fs-5"
                 [ngClass]="
                   item.titolo == 'FREE PLAN'
                     ? 'btn-success'
@@ -608,8 +666,15 @@
             </div>
           </div>
           @if (choosedPlan == item && item.id != 1) {
-            <div class="m-2 w-75 m-auto">
-              <label for="">Select days of Subscription:</label>
+            <div class="my-3 w-75 m-auto">
+              <label for="" class="my-2"
+                >Select days of Subscription:
+                @if (!chosedDays) {
+                  <i class="pi pi-exclamation-triangle fs-3"></i>
+                } @else {
+                  <i class="pi pi-check text-success fs-3"></i>
+                }
+              </label>
               <select class="form-select" (change)="chosedDays = days.value" #days>
                 @for (item of sbDays; track $index) {
                   <option value="{{ item }}">{{ item }}</option>
@@ -621,323 +686,363 @@
       }
     } @else if (step == 3) {
       <div class="row w-75 m-auto">
-        <div class="col-12 text-center"><p class="h2 fw-bold">Summary & Payment</p></div>
-        <div class="col-md-12 py-1 pt-5">
-          <h2>General datas</h2>
+        <div class="col-12 text-center py-5">
+          <p class="title fw-bold">Summary & payment <i class="pi pi-credit-card fs-1"></i></p>
         </div>
-        <div class="col-md-6">
-          <label class="py-2 fw-bold"> Ragione sociale</label>
-          <p>{{ signupForm.controls['ragioneSociale'].value }}</p>
-        </div>
-        <div class="col-md-6">
-          <label class="py-2 fw-bold">Partita Iva</label>
-          <p>{{ signupForm.controls['partitaIva'].value }}</p>
-        </div>
-        <div class="col-md-12">
-          <label class="py-2 fw-bold"> Forma giuridica</label>
-          <p>{{ getForma(signupForm.controls['formaGiuridica'].value) }}</p>
-        </div>
-        <div class="col-md-12 py-1 pt-5">
-          <h2>Indirizzo</h2>
-        </div>
-        <div class="col-md-12">
-          <label class="py-2 fw-bold"> Paese di registrazione</label>
-          <p>{{ getNation(signupForm.controls['indirizzo'].get('nazione')?.value) }}</p>
-        </div>
-        <div class="col-md-4">
-          <label class="py-2 fw-bold">Regione</label>
-          <p>{{ getRegion(signupForm.controls['indirizzo'].get('regione')?.value) }}</p>
-        </div>
-        <div class="col-md-4">
-          <label class="py-2 fw-bold">Città</label>
-          <p>{{ getCitta(signupForm.controls['indirizzo'].get('citta')?.value) }}</p>
-        </div>
-        <div class="col-md-4">
-          <label class="py-2 fw-bold">Cap</label>
-          <p>{{ getCap(signupForm.controls['indirizzo'].get('cap')?.value) }}</p>
-        </div>
-        <div class="col-12">
-          <label class="py-2 fw-bold">Via</label>
-          <p>{{ signupForm.controls['indirizzo'].get('via')?.value }}</p>
-        </div>
-        <div class="col-md-8">
-          <label class="py-2 fw-bold">Settore</label>
-          <p>{{ getSettore(signupForm.controls['settore'].value) }}</p>
-        </div>
-        <div class="col-md-4">
-          <label class="py-2 fw-bold">Dimensioni</label>
-          <p>{{ getDimensione(signupForm.controls['dimensioniAzienda'].value) }}</p>
-        </div>
-        @if (signupForm.controls['differentWorkStation'].value) {
-          <div class="col-md-12 pt-5 py-1">
-            <h2>Sede operativa</h2>
+        <div [ngClass]="isDark ? 'dark-card' : 'light-card'" class="my-3">
+          <div class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top">
+            <h2 class="p-0 m-0 fw-bold text-uppercase">
+              General datas <i class="pi pi-server fs-2"></i>
+            </h2>
           </div>
-          <div class="col-md-12">
-            <label class="py-2 fw-bold"> Paese di registrazione</label>
-            <p>{{ getNation(signupForm.controls['sedeOperativa'].get('nazione')?.value, true) }}</p>
-          </div>
-          <div class="col-md-4">
-            <label class="py-2 fw-bold">Regione</label>
-            <p>{{ getRegion(signupForm.controls['sedeOperativa'].get('regione')?.value, true) }}</p>
-          </div>
-          <div class="col-md-4">
-            <label class="py-2 fw-bold">Città</label>
-            <p>{{ getCitta(signupForm.controls['sedeOperativa'].get('citta')?.value, true) }}</p>
-          </div>
-          <div class="col-md-4">
-            <label class="py-2 fw-bold">Cap</label>
-            <p>{{ getCap(signupForm.controls['sedeOperativa'].get('cap')?.value, true) }}</p>
-          </div>
-          <div class="col-12">
-            <label class="py-2 fw-bold">Via</label>
-            <p>{{ signupForm.controls['sedeOperativa'].get('via')?.value }}</p>
-          </div>
-        }
-        <div class="col-md-12">
-          <label class="py-2 fw-bold">Email</label>
-          <p>{{ signupForm.controls['email'].value }}</p>
-        </div>
-        <div class="col-md-6">
-          <label class="py-2 fw-bold">Password</label>
-          <p>{{ signupForm.controls['password'].value }}</p>
-        </div>
-      </div>
-
-      <div class="row py-5">
-        <div class="col-12 text-center"><p class="h2 fw-bold">Choosed plan</p></div>
-        <div class="card w-75 m-auto my-2 choosed-border">
-          <div
-            class="card-header fw-bolder"
-            [ngClass]="
-              choosedPlan!.titolo == 'FREE PLAN'
-                ? 'text-success'
-                : choosedPlan!.titolo == 'MEDIUM PLAN'
-                  ? 'text-info'
-                  : choosedPlan!.titolo == 'GOLDEN PLAN'
-                    ? 'text-warning'
-                    : 'text-danger'
-            "
-          >
-            {{ choosedPlan!.titolo }}
-            {{
-              choosedPlan!.titolo == 'FREE PLAN'
-                ? '💸'
-                : choosedPlan!.titolo == 'MEDIUM PLAN'
-                  ? '🌊'
-                  : choosedPlan!.titolo == 'GOLDEN PLAN'
-                    ? '🪙'
-                    : '🔥'
-            }}
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ choosedPlan!.prezzo | currency: 'EUR' }}</h5>
-            <p class="card-text">
-              {{ choosedPlan!.description }}
-            </p>
-          </div>
-        </div>
-        <div class="my-2 w-75 m-auto">Choosed days : {{ chosedDays }}</div>
-      </div>
-
-      <div class="bg-light border w-75 m-auto p-2 row my-5">
-        <div class="col-12">
-          <p class="h5"><i class="pi pi-lock"></i> Your payment is secure</p>
-          <form [formGroup]="paymentForm" class="py-2 row">
-            <div class="col-12">
-              <label for="cardNumber" class="py-2">Card number</label>
-              <input
-                type="tel"
-                formControlName="cardNumber"
-                class="form-control"
-                placeholder="0000 0000 0000 0000"
-                maxlength="19"
-                (input)="adeguateCardNumberValue($event)"
-              />
-              <p class="text-danger pt-1">
-                @if (
-                  paymentForm.controls['cardNumber'].hasError('required') &&
-                  paymentForm.controls['cardNumber'].touched
-                ) {
-                  Il campo è richiesto.
-                } @else if (
-                  paymentForm.controls['cardNumber'].hasError('pattern') &&
-                  paymentForm.controls['cardNumber'].dirty
-                ) {
-                  Inserire un formato numerico tipo 1111 1111 1111 1111
-                } @else if (
-                  paymentForm.controls['cardNumber'].hasError('minlength') &&
-                  paymentForm.controls['cardNumber'].dirty
-                ) {
-                  Lunghezza minima 16 caratteri
-                } @else if (
-                  paymentForm.controls['cardNumber'].hasError('maxlength') &&
-                  paymentForm.controls['cardNumber'].dirty
-                ) {
-                  Lunghezza massima 16 caratteri
-                } @else if (paymentForm.controls['cardNumber'].dirty) {
-                  <p class="text-success">Campo corretto</p>
-                }
-              </p>
+          <div class="card-body shadow row w-100 m-auto rounded-bottom border border-top-0 p-1">
+            <div class="col-md-6">
+              <label class="py-2 fw-bold"> Ragione sociale</label>
+              <p>{{ signupForm.controls['ragioneSociale'].value }}</p>
             </div>
-            <div class="col-md-8">
-              <label for="expirationDate" class="py-2">Expiration date</label>
-              <p class="form-control">
-                <input
-                  type="number"
-                  class="border-0"
-                  placeholder="MM / "
-                  style="width: 45px"
-                  formControlName="expirationMonth"
-                  min="1"
-                  max="12"
-                  (input)="limitExpirationMonth()"
-                />
-                {{ paymentForm.controls['expirationMonth'].value ? '/' : '' }}
-                <input
-                  type="number"
-                  min="{{ currentYear }}"
-                  placeholder="YY"
-                  class="border-0"
-                  formControlName="expirationYear"
-                  (input)="limitExpirationYear()"
-                />
-              </p>
-              <p class="text-danger pt-1">
-                @if (
-                  (paymentForm.controls['expirationMonth'].hasError('required') &&
-                    paymentForm.controls['expirationMonth'].touched) ||
-                  (paymentForm.controls['expirationYear'].hasError('required') &&
-                    paymentForm.controls['expirationYear'].touched)
-                ) {
-                  Il campo è richiesto.
-                } @else if (
-                  paymentForm.controls['expirationMonth'].hasError('min') &&
-                  paymentForm.controls['expirationMonth'].dirty
-                ) {
-                  Mese minimo : 01
-                } @else if (
-                  paymentForm.controls['expirationYear'].hasError('min') &&
-                  paymentForm.controls['expirationYear'].dirty
-                ) {
-                  Anno minimo : {{ currentYear }}
-                } @else if (
-                  paymentForm.controls['expirationMonth'].hasError('max') &&
-                  paymentForm.controls['expirationMonth'].dirty
-                ) {
-                  Mese massimo : 12
-                } @else if (
-                  (paymentForm.controls['expirationMonth'].hasError('maxlength') &&
-                    paymentForm.controls['expirationMonth'].dirty) ||
-                  (paymentForm.controls['expirationYear'].hasError('maxlength') &&
-                    paymentForm.controls['expirationYear'].dirty)
-                ) {
-                  Massimo 2 valori numerici sia per mese che per anno
-                } @else if (
-                  paymentForm.controls['expirationMonth'].valid &&
-                  paymentForm.controls['expirationYear'].valid
-                ) {
-                  <p class="text-success">Campo corretto</p>
-                }
-              </p>
-            </div>
-            <div class="col-md-4">
-              <label for="securityCode" class="py-2">Security code (CVV)</label>
-              <input
-                type="password"
-                formControlName="securityCode"
-                placeholder="XXX"
-                class="form-control"
-                maxlength="3"
-              />
-              <p class="text-danger pt-1">
-                @if (
-                  paymentForm.controls['securityCode'].hasError('required') &&
-                  paymentForm.controls['securityCode'].touched
-                ) {
-                  Il campo è richiesto.
-                } @else if (
-                  paymentForm.controls['securityCode'].hasError('min') &&
-                  paymentForm.controls['securityCode'].dirty
-                ) {
-                  Lunghezza minima 3 cifre
-                } @else if (
-                  paymentForm.controls['securityCode'].hasError('max') &&
-                  paymentForm.controls['securityCode'].dirty
-                ) {
-                  Inserisci massimo 3 cifre
-                } @else if (
-                  paymentForm.controls['securityCode'].hasError('pattern') &&
-                  paymentForm.controls['securityCode'].dirty
-                ) {
-                  Inserisci solo numeri
-                } @else if (paymentForm.controls['securityCode'].valid) {
-                  <p class="text-success">Campo corretto</p>
-                }
-              </p>
+            <div class="col-md-6">
+              <label class="py-2 fw-bold">Partita Iva</label>
+              <p>{{ signupForm.controls['partitaIva'].value }}</p>
             </div>
             <div class="col-md-12">
-              <label for="cardHolder" class="py-2">Card holder name</label>
-              <input
-                type="string"
-                formControlName="cardHolder"
-                placeholder="Mario Rossi"
-                class="form-control"
-              />
-              <p class="text-danger pt-1">
-                @if (
-                  paymentForm.controls['cardHolder'].hasError('required') &&
-                  paymentForm.controls['cardHolder'].touched
-                ) {
-                  Il campo è richiesto.
-                } @else if (
-                  paymentForm.controls['cardHolder'].hasError('pattern') &&
-                  paymentForm.controls['cardHolder'].touched
-                ) {
-                  Inserisci nome e cognome separati da uno spazio.
-                } @else if (paymentForm.controls['cardHolder'].valid) {
-                  <p class="text-success">Campo corretto</p>
-                }
-              </p>
+              <label class="py-2 fw-bold"> Forma giuridica</label>
+              <p>{{ getForma(signupForm.controls['formaGiuridica'].value) }}</p>
             </div>
-            <div class="col-12 text-left py-5">
-              <button class="btn" pTooltip="Add" [disabled]="paymentForm.invalid" (click)="pay()">
-                <i class="pi pi-plus"></i> Add payment method
-              </button>
+          </div>
+        </div>
+
+        <div [ngClass]="isDark ? 'dark-card' : 'light-card'" class="my-3">
+          <div class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top">
+            <h2 class="fw-bold text-uppercase">
+              Indirizzo <i class="pi pi-address-book fs-2"></i>
+            </h2>
+          </div>
+          <div class="card-body row w-100 m-auto rounded-bottom border border-top-0 p-1 shadow">
+            <div class="col-md-12">
+              <label class="py-2 fw-bold"> Paese di registrazione</label>
+              <p>{{ getNation(signupForm.controls['indirizzo'].get('nazione')?.value) }}</p>
             </div>
-            <div class="col-12">
-              *** If you chose a free plan, we never take money from your payment method at any
-              time. If you chose a non-free plan we process the transaction after the subscription,
-              and the renewal is not automatic.
+            <div class="col-md-4">
+              <label class="py-2 fw-bold">Regione</label>
+              <p>{{ getRegion(signupForm.controls['indirizzo'].get('regione')?.value) }}</p>
             </div>
-            @if (paymentIsLoading) {
-              <div class="spinner-border m-auto" role="status">
-                <span class="visually-hidden">Loading...</span>
+            <div class="col-md-4">
+              <label class="py-2 fw-bold">Città</label>
+              <p>{{ getCitta(signupForm.controls['indirizzo'].get('citta')?.value) }}</p>
+            </div>
+            <div class="col-md-4">
+              <label class="py-2 fw-bold">Cap</label>
+              <p>{{ getCap(signupForm.controls['indirizzo'].get('cap')?.value) }}</p>
+            </div>
+            <div class="col-7">
+              <label class="py-2 fw-bold">Via</label>
+              <p>{{ signupForm.controls['indirizzo'].get('via')?.value }}</p>
+            </div>
+            <div class="col-5">
+              <label class="py-2 fw-bold">Numero civico</label>
+              <p>{{ signupForm.controls['indirizzo'].get('numeroCivico')?.value }}</p>
+            </div>
+            <div class="col-md-8">
+              <label class="py-2 fw-bold">Settore</label>
+              <p>{{ getSettore(signupForm.controls['settore'].value) }}</p>
+            </div>
+            <div class="col-md-4">
+              <label class="py-2 fw-bold">Dimensioni</label>
+              <p>{{ getDimensione(signupForm.controls['dimensioniAzienda'].value) }}</p>
+            </div>
+            @if (signupForm.controls['differentWorkStation'].value) {
+              <div class="col-md-12 pt-5 py-1">
+                <h2>Sede operativa</h2>
               </div>
-            } @else {
-              <div class="col-12 pt-4">
-                @if (paymentAccepted) {
-                  <p class="text-right text-success fw-bold">
-                    ✅ Payment method accepted
-                    <span class="mx-5">
-                      <button
-                        class="btn-outline-danger"
-                        (click)="
-                          paymentMethod = null;
-                          paymentAccepted = false;
-                          paymentForm.reset();
-                          paymentSubmitted = false
-                        "
-                      >
-                        Remove method
-                      </button></span
-                    >
-                  </p>
-                } @else if (!paymentAccepted && paymentSubmitted) {
-                  <p class="text-right text-danger fw-bold">❌ Payment method refused</p>
-                }
+              <div class="col-md-12">
+                <label class="py-2 fw-bold"> Paese di registrazione</label>
+                <p>
+                  {{ getNation(signupForm.controls['sedeOperativa'].get('nazione')?.value, true) }}
+                </p>
+              </div>
+              <div class="col-md-4">
+                <label class="py-2 fw-bold">Regione</label>
+                <p>
+                  {{ getRegion(signupForm.controls['sedeOperativa'].get('regione')?.value, true) }}
+                </p>
+              </div>
+              <div class="col-md-4">
+                <label class="py-2 fw-bold">Città</label>
+                <p>
+                  {{ getCitta(signupForm.controls['sedeOperativa'].get('citta')?.value, true) }}
+                </p>
+              </div>
+              <div class="col-md-4">
+                <label class="py-2 fw-bold">Cap</label>
+                <p>{{ getCap(signupForm.controls['sedeOperativa'].get('cap')?.value, true) }}</p>
+              </div>
+              <div class="col-7">
+                <label class="py-2 fw-bold">Via</label>
+                <p>{{ signupForm.controls['sedeOperativa'].get('via')?.value }}</p>
+              </div>
+              <div class="col-5">
+                <label class="py-2 fw-bold">Numero civico</label>
+                <p>{{ signupForm.controls['sedeOperativa'].get('numeroCivico')?.value }}</p>
               </div>
             }
-          </form>
+          </div>
+        </div>
+        <div [ngClass]="isDark ? 'dark-card' : 'light-card'" class="my-3">
+          <div class="w-100 pt-5 p-1 card-header shadow border-start border-top border-end rounded-top">
+            <h2 class="fw-bold text-uppercase">Login infos <i class="pi pi-sign-in fs-2"></i></h2>
+          </div>
+          <div class="row card-body shadow w-100 m-auto rounded-bottom border border-top-0">
+            <div class="col-md-6">
+              <label class="py-2 fw-bold">Email</label>
+              <p>{{ signupForm.controls['email'].value }}</p>
+            </div>
+            <div class="col-md-6">
+              <label class="py-2 fw-bold">Password</label>
+              <p>{{ signupForm.controls['password'].value }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="row py-5" [ngClass]="isDark ? 'dark-card' : 'light-card'" class="my-3">
+          <div class="card w-75 m-auto my-2 choosed-border">
+            <div
+              class="card-header fw-bolder"
+              [ngClass]="
+                choosedPlan!.titolo == 'FREE PLAN'
+                  ? 'text-success'
+                  : choosedPlan!.titolo == 'MEDIUM PLAN'
+                    ? 'text-info'
+                    : choosedPlan!.titolo == 'GOLDEN PLAN'
+                      ? 'text-warning'
+                      : 'text-danger'
+              "
+            >
+              {{ choosedPlan!.titolo }}
+              {{
+                choosedPlan!.titolo == 'FREE PLAN'
+                  ? '💸'
+                  : choosedPlan!.titolo == 'MEDIUM PLAN'
+                    ? '🌊'
+                    : choosedPlan!.titolo == 'GOLDEN PLAN'
+                      ? '🪙'
+                      : '🔥'
+              }}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ choosedPlan!.prezzo | currency: 'EUR' }}</h5>
+              <p class="card-text">
+                {{ choosedPlan!.description }}
+              </p>
+            </div>
+          </div>
+          <div class="my-4 w-75 m-auto fw-bold">Choosed days : {{ chosedDays }}</div>
+        </div>
+        <div [ngClass]="isDark ? 'dark-card' : 'light-card'">
+          <div class="border rounded w-75 m-auto p-2 row my-5 card-body shadow">
+            <div class="col-12">
+              <p class="h5"><i class="pi pi-lock"></i> Your payment is secure</p>
+              <form [formGroup]="paymentForm" class="py-2 row">
+                <div class="col-12">
+                  <label for="cardNumber" class="py-2">Card number</label>
+                  <input
+                    type="tel"
+                    formControlName="cardNumber"
+                    class="form-control"
+                    placeholder="0000 0000 0000 0000"
+                    maxlength="19"
+                    (input)="adeguateCardNumberValue($event)"
+                  />
+                  <p class="text-danger pt-1">
+                    @if (
+                      paymentForm.controls['cardNumber'].hasError('required') &&
+                      paymentForm.controls['cardNumber'].touched
+                    ) {
+                      Il campo è richiesto.
+                    } @else if (
+                      paymentForm.controls['cardNumber'].hasError('pattern') &&
+                      paymentForm.controls['cardNumber'].dirty
+                    ) {
+                      Inserire un formato numerico tipo 1111 1111 1111 1111
+                    } @else if (
+                      paymentForm.controls['cardNumber'].hasError('minlength') &&
+                      paymentForm.controls['cardNumber'].dirty
+                    ) {
+                      Lunghezza minima 16 caratteri
+                    } @else if (
+                      paymentForm.controls['cardNumber'].hasError('maxlength') &&
+                      paymentForm.controls['cardNumber'].dirty
+                    ) {
+                      Lunghezza massima 16 caratteri
+                    } @else if (paymentForm.controls['cardNumber'].dirty) {
+                      <p class="text-success">Campo corretto</p>
+                    }
+                  </p>
+                </div>
+                <div class="col-md-8">
+                  <label for="expirationDate" class="py-2">Expiration date</label>
+                  <p class="form-control">
+                    <input
+                      type="number"
+                      class="border-0"
+                      placeholder="MM / "
+                      style="width: 45px"
+                      formControlName="expirationMonth"
+                      min="1"
+                      max="12"
+                      (input)="limitExpirationMonth()"
+                    />
+                    {{ paymentForm.controls['expirationMonth'].value ? '/' : '' }}
+                    <input
+                      type="number"
+                      min="{{ currentYear }}"
+                      placeholder="YY"
+                      class="border-0"
+                      formControlName="expirationYear"
+                      (input)="limitExpirationYear()"
+                    />
+                  </p>
+                  <p class="text-danger pt-1">
+                    @if (
+                      (paymentForm.controls['expirationMonth'].hasError('required') &&
+                        paymentForm.controls['expirationMonth'].touched) ||
+                      (paymentForm.controls['expirationYear'].hasError('required') &&
+                        paymentForm.controls['expirationYear'].touched)
+                    ) {
+                      Il campo è richiesto.
+                    } @else if (
+                      paymentForm.controls['expirationMonth'].hasError('min') &&
+                      paymentForm.controls['expirationMonth'].dirty
+                    ) {
+                      Mese minimo : 01
+                    } @else if (
+                      paymentForm.controls['expirationYear'].hasError('min') &&
+                      paymentForm.controls['expirationYear'].dirty
+                    ) {
+                      Anno minimo : {{ currentYear }}
+                    } @else if (
+                      paymentForm.controls['expirationMonth'].hasError('max') &&
+                      paymentForm.controls['expirationMonth'].dirty
+                    ) {
+                      Mese massimo : 12
+                    } @else if (
+                      (paymentForm.controls['expirationMonth'].hasError('maxlength') &&
+                        paymentForm.controls['expirationMonth'].dirty) ||
+                      (paymentForm.controls['expirationYear'].hasError('maxlength') &&
+                        paymentForm.controls['expirationYear'].dirty)
+                    ) {
+                      Massimo 2 valori numerici sia per mese che per anno
+                    } @else if (
+                      paymentForm.controls['expirationMonth'].valid &&
+                      paymentForm.controls['expirationYear'].valid
+                    ) {
+                      <p class="text-success">Campo corretto</p>
+                    }
+                  </p>
+                </div>
+                <div class="col-md-4">
+                  <label for="securityCode" class="py-2">Security code (CVV)</label>
+                  <input
+                    type="password"
+                    formControlName="securityCode"
+                    placeholder="XXX"
+                    class="form-control"
+                    maxlength="3"
+                  />
+                  <p class="text-danger pt-1">
+                    @if (
+                      paymentForm.controls['securityCode'].hasError('required') &&
+                      paymentForm.controls['securityCode'].touched
+                    ) {
+                      Il campo è richiesto.
+                    } @else if (
+                      paymentForm.controls['securityCode'].hasError('min') &&
+                      paymentForm.controls['securityCode'].dirty
+                    ) {
+                      Lunghezza minima 3 cifre
+                    } @else if (
+                      paymentForm.controls['securityCode'].hasError('max') &&
+                      paymentForm.controls['securityCode'].dirty
+                    ) {
+                      Inserisci massimo 3 cifre
+                    } @else if (
+                      paymentForm.controls['securityCode'].hasError('pattern') &&
+                      paymentForm.controls['securityCode'].dirty
+                    ) {
+                      Inserisci solo numeri
+                    } @else if (paymentForm.controls['securityCode'].valid) {
+                      <p class="text-success">Campo corretto</p>
+                    }
+                  </p>
+                </div>
+                <div class="col-md-12">
+                  <label for="cardHolder" class="py-2">Card holder name</label>
+                  <input
+                    type="string"
+                    formControlName="cardHolder"
+                    placeholder="Mario Rossi"
+                    class="form-control"
+                  />
+                  <p class="text-danger pt-1">
+                    @if (
+                      paymentForm.controls['cardHolder'].hasError('required') &&
+                      paymentForm.controls['cardHolder'].touched
+                    ) {
+                      Il campo è richiesto.
+                    } @else if (
+                      paymentForm.controls['cardHolder'].hasError('pattern') &&
+                      paymentForm.controls['cardHolder'].touched
+                    ) {
+                      Inserisci nome e cognome separati da uno spazio.
+                    } @else if (paymentForm.controls['cardHolder'].valid) {
+                      <p class="text-success">Campo corretto</p>
+                    }
+                  </p>
+                </div>
+                <div class="col-12 text-left py-5">
+                  <button
+                    class="btn btn-danger"
+                    pTooltip="Add"
+                    [disabled]="paymentForm.invalid"
+                    (click)="pay()"
+                  >
+                    <i class="pi pi-plus"></i> Add payment method
+                  </button>
+                </div>
+                <div class="col-12">
+                  *** If you chose a free plan, we never take money from your payment method at any
+                  time. If you chose a non-free plan we process the transaction after the
+                  subscription, and the renewal is not automatic.
+                </div>
+                @if (paymentIsLoading) {
+                  <div class="spinner-border m-auto my-5" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                  </div>
+                } @else {
+                  <div class="col-12 pt-4">
+                    @if (paymentAccepted) {
+                      <p class="text-right text-success fw-bold">
+                        ✅ Payment method accepted
+                        <span class="mx-5">
+                          <button
+                            class="btn btn-secondary"
+                            (click)="
+                              paymentMethod = null;
+                              paymentAccepted = false;
+                              paymentForm.reset();
+                              paymentSubmitted = false
+                            "
+                          >
+                            Remove method
+                          </button></span
+                        >
+                      </p>
+                    } @else if (!paymentAccepted && paymentSubmitted) {
+                      <p class="text-right text-danger fw-bold">❌ Payment method refused</p>
+                    }
+                  </div>
+                }
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     }
@@ -948,34 +1053,36 @@
       </div>
     </div>
   } @else if (section == 'access-code' && !showSpinner) {
-    <p class="h2 w-75 m-auto">
+    <p class="h2 w-75 m-auto py-5 text-center my-5">
       {{ registredCompany?.nomeAzienda }}, inserisci il codice che ti abbiamo mandato per mail!
     </p>
-    <div class="card flex justify-center border-0">
-      <p-inputotp [(ngModel)]="value" size="large" class="m-auto" [length]="6" />
+    <div class="flex justify-center border-0 my-5">
+      <p-inputotp [(ngModel)]="value" size="large" class="m-auto d-flex justify-content-center" [length]="6" />
     </div>
     @if (value.length == 6) {
       <div class="py-4 text-center m-auto">
-        <button class="btn" (click)="verifyCode(value)">Verifica codice</button>
+        <button class="btn" [ngClass]="isDark?'dark-btn-signup':'light-btn-signup'" (click)="verifyCode(value)">Verifica codice</button>
       </div>
     }
   }
 
-  <div class="w-75 m-auto text-center py-4">
+  <div class="w-75 m-auto text-center py-4 d-flex flex-column gap-1 mt-4">
     @if (section != 'access-code') {
       @if (step > 1) {
         <button
-          class="btn btn-light m-1"
+          class="btn btn-light w-50 m-auto p-2 fs-5"
           (click)="step -= 1"
           pTooltip="Back"
           tooltipPosition="left"
         >
           Indietro
         </button>
+        <br />
       }
       @if (step == 1) {
         <button
-          class="btn btn-primary m-1"
+          class="btn m-1 w-50 m-auto p-2 fs-5"
+          [ngClass]="isDark ? 'dark-btn-signup' : 'light-btn-signup'"
           (click)="step += 1"
           [disabled]="signupForm.invalid || passwordMismatch()"
           pTooltip="Forward"
@@ -984,8 +1091,9 @@
         </button>
       } @else if (step == 2) {
         <button
-          class="btn btn-primary m-1"
+          class="btn w-50 m-auto m-1 p-2 fs-5"
           (click)="step += 1"
+          [ngClass]="isDark ? 'dark-btn-signup' : 'light-btn-signup'"
           [disabled]="!choosedPlan || (!chosedDays && choosedPlan.id != 1)"
           pTooltip="Forward"
         >
@@ -994,7 +1102,7 @@
       }
       @if (step == 3) {
         <button
-          class="btn btn-primary m-1"
+          class="btn w-50 m-auto m-1 p-2 fs-5"
           (click)="signup()"
           [disabled]="
             signupForm.invalid ||
@@ -1003,6 +1111,7 @@
             (!chosedDays && choosedPlan.id != 1) ||
             !paymentMethod
           "
+          [ngClass]="isDark ? 'dark-btn-signup' : 'light-btn-signup'"
           pTooltip="Register"
         >
           Signup
@@ -1013,7 +1122,12 @@
     <p>or</p>
   </div>
   <div class="w-75 m-auto py-4 text-center">
-    <button class="btn btn-outline-warning" (click)="goToLogin()" pTooltip="Go to signin">
+    <button
+      class="btn w-50 m-auto p-2 fs-5"
+      [ngClass]="isDark ? 'dark-btn-login' : 'light-btn-login'"
+      (click)="goToLogin()"
+      pTooltip="Go to signin"
+    >
       Login
     </button>
   </div>

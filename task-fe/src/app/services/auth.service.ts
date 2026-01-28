@@ -35,7 +35,7 @@ export class AuthService {
   private refreshtoken: string | null = null;
   private http: HttpClient = inject(HttpClient);
   private authState$ = new BehaviorSubject<'checking' | 'authenticated' | 'unauthenticated'>(
-    'checking'
+    'checking',
   );
   protected router: Router = inject(Router);
   constructor() {
@@ -156,7 +156,7 @@ export class AuthService {
         '&email=' +
         email +
         '&type=' +
-        type.toUpperCase()
+        type.toUpperCase(),
     );
   }
   public login(body: UserLogin, type: string): Observable<boolean> {
@@ -198,5 +198,8 @@ export class AuthService {
   }
   public verifyRefreshToken(token: string): Observable<loginSuccess> {
     return this.http.get<loginSuccess>(API_URL.auth + '/auth/verifyRefreshToken/' + token);
+  }
+  public setAuthState(value: 'checking' | 'authenticated' | 'unauthenticated') {
+    this.authState$.next(value);
   }
 }

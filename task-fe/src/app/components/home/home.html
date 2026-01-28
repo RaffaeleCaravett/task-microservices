@@ -1,24 +1,24 @@
 <div class="row text-center py-5 p-5">
   <div class="col-12 text-center pt-5">
-    <h1 class="title text-uppercase fw-bold">Take control of your things</h1>
+    <h1 class="title text-uppercase fw-bold scale-animation">Take control of your things</h1>
   </div>
-  <div class="col-12 p-0">
+  <div class="col-12 p-0 scale-animation">
     <h1 class="title-small m-auto w-50">Don't let other people do it for you, in their way.</h1>
   </div>
-  <div class="col-md-12 py-5 d-flex justify-content-center">
+  <div class="col-md-12 py-5 d-flex justify-content-center scale-animation">
     <div class="d-flex gap-4 justify-content-center align-items-stretch p-3">
-      <form [formGroup]="homeForm">
+      <form [formGroup]="homeForm" (ngSubmit)="checkPermission()">
         <div class="border rounded p-1 bg-white d-flex gap-1">
           <input
             type="email"
             formControlName="email"
             class="form-control border-0 fs-4"
-            placeholder="taskMaster@email.com"
+            placeholder="appunto@email.com"
           /><button
             class="btn btn-lg fs-4 overflow-hidden px-4"
             pTooltip="Fill the email field"
             tooltipPosition="left"
-            (click)="checkPermission()"
+            type="submit"
             [ngClass]="isDark ? 'dark-btn-signup' : 'light-btn-signup'"
           >
             Signup
@@ -37,7 +37,7 @@
   <div class="p-5"></div>
   <div class="row">
     @for (card of homeCards; track $index) {
-      <div class="col-lg-3 col-md-6 p-3">
+      <div class="col-lg-3 col-md-6 p-3 scale-card-animation-{{$index}}">
         <div
           class="border rounded h-100 p-3 shadow-sm border-black overflow-auto"
           [ngClass]="isDark ? 'dark-home-card' : 'light-home-card'"

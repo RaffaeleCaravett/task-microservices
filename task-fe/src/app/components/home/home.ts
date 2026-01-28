@@ -15,7 +15,7 @@ import { ModeService } from '../../services/mode.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { Tooltip } from "primeng/tooltip";
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-home',
@@ -141,7 +141,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   checkPermission() {
     if (this.homeForm.valid) {
-      this.router.navigate(['signup', this.homeForm.controls['email'].value]);
+      this.router.navigateByUrl(`signup/${this.homeForm.controls['email'].value}`);
     }
   }
 

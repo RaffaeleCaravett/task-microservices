@@ -43,6 +43,7 @@ export interface CompanySignup {
   metodoPagamentoDTO: metodoPagamento;
   email: string;
   password: string;
+  isDifferentWorkStation: boolean;
 }
 export interface CompanyDTOFromSignup {
   id: number;
