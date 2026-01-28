@@ -89,19 +89,34 @@
                       class="form-control border-bottom-0"
                       (click)="showManagers.set(true)"
                     />
-                    @if (!showManagers()) {
+                    <div class="d-flex gap-2">
+                      @if(addProject.controls['managerId'].value.length > 0){
+                        <i class="pi pi-times" (click)="addProject.controls['managerId'].setValue('')"></i>
+                      }
+                      @if (!showManagers()) {
                       <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
                     } @else {
                       <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
                     }
+                    </div>
+                    
                   </div>
                   @if (showManagers()) {
-                    <div class="d-flex align-items-center">
-                      @for (item of company?.users; track $index) {
-                        <p (click)="chooseManager(item)">{{ item.nome + ' ' + item.cognome }}</p>
-                        <i class="pi pi-check text-success"></i>
-                        <i class="pi pi-delete text-danger"></i>
-                      }
+                    <div class="position-relative bg-white">
+                      <div
+                        class="position-absolute overflow-auto top-0 bg-white border w-100 p-1 rounded shadow"
+                        [style.maxHeight]="'500px'"
+                      >
+                        @for (item of filteredUsers; track $index) {
+                          <div (click)="chooseManager(item)">
+                            {{ item.nome + ' ' + item.cognome }}
+                          </div>
+                        }@empty {
+                          <div >
+                            No managers ...
+                          </div>
+                        }
+                      </div>
                     </div>
                   }
                   @if (

@@ -92,7 +92,7 @@ export class ProfileComponent implements OnInit {
   protected addMode: WritableSignal<boolean> = signal(false);
   protected addProject: FormGroup = new FormGroup({});
   protected addProjectFormSubmitted: boolean = false;
-  protected selectedManager!: User;
+  protected selectedManager: User | null = null;
   showManagers: WritableSignal<boolean> = signal(false);
   protected filteredUsers: User[] = [];
   protected types: projectType[] = [];
@@ -117,12 +117,16 @@ export class ProfileComponent implements OnInit {
       typeId: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
     });
+    this.addProject.valueChanges.pipe(debounceTime(300)).subscribe((data) => {
+      this.filterManagers(data.managerId);
+    });
     this.loadDatas();
   }
   chooseManager(item: User) {
-    this.addProject.controls['managerId'].setValue(item.id);
+    this.addProject.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
     this.addProject.updateValueAndValidity();
     this.selectedManager = item;
+    this.showManagers.set(false);
   }
 
   search() {
@@ -135,6 +139,19 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  filterManagers(value: string | null | undefined) {
+    if (value) {
+      let filtered = this.company?.users.filter(
+        (u: User) =>
+          u.nome.toLowerCase().includes(value.toLowerCase()) ||
+          u.cognome.toLowerCase().includes(value.toLowerCase()),
+      );
+      this.filteredUsers = filtered || [];
+    } else {
+      this.filteredUsers = this.company?.users || [];
+    }
+    this.cdr.markForCheck();
+  }
   buildFilters(projectName: string | null): CompanyProjectsFilters {
     return {
       page: this.page,
