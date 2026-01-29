@@ -4,7 +4,7 @@
 >
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand" routerLink="dashboard/landing">
+    <a class="navbar-brand" routerLink="{{authService.getIsLoggedIn()?'dashboard/landing':''}}">
       <img
         src="/assets/logo/logo.png"
         width="80"
@@ -15,7 +15,7 @@
     </a>
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item">
-        <a class="nav-link fw-semibold" routerLink="dashboard/landing"
+        <a class="nav-link fw-semibold" routerLink="{{authService.getIsLoggedIn()?'dashboard/landing':''}}"
           ><button class="btn fw-bold" [ngClass]="isDark ? ['text-black'] : ''">
             <h2>TaskMaster</h2>
           </button></a
