@@ -96,6 +96,7 @@ export class ProfileComponent implements OnInit {
   showManagers: WritableSignal<boolean> = signal(false);
   protected filteredUsers: User[] = [];
   protected types: projectType[] = [];
+  protected states: string[] = [];
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
@@ -154,6 +155,7 @@ export class ProfileComponent implements OnInit {
         this.types = data;
       },
     });
+    this.states = ['PENDING', 'STARTED', 'STOPPED', 'COMPLETED'];
   }
   constructor() {
     effect(() => {
