@@ -110,8 +110,8 @@ export class ProfileComponent implements OnInit {
 
     this.searchProjectForm.valueChanges.pipe(debounceTime(300)).subscribe((data) => {});
     this.addProject = new FormGroup({
-      title: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
+      title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      description: new FormControl('', [Validators.required, Validators.maxLength(600)]),
       managerId: new FormControl('', Validators.required),
       typeId: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
