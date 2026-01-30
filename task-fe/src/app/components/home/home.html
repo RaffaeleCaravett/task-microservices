@@ -8,9 +8,9 @@
   <div class="col-12 p-0">
     <h1 class="title-small m-auto w-50">Don't let other people do it for you, in their way.</h1>
   </div>
-  <div class="col-md-12 py-5">
+  <div class="col-md-12 py-5 d-flex justify-content-center position-relative">
     <div class="d-flex gap-4 justify-content-center align-items-stretch p-3">
-      <form [formGroup]="homeForm">
+      <form [formGroup]="homeForm" >
         <div class="border rounded p-1 bg-white d-flex gap-1">
           <input type="email" formControlName="email" class="form-control border-0 fs-4" placeholder="type your email"/><button
             class="btn btn-lg fs-4"
@@ -21,7 +21,7 @@
           </button>
         </div>
       </form>
-      <button class="btn btn-lg px-5 py-2 fs-4" [ngClass]="isDark ? ['dark-btn-login'] : 'light-btn-login'">
+      <button class="btn btn-lg px-5 py-2 fs-4" [ngClass]="isDark ? ['dark-btn-login'] : 'light-btn-login'" routerLink="/login">
         Login
       </button>
     </div>

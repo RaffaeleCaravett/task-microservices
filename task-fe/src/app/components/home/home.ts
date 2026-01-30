@@ -1,12 +1,12 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectorRef, Component, effect, HostListener, inject, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, RouterLink } from '@angular/router';
 import { ModeService } from '../../services/mode.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
-  imports: [NgClass, ReactiveFormsModule],
+  imports: [NgClass, ReactiveFormsModule, RouterLink],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

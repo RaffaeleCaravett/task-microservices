@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, effect, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -28,6 +28,7 @@ import { CurrencyPipe, NgClass } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { InputOtp } from 'primeng/inputotp';
 import { FormsModule } from '@angular/forms';
+import { ModeService } from '../../services/mode.service';
 @Component({
   selector: 'app-signup',
   imports: [ReactiveFormsModule, TooltipModule, CurrencyPipe, NgClass, FormsModule, InputOtp],
@@ -67,6 +68,8 @@ export class SignupComponent implements OnInit {
   protected registredCompany: CompanyDTOFromSignup | null = null;
   protected paymentSubmitted: boolean = false;
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  protected modeService: ModeService = inject(ModeService);
+  protected isDark: boolean = false;
   ngOnInit(): void {
     this.currentYear = Number(new Date().getFullYear().toString().substring(2, 4));
     this.signupForm = this.formBuilder.group({
@@ -76,16 +79,16 @@ export class SignupComponent implements OnInit {
       indirizzo: this.formBuilder.group({
         nazione: new FormControl(
           { value: '', disabled: this.nazioni.length == 0 },
-          Validators.required
+          Validators.required,
         ),
         citta: new FormControl(
           { value: '', disabled: this.citta.length == 0 },
-          Validators.required
+          Validators.required,
         ),
         cap: new FormControl({ value: '', disabled: this.cap.length == 0 }, Validators.required),
         regione: new FormControl(
           { value: '', disabled: this.regioni.length == 0 },
-          Validators.required
+          Validators.required,
         ),
         via: new FormControl('', Validators.required),
       }),
@@ -410,7 +413,7 @@ export class SignupComponent implements OnInit {
           this.toastr.error("We can't add this payment method: expiration too near.");
         } else {
           this.toastr.success(
-            "We've succesfuly checked your card, and added as your payment method."
+            "We've succesfuly checked your card, and added as your payment method.",
           );
           this.paymentAccepted = true;
           this.paymentMethod = {
@@ -437,15 +440,15 @@ export class SignupComponent implements OnInit {
     ) {
       if (value.length == 4) {
         this.paymentForm.controls['cardNumber'].setValue(
-          this.paymentForm.controls['cardNumber'].value + ' '
+          this.paymentForm.controls['cardNumber'].value + ' ',
         );
       } else if (value.length == 9) {
         this.paymentForm.controls['cardNumber'].setValue(
-          this.paymentForm.controls['cardNumber'].value + ' '
+          this.paymentForm.controls['cardNumber'].value + ' ',
         );
       } else if (value.length == 14) {
         this.paymentForm.controls['cardNumber'].setValue(
-          this.paymentForm.controls['cardNumber'].value + ' '
+          this.paymentForm.controls['cardNumber'].value + ' ',
         );
       }
     }
@@ -458,7 +461,7 @@ export class SignupComponent implements OnInit {
       String(this.paymentForm.controls['expirationMonth'].value).length > 2
     ) {
       this.paymentForm.controls['expirationMonth'].setValue(
-        String(this.paymentForm.controls['expirationMonth'].value).substring(0, 2)
+        String(this.paymentForm.controls['expirationMonth'].value).substring(0, 2),
       );
     }
     this.paymentForm.controls['expirationMonth'].updateValueAndValidity();
@@ -469,9 +472,15 @@ export class SignupComponent implements OnInit {
       String(this.paymentForm.controls['expirationYear'].value).length > 2
     ) {
       this.paymentForm.controls['expirationYear'].setValue(
-        String(this.paymentForm.controls['expirationYear'].value).substring(0, 2)
+        String(this.paymentForm.controls['expirationYear'].value).substring(0, 2),
       );
     }
     this.paymentForm.controls['expirationYear'].updateValueAndValidity();
+  }
+
+  constructor() {
+    effect(() => {
+      this.isDark = this.modeService.isDark();
+    });
   }
 }
