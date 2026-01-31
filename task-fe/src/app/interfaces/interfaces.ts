@@ -142,6 +142,10 @@ export interface project {
   name: string;
   description: string;
 }
+export interface projectType {
+  id: number;
+  tipoProgetto: string;
+}
 export interface task {
   id: number;
   creator: User;

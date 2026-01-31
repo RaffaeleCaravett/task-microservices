@@ -7,6 +7,8 @@ import com.example.task_general.exceptions.EntityNotPresentException;
 import com.example.task_general.exceptions.UnauthorizedException;
 import com.example.task_general.project.Project;
 import com.example.task_general.project.ProjectService;
+import com.example.task_general.projectType.ProjectType;
+import com.example.task_general.projectType.ProjectTypeService;
 import com.example.task_general.user.Role;
 import com.example.task_general.user.User;
 import com.example.task_general.user.UserService;
@@ -26,6 +28,7 @@ public class CompanyService {
 
     private final CompanyRepository companyRepository;
     private final UserService userService;
+    private final ProjectTypeService projectTypeService;
 
     public Company findById(Long id) {
         return companyRepository.findById(id).orElseThrow(() -> new EntityNotPresentException("Company " + id + " non presente in db"));
@@ -54,6 +57,10 @@ public class CompanyService {
         } else {
             throw new UnauthorizedException("Non puoi sospendere lo user");
         }
+    }
+
+    public List<ProjectType> findAllTypes() {
+        return this.projectTypeService.findAll();
     }
 }
 

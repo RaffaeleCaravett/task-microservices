@@ -16,6 +16,7 @@ import {
   CompanyProjectsFilters,
   Page,
   project,
+  projectType,
   task,
   User,
 } from '../../../interfaces/interfaces';
@@ -94,6 +95,7 @@ export class ProfileComponent implements OnInit {
   protected selectedManager!: User;
   showManagers: WritableSignal<boolean> = signal(false);
   protected filteredUsers: User[] = [];
+  protected types: projectType[] = [];
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
@@ -114,6 +116,7 @@ export class ProfileComponent implements OnInit {
       typeId: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
     });
+    this.loadDatas();
   }
   chooseManager(item: User) {
     this.addProject.controls['managerId'].setValue(item.id);
@@ -143,6 +146,14 @@ export class ProfileComponent implements OnInit {
 
   switchToAddMode() {
     this.addMode.set(true);
+  }
+
+  loadDatas() {
+    this.profileService.getProjectTypes().subscribe({
+      next: (data: projectType[]) => {
+        this.types = data;
+      },
+    });
   }
   constructor() {
     effect(() => {

@@ -6,6 +6,7 @@ import com.example.task_general.dtos.entitiesDTO.FirstUserLoginDTO;
 import com.example.task_general.dtos.entitiesDTO.UserLoginDTO;
 import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.project.Project;
+import com.example.task_general.projectType.ProjectType;
 import com.example.task_general.user.User;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -50,5 +51,10 @@ public class CompanyController {
     @DeleteMapping("/userSuspend/{id}")
     public List<User> suspendUser(@PathVariable Long id, @AuthenticationPrincipal Company company) {
         return companyService.suspendUser(id, company);
+    }
+
+    @GetMapping("/types")
+    public List<ProjectType> findAll(){
+        return this.companyService.findAllTypes();
     }
 }
