@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { Company, Page, User } from '../../interfaces/interfaces';
@@ -8,15 +8,18 @@ import { CompanyService } from '../../services/company.service';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { take } from 'rxjs';
+import { ModeService } from '../../services/mode.service';
+import { NgClass } from '@angular/common';
+import { Tooltip } from "primeng/tooltip";
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLinkActive, RouterLink, ToastModule],
+  imports: [RouterLinkActive, RouterLink, ToastModule, NgClass, Tooltip],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
   providers: [MessageService],
 })
-export class NavComponent {
+export class NavComponent implements OnInit {
   protected authService: AuthService = inject(AuthService);
   protected companyService: CompanyService = inject(CompanyService);
   protected router: Router = inject(Router);
@@ -25,6 +28,10 @@ export class NavComponent {
   protected company: Company | null = null;
   protected users!: Page<User>;
   protected messageService: MessageService = inject(MessageService);
+  isDark: boolean = false;
+  protected modeService: ModeService = inject(ModeService);
+  ngOnInit(): void {
+  }
   goToRoute(route: string) {
     this.router.navigate([`${route}`]);
   }
@@ -71,5 +78,13 @@ export class NavComponent {
         life: 3000,
       });
     }
+  }
+  protected toggleMode(){
+    this.modeService.toggleMode();
+  }
+  constructor() {
+    effect(() => {
+      this.isDark = this.modeService.isDark();
+    });
   }
 }
