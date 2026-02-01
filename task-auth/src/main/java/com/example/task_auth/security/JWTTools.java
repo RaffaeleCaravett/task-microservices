@@ -34,12 +34,12 @@ public class JWTTools {
         accessMap.put("type", TokenType.ACCESS);
         accessMap.put("userType", type);
         Map<String, Object> refreshMap = new HashMap<>();
-        accessMap.put("userType", type);
+        refreshMap.put("userType", type);
         refreshMap.put("type", TokenType.REFRESH);
 
         String accessToken = Jwts.builder().setSubject(String.valueOf(id))
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 2))
                 .addClaims(accessMap)
                 .setIssuer("task-auth")
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes())).compact();

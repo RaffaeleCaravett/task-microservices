@@ -2,6 +2,8 @@ package com.example.task_general.user;
 
 import com.example.task_general.codiceAccesso.CodiceAccesso;
 import com.example.task_general.company.Company;
+import com.example.task_general.project.Project;
+import com.example.task_general.task.Task;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,11 +31,24 @@ public class User extends UserInfos implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private Role role;
-    @ManyToMany(fetch = FetchType.LAZY,mappedBy = "users")
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
     @JsonIgnore
     private List<Company> companies;
-    @OneToOne(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private CodiceAccesso codiceAccesso;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "creator")
+    @JsonIgnore
+    private List<Task> tasksAsCreator;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "developers")
+    @JsonIgnore
+    private List<Task> tasks;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
+    @JsonIgnore
+    private List<Project> projects;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "manager")
+    @JsonIgnore
+    private List<Project> projectsAsManager;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));

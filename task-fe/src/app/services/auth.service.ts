@@ -77,7 +77,8 @@ export class AuthService {
           next: (data: loginSuccess) => {
             if (data) {
               this.authState$.next('authenticated');
-              this.setAccessToken(token);
+              this.setAccessToken(data?.token?.accessToken);
+              localStorage.setItem('accessToken', data?.token?.accessToken);
               this.setRefreshToken(refresh);
               if (data.company) {
                 this.setCompany(data.company);

@@ -2,37 +2,40 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { API_URL } from '../core/environment';
 import { map, Observable } from 'rxjs';
-import { accessCode, Page, User } from '../interfaces/interfaces';
+import { Page, User } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CompanyService {
+export class ProfileService {
   private http: HttpClient = inject(HttpClient);
 
-  getUsers(companyId: number, skipFilters?: boolean): Observable<Page<User>> {
+  findUsersByCompanyAndFilters(
+    companyId: number,
+    filters: { email?: string; fullname?: string; status?: string },
+    page: number,
+    size: number
+  ): Observable<Page<User>> {
     return this.http
-      .get<Page<User>>(API_URL.general + '/company/users/' + companyId)
-      .pipe(map((u) => this.filterUsersPage(u, skipFilters)))
+      .post<Page<User>>(
+        API_URL.general +
+          '/users/byCompanyAndFilters/' +
+          companyId +
+          '?page=' +
+          page +
+          '&size=' +
+          size,
+        filters
+      )
       .pipe(map((u) => this.addColor(u)));
   }
 
-  filterUsersPage(usersPage: Page<User>, skipFilters?: boolean) {
-    if (skipFilters) return usersPage;
-    var content = usersPage?.content;
-    content = content?.filter((user) => user.isActive && user.isConfirmed);
-    usersPage.content = content;
-    return usersPage;
-  }
   addColor(u: Page<User>): Page<User> {
     u.content.forEach((us: User) => {
       var color = this.getColor();
       us.color = color;
     });
     return u;
-  }
-  addUser(body: {}): Observable<accessCode> {
-    return this.http.post<accessCode>(API_URL.general + '/company/user', body);
   }
   getColor(): string {
     var backgrounds: string[] = [

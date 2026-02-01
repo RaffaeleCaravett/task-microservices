@@ -1,12 +1,63 @@
 .title {
-  letter-spacing: 15px;
+  font-size: clamp(3rem, 10vw, 10vw,);
 }
 .h5 {
   line-height: 1.5;
 }
 .position-absolute {
   top: 20%;
-  opacity: .2;
+  opacity: 0.2;
   rotate: -45deg;
   left: 10%;
+}
+.dark-home {
+  background: linear-gradient(to right top, #212529 40%, #b11226 60%,#212529 100%);
+  border-color: #2b2a2a !important;
+  button {
+    font-weight: 600 !important;
+  }
+}
+.light-home {
+  background: linear-gradient(to right top, beige 40%, rgb(76, 180, 76) 60%,beige 100%);
+  color: brown;
+  border-color: brown !important;
+  button {
+    font-weight: 600 !important;
+    color: brown !important;
+  }
+}
+.dark-btn-login {
+  transition: 1s;
+  background-color: black;
+  &:hover {
+    transition: 1s;
+    background-color: #212529 !important;
+    scale: 1.1;
+  }
+}
+.dark-btn-signup {
+  transition: 1s;
+  -webkit-text-fill-color: #dc3545 !important;
+  &:hover {
+    transition: 1s;
+    background-color: #dc3545 !important;
+    -webkit-text-fill-color: #212529 !important;
+  }
+}
+.light-btn-login {
+  transition: 1s;
+  &:hover {
+    transition: 1s;
+    background-color: brown !important;
+    -webkit-text-fill-color: beige !important;
+  }
+}
+.light-btn-signup {
+  transition: 1s;
+  -webkit-text-fill-color: rgb(76, 180, 76) !important;
+  &:hover {
+    transition: 1s;
+    background-color: rgb(76, 180, 76) !important;
+    -webkit-text-fill-color: brown !important;
+  }
 }

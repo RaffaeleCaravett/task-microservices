@@ -17,12 +17,12 @@ public class AuthController {
     private final AuthService authService;
 
 
-    @PostMapping("/login")
-    public Boolean login(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult) {
+    @PostMapping("/login/{accessCode}")
+    public SignupSuccess login(@RequestBody @Valid UserLoginDTO userLoginDTO, BindingResult bindingResult, @PathVariable String accessCode) {
         if (bindingResult.hasErrors()) {
             throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
-        return authService.login(userLoginDTO);
+        return authService.login(userLoginDTO, accessCode);
     }
 
     @PostMapping("/company/login")

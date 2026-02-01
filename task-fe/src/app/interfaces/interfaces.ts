@@ -108,6 +108,8 @@ export interface Company {
   sedeOperativa?: indirizzo;
   email: string;
   immagine: immagine[];
+  projects: project[];
+  users: User[];
 }
 export interface immagine {
   name: string;
@@ -127,25 +129,26 @@ export interface User {
   email: string;
   companies: Company[];
   immagine: immagine[];
+  color?: string;
 }
-export interface project{
-  id:number,
-  createdAt:string,
-  state:ProjectState,
-  user:User[],
-  manager:User,
-  task:task,
-  name:string,
-  description:string
+export interface project {
+  id: number;
+  createdAt: string;
+  state: ProjectState;
+  user: User[];
+  manager: User;
+  task: task[];
+  name: string;
+  description: string;
 }
-export interface task{
-  id:number,
-  creator:User,
-  title:string,
-  developers:User[],
-  state:TaskState,
-  createdAt:string,
-  description:string
+export interface task {
+  id: number;
+  creator: User;
+  title: string;
+  developers: User[];
+  state: TaskState;
+  createdAt: string;
+  description: string;
 }
 export interface metodoPagamento {
   cardNumber: string;
@@ -153,4 +156,38 @@ export interface metodoPagamento {
   year: number;
   secretCode: number;
   owner: string;
+}
+export interface Page<T> {
+  content: T[];
+  empty: boolean;
+  first: boolean;
+  last: boolean;
+  number: number;
+  numberOfElements: number;
+  pageable: Pageable;
+  size: number;
+  sort: Sort;
+  totalElements: number;
+  totalPages: number;
+}
+
+export interface Pageable {
+  offset: number;
+  pageNumber: number;
+  pageSize: number;
+  paged: boolean;
+  unpaged: boolean;
+  sort: Sort;
+}
+
+export interface Sort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
+}
+export interface accessCode {
+  id: number;
+  code: string;
+  creationTime: string;
+  isUsed: boolean;
 }

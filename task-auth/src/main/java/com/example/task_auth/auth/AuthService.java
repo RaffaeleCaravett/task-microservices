@@ -30,21 +30,25 @@ public class AuthService {
     private final CompanyService companyService;
     private final MGSamples mgSamples;
 
-    public Boolean login(UserLoginDTO userLoginDTO) {
+    public SignupSuccess login(UserLoginDTO userLoginDTO, String code) {
         try {
             User user = userService.findByEmail(userLoginDTO.email());
             if (bcrypt.matches(userLoginDTO.password(), user.getPassword())) {
-                var code = createUserAccessCode(user.getId());
-                mgSamples.sendSimpleMessage("", user.getEmail(), "Codice di accesso login - TaskMaster",
-                        "Hai effettuato il login, \n" +
-                                "questo è il codice di accesso : \n" +
-                                code.getCode() + "\n" +
-                                "Buon lavoro!");
-                return true;
+                if (!user.getIsConfirmed()) {
+                    var accessCode = codiceAccessoRepository.findByUser_Email(userLoginDTO.email());
+                    if (accessCode.isPresent() && accessCode.get().getCode().equals(code)) {
+                        codiceAccessoRepository.delete(accessCode.get());
+                    } else {
+                        throw new UnauthorizedException("Non hai i permessi per accedere");
+                    }
+                }
             } else {
-                throw new Exception();
+                throw new UnauthorizedException("Credenziali non valide");
             }
-        } catch (Exception e) {
+            Token token = jwtTools.createTokens(user.getId(), "USER");
+            return new SignupSuccess(token, null, user);
+        } catch (
+                Exception e) {
             throw new UnauthorizedException("Credenziali non valide");
         }
     }
@@ -117,9 +121,11 @@ public class AuthService {
     public SignupSuccess refreshRefreshToken(String token) {
         return jwtTools.verifyRefreshToken(token);
     }
+
     public SignupSuccess verifyAccessToken(String token) {
         return jwtTools.verifyAccessToken(token);
     }
+
     public CodiceAccesso createUserAccessCode(Long id) {
         CodiceAccesso codiceAccesso = new CodiceAccesso();
         codiceAccesso.setCreationTime(Instant.now());

@@ -1,24 +1,323 @@
-<div class="row p-5">
+<div class="row p-5 equal-height">
   @if(section=='Generale'){ @if(user){ }@else {
-  <div class="col-12 d-flex justify-content-start align-items-end">
-    <img
-      src="{{ getImage() }}"
-      alt="profile_image_not_found"
-      [style.width]="'100px'"
-      [style.height]="'100px'"
-      class="mx-1"
-    />
-    <p class="h1 mx-1">{{ company?.ragioneSociale }}</p>
+  <div class="col-12 p-3">
+    <div class="bg-white w-100 p-2">
+      <div class="d-flex justify-content-start align-items-end">
+        <img
+          src="{{ getImage() }}"
+          alt="profile_image_not_found"
+          [style.width]="'100px'"
+          [style.height]="'100px'"
+          class="mx-1"
+        />
+        <p class="h1 mx-1">{{ company?.ragioneSociale }}</p>
+      </div>
+      <div class="w-100">
+        <p>
+          <span class="fw-bold">Registred :</span>
+          {{ company?.createdAt | date : 'dd-MM-yyyy' }}
+          <span class="fw-bold">Utenti :</span>
+          {{ usersForCount || 0 }}
+          <span class="fw-bold">Active projects :</span>
+          {{ company?.projects?.length || 0 }}
+        </p>
+      </div>
+    </div>
   </div>
-  <div class="col-12">
-    <p>
-      <span class="fw-bold">Registred :</span>
-      {{ company?.createdAt | date : 'dd-MM-yyyy' }}
-      <span class="fw-bold">Utenti :</span>
-      {{ users.length }}
-      <span class="fw-bold">Active projects :</span>
-      {{ projects.length }}
-    </p>
+  <div class="col-md-6 p-3">
+    <div class="row m-auto p-2 bg-white">
+      <div class="col-md-12 py-1 pt-5">
+        <h2>Dati generali</h2>
+      </div>
+      <div class="col-md-6">
+        <label class="py-2 fw-bold"> Ragione sociale</label>
+        <p>{{ company?.ragioneSociale }}</p>
+      </div>
+      <div class="col-md-6">
+        <label class="py-2 fw-bold">Partita Iva</label>
+        <p>{{ company?.partitaIva }}</p>
+      </div>
+      <div class="col-md-12">
+        <label class="py-2 fw-bold"> Forma giuridica</label>
+        <p>{{ company?.formaGiuridica?.name }}</p>
+      </div>
+      <div class="col-md-12 py-1 pt-5">
+        <h2>Indirizzo</h2>
+      </div>
+      <div class="col-md-12">
+        <label class="py-2 fw-bold"> Paese di registrazione</label>
+        <p>{{ company?.indirizzo?.nazione?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Regione</label>
+        <p>{{ company?.indirizzo?.regione?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Città</label>
+        <p>{{ company?.indirizzo?.citta?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Cap</label>
+        <p>{{ company?.indirizzo?.cap?.name }}</p>
+      </div>
+      <div class="col-12">
+        <label class="py-2 fw-bold">Via</label>
+        <p>{{ company?.indirizzo?.via }}</p>
+      </div>
+      <div class="col-md-8">
+        <label class="py-2 fw-bold">Settore</label>
+        <p>{{ company?.settore?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Dimensioni</label>
+        <p>{{ company?.dimensioniAzienda?.label }}</p>
+      </div>
+      @if(company?.sedeOperativa){
+      <div class="col-md-12 pt-5 py-1">
+        <h2>Sede operativa</h2>
+      </div>
+      <div class="col-md-12">
+        <label class="py-2 fw-bold"> Paese di registrazione</label>
+        <p>{{ company?.sedeOperativa?.nazione?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Regione</label>
+        <p>{{ company?.sedeOperativa?.regione?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Città</label>
+        <p>{{ company?.sedeOperativa?.citta?.name }}</p>
+      </div>
+      <div class="col-md-4">
+        <label class="py-2 fw-bold">Cap</label>
+        <p>{{ company?.sedeOperativa?.cap?.name }}</p>
+      </div>
+      <div class="col-12">
+        <label class="py-2 fw-bold">Via</label>
+        <p>{{ company?.sedeOperativa?.via }}</p>
+      </div>
+      }
+      <div class="col-md-12">
+        <label class="py-2 fw-bold">Email</label>
+        <p>{{ company?.email }}</p>
+      </div>
+    </div>
   </div>
-  } }@else {wow}
+  <div class="col-md-6 overflow-scroll p-3">
+    <div class="p-2 bg-white" [style.height]="'100%'">
+      <div class="text-center py-1 pb-5">
+        <h2 class="py-5">Your projects</h2>
+        <form [formGroup]="searchProjectForm" class="d-flex m-auto w-75">
+          <input
+            type="text"
+            class="form-control text-end"
+            formControlName="search"
+            placeholder="search a project ..."
+          />
+          <button
+            class="btn mx-2 fs-3 pt-1"
+            [disabled]="
+              !company?.projects ||
+              company?.projects == undefined ||
+              (company?.projects && company?.projects?.length == 0)
+            "
+            (click)="search()"
+          >
+            🔎
+          </button>
+        </form>
+      </div>
+      @for (item of projectsToShow; track $index) {
+      <div class="w-75 m-1 m-auto bg-light shadow-sm p-3" [style.height]="'fit-content'">
+        <p class="text-center h2">{{ item?.name }}</p>
+        <p class="d-flex justify-content-around">
+          <span><span class="fw-bold">Manager : </span> {{ item?.manager?.email }}</span>
+          <span><span class="fw-bold">Stato : </span>{{ item?.state?.toLocaleUpperCase() }}</span>
+        </p>
+        <p class="py-2 text-start">{{ item?.description }}</p>
+        <p class="text-end">{{ item?.createdAt }}</p>
+      </div>
+      }@empty {
+      <div class="w-75 m-1 m-auto bg-light shadow-sm p-3" [style.height]="'fit-content'">
+        <p class="text-center h2">Nothing yet</p>
+        <p class="d-flex justify-content-around">
+          <span><span class="fw-bold">Manager : </span> /</span>
+          <span><span class="fw-bold">Stato : </span>/</span>
+        </p>
+        <p class="py-2 text-left">No description</p>
+        <p class="text-right">No creation date</p>
+      </div>
+      }
+    </div>
+  </div>
+  <div class="col-md-12 pt-5 p-3 overflow-auto">
+    <div class="p-2 bg-white" [style.min-width]="'1000px'">
+      <h2 class="text-center py-5">Users</h2>
+      <div class="bg-light text-center">
+        <form [formGroup]="searchUserForm">
+          <tr>
+            <th scope="col" [style.width]="'100px!important'">#</th>
+            <th scope="col" [style.width]="'33%!important'">
+              Email
+              <div class="d-flex">
+                <input
+                  type="text"
+                  id="email"
+                  name="email"
+                  class="form-control w-75 m-auto"
+                  placeholder="Type email ..."
+                  formControlName="email"
+                  (input)="check()"
+                />
+              </div>
+            </th>
+            <th scope="col" [style.width]="'33%!important'">
+              Fullname
+              <input
+                type="text"
+                id="fullname"
+                name="fullname"
+                class="form-control w-75 m-auto"
+                placeholder="Type fullname ..."
+                formControlName="fullname"
+                (input)="check()"
+              />
+            </th>
+            <th scope="col" [style.width]="'33%!important'">
+              Status
+              <select
+                name="status"
+                id="status"
+                class="form-select w-75 m-auto"
+                aria-label="Search status"
+                formControlName="status"
+                (change)="check()"
+              >
+                @for (item of status; track $index) {
+                <option value="{{ item }}">{{ item }}</option>
+                }
+              </select>
+            </th>
+          </tr>
+        </form>
+      </div>
+      <table class="table text-center">
+        <tbody>
+          @for(user of users?.content; track $index){
+          <tr>
+            <th scope="row" [style.width]="'100px!important'">{{ $index + 1 }}</th>
+            <td [style.width]="'33%!important'">{{ user.email }}</td>
+            <td [style.width]="'33%!important'">
+              <div class="d-flex justify-content-center align-items-center">
+                <span
+                  [style.width]="'40px'"
+                  [style.height]="'40px'"
+                  class="rounded-circle border shadow-sm p-1 d-flex justify-content-center align-items-center mx-3"
+                  [ngClass]="user?.color"
+                >
+                  {{ getInitials(user) }}
+                </span>
+                {{ user.nome + ' ' + user.cognome }}
+              </div>
+            </td>
+            <td [style.width]="'33%!important'">
+              <span
+                class="rounded shadow-sm p-2 text-white"
+                [ngClass]="user.isConfirmed ? 'bg-success' : 'bg-warning'"
+              >
+                {{ user.isConfirmed ? 'CONFIRMED' : 'TO CONFIRM' }}</span
+              >
+            </td>
+          </tr>
+          }@empty {
+          <tr>
+            <td class="fs-3">Nothing to show ...</td>
+          </tr>
+          }
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-around align-items-center">
+        <button
+          class="btn"
+          [disabled]="users?.pageable?.pageNumber == 0"
+          (click)="page = page - 1; check()"
+        >
+          <i class="pi pi-arrow-left"></i>
+        </button>
+        <div class="text-center">
+          <p class="fs-bold">Page {{ users?.pageable?.pageNumber }} of {{ users?.totalPages }}</p>
+          <div class="d-flex justify-content-around align-items-center">
+            <form [formGroup]="paginationForm" class="d-flex">
+              <input
+                type="number"
+                class="form-control mx-1"
+                placeholder="page ..."
+                formControlName="page"
+                (change)="page = paginationForm.controls['page'].value || 0"
+              />
+              <select
+                name=""
+                id=""
+                class="form-select mx-1"
+                formControlName="size"
+                (change)="size = paginationForm.controls['size'].value || 10"
+              >
+                <option value="" disabled selected>Size</option>
+                @for (item of sizes; track $index) {
+                <option value="{{ item }}">{{ item }}</option>
+                }
+              </select>
+            </form>
+            <button class="btn" (click)="check()">Search</button>
+          </div>
+        </div>
+        <button
+          class="btn"
+          [disabled]="users?.pageable?.pageNumber == users?.totalPages"
+          (click)="page = page + 1; check()"
+        >
+          <i class="pi pi-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+  } }@else if(section=='Monitora statistiche'){
+  <div class="row">
+    <div class="col-md-12 py-5 p-3">
+      <div class="p-2 bg-white">
+        <h2 class="text-center">General statistics</h2>
+      </div>
+    </div>
+    <div class="col-md-6 p-3">
+      <div class="p-2 bg-white">
+        <div>
+          <canvasjs-chart
+            [options]="chartUsersOptions"
+            [styles]="{ width: '100%', height: '360px' }"
+          ></canvasjs-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 p-3">
+      <div class="p-2 bg-white">
+        <div>
+          <canvasjs-chart
+            [options]="chartProjectsOptions"
+            [styles]="{ width: '100%', height: '360px' }"
+          ></canvasjs-chart>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-12 p-3">
+      <div class="p-2 bg-white">
+        <div>
+          <canvasjs-chart
+            [options]="chartTaskOptions"
+            [styles]="{ width: '100%', height: '360px' }"
+          ></canvasjs-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
 </div>
