@@ -21,7 +21,7 @@
   }
 }
 .light-home {
-  background:  beige 40%;
+  background: beige 40%;
   color: brown;
   border-color: brown !important;
   button {
@@ -76,13 +76,13 @@
 }
 
 .position-absolute {
-  left: 80%; 
+  left: 80%;
   top: -500px;
   width: 1000px;
   height: 1000px;
-  border-radius: 50%; 
-  filter: blur(90px); 
-  opacity: 0.3; 
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.3;
   pointer-events: none;
   z-index: 0;
 }

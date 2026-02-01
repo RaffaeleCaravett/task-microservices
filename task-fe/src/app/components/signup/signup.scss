@@ -20,5 +20,40 @@ input[type='number'] {
 
 ::ng-deep.p-inputtext {
   background: #fff !important;
-  color: black!important;
+  color: black !important;
+}
+.bg-dark {
+  button {
+    font-weight: 600 !important;
+    color: red !important;
+  }
+  .form-control,
+  .form-select {
+    background-color: gray;
+  }
+}
+.light-signup {
+  background: beige 40%;
+  color: brown;
+  border-color: brown !important;
+  button {
+    font-weight: 600 !important;
+    color: brown !important;
+  }
+}
+
+.section {
+  margin: 5%;
+  label {
+    margin-bottom: 15px;
+    margin-top: 15px;
+  }
+}
+
+.title {
+  font-size: clamp(3.4rem, 5vw, 5vw);
+  line-height: 1.1;
+}
+.light-bg-section {
+  background: rgb(237, 237, 180) 
 }
