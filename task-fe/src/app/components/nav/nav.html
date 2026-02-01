@@ -4,7 +4,7 @@
 >
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand" routerLink="dashboard/landing">
+    <a class="navbar-brand" routerLink="{{authService.getIsLoggedIn()?'dashboard/landing':''}}">
       <img
         src="/assets/logo/logo.png"
         width="80"
@@ -15,7 +15,7 @@
     </a>
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
       <li class="nav-item">
-        <a class="nav-link fw-semibold" routerLink="dashboard/landing"
+        <a class="nav-link fw-semibold" routerLink="{{authService.getIsLoggedIn()?'dashboard/landing':''}}"
           ><button class="btn fw-bold" [ngClass]="isDark ? ['text-black'] : ''">
             <h2>TaskMaster</h2>
           </button></a
@@ -23,19 +23,19 @@
       </li>
     </ul>
     <!-- Mobile toggle -->
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#mainNavbar"
-      aria-controls="mainNavbar"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
     @if (authService.getIsLoggedIn()) {
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#mainNavbar"
+        aria-controls="mainNavbar"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
       <div class="collapse navbar-collapse" id="mainNavbar">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
@@ -90,17 +90,15 @@
         </div>
       </div>
     } @else {
-      <div class="collapse navbar-collapse" id="mainNavbar">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center"></ul>
-        <div class="d-flex align-items-center gap-2">
-          <button class="btn" type="button" (click)="toggleMode()">
-            @if (isDark) {
-              <i class="pi pi-sun fs-3 text-danger" pTooltip="Light mode"></i>
-            } @else {
-              <i class="pi pi-moon fs-3 text-success" pTooltip="Dark mode"></i>
-            }
-          </button>
-        </div>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center"></ul>
+      <div class="d-flex align-items-center gap-2 w-100 justify-content-end">
+        <button class="btn" type="button" (click)="toggleMode()">
+          @if (isDark) {
+            <i class="pi pi-sun fs-3 text-danger" pTooltip="Light mode"></i>
+          } @else {
+            <i class="pi pi-moon fs-3 text-success" pTooltip="Dark mode"></i>
+          }
+        </button>
       </div>
     }
   </div>

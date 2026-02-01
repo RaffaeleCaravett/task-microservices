@@ -3,12 +3,19 @@ import { DashboardRoutes } from './components/dashboard/dashboard/dashboard.rout
 import { HomeRoutes } from './components/home/home.routes';
 import { AuthGuard } from './core/auth.guard';
 import { ErrorComponent } from './core/error/error';
+import { LoginComponent } from './components/login/login';
+import { SignupComponent } from './components/signup/signup';
 
 export const routes: Routes = [
   {
     path: 'home',
     loadChildren: () => Promise.resolve(HomeRoutes),
   },
+  {
+    path: 'login',
+    component: LoginComponent,
+  },
+  { path: 'signup/:email', component: SignupComponent },
   {
     path: 'dashboard',
     loadChildren: () => Promise.resolve(DashboardRoutes),

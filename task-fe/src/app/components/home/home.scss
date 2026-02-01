@@ -1,5 +1,8 @@
 .title {
-  font-size: clamp(3rem, 10vw, 10vw,);
+  font-size: clamp(3.4rem, 5vw, 5vw);
+}
+.title-small {
+  font-size: clamp(2rem, 2vw, 2vw);
 }
 .h5 {
   line-height: 1.5;
@@ -11,14 +14,14 @@
   left: 10%;
 }
 .dark-home {
-  background: linear-gradient(to right top, #212529 40%, #b11226 60%,#212529 100%);
+  background: #212529;
   border-color: #2b2a2a !important;
   button {
     font-weight: 600 !important;
   }
 }
 .light-home {
-  background: linear-gradient(to right top, beige 40%, rgb(76, 180, 76) 60%,beige 100%);
+  background:  beige 40%;
   color: brown;
   border-color: brown !important;
   button {
@@ -32,16 +35,16 @@
   &:hover {
     transition: 1s;
     background-color: #212529 !important;
-    scale: 1.1;
   }
 }
 .dark-btn-signup {
-  transition: 1s;
-  -webkit-text-fill-color: #dc3545 !important;
+  flex-grow: 1;
+  transition: 0.5s;
+  background-color: #dc3545 !important;
+  -webkit-text-fill-color: #212529 !important;
   &:hover {
-    transition: 1s;
-    background-color: #dc3545 !important;
-    -webkit-text-fill-color: #212529 !important;
+    transition: 0.5s;
+    background-color: #a71f2d !important;
   }
 }
 .light-btn-login {
@@ -53,11 +56,33 @@
   }
 }
 .light-btn-signup {
-  transition: 1s;
-  -webkit-text-fill-color: rgb(76, 180, 76) !important;
+  transition: 0.5s;
+  background-color: rgb(76, 180, 76) !important;
+  -webkit-text-fill-color: brown !important;
   &:hover {
-    transition: 1s;
-    background-color: rgb(76, 180, 76) !important;
-    -webkit-text-fill-color: brown !important;
+    transition: 0.5s;
+    background-color: rgb(26, 131, 26) !important;
   }
+}
+
+@media screen and (max-width: '586px') {
+  .title,
+  .title-small {
+    width: 100% !important;
+  }
+  .d-flex {
+    flex-direction: column !important;
+  }
+}
+
+.position-absolute {
+  left: 80%; 
+  top: -500px;
+  width: 1000px;
+  height: 1000px;
+  border-radius: 50%; 
+  filter: blur(90px); 
+  opacity: 0.3; 
+  pointer-events: none;
+  z-index: 0;
 }

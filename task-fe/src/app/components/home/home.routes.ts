@@ -7,21 +7,6 @@ import { ErrorComponent } from '../../core/error/error';
 export const HomeRoutes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
-  {
-    path: '',
     component: HomeComponent,
-    children: [
-      {
-        path: 'login',
-        component: LoginComponent,
-      },
-      {
-        path: 'signup',
-        component: SignupComponent,
-      },
-    ],
   }
 ];
