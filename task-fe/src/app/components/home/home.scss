@@ -12,22 +12,22 @@
   opacity: 0.2;
   rotate: -45deg;
   left: 10%;
-// }
-// .dark-home {
-//   background: #212529;
-//   border-color: #2b2a2a !important;
-//   button {
-//     font-weight: 600 !important;
-//   }
-// }
-// .light-home {
-//   background: beige 40%;
-//   color: brown;
-//   border-color: brown !important;
-//   button {
-//     font-weight: 600 !important;
-//     color: brown !important;
-//   }
+  // }
+  // .dark-home {
+  //   background: #212529;
+  //   border-color: #2b2a2a !important;
+  //   button {
+  //     font-weight: 600 !important;
+  //   }
+  // }
+  // .light-home {
+  //   background: beige 40%;
+  //   color: brown;
+  //   border-color: brown !important;
+  //   button {
+  //     font-weight: 600 !important;
+  //     color: brown !important;
+  //   }
 }
 .dark-btn-login {
   transition: 1s;
@@ -41,7 +41,7 @@
   flex-grow: 1;
   transition: 0.5s;
   background-color: #dc3545 !important;
-  -webkit-text-fill-color: #353739  !important;
+  -webkit-text-fill-color: #353739 !important;
   &:hover {
     transition: 0.5s;
     background-color: #a71f2d !important;
@@ -75,9 +75,36 @@
   }
 }
 
-.dark-home-card{
-  background: #474849 ;
+.dark-home-card {
+  background: #474849;
+  &:hover {
+    .fw-bold {
+      transition: 1s;
+      scale: 1.2;
+    }
+    scale: 0.98;
+  }
+  .fw-bold {
+    transition: 1s;
+  }
+  transition: 1s;
 }
-.light-home-card{
-  background: rgb(236, 236, 217) ;
+.light-home-card {
+  background: rgb(236, 236, 217);
+  &:hover {
+    .fw-bold {
+      transition: 1s;
+      scale: 1.2;
+    }
+    scale: 0.98;
+  }
+  .fw-bold {
+    transition: 1s;
+  }
+  transition: 1s;
+}
+canvas {
+  width: 100%;
+  margin: auto;
+  height: 334px;
 }

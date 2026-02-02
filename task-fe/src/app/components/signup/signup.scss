@@ -29,6 +29,8 @@ input[type='number'] {
   .form-check-input {
     font-weight: bold;
     background: none !important;
+    outline: none!important;
+    box-shadow: none!important;
   }
   .form-control,
   .form-select {
@@ -69,6 +71,8 @@ input[type='number'] {
 .light-bg-section {
   background: rgb(236, 236, 217);
 }
-.text-danger {
+.text-danger, .text-success {
   padding-top: 15px !important;
+  font-size: 18px;
+  line-height: 1.2;
 }

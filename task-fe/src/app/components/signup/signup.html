@@ -4,19 +4,22 @@
       <form [formGroup]="signupForm" class="row w-75 m-auto">
         <div class="col-12 text-center py-5">
           <p class="title fw-bold">Join us <i class="pi pi-user-plus fs-1"></i></p>
+          <p class="fs-2 fw-bold">And start planning your dreams.</p>
         </div>
         <div
           class="section row border border-secondary p-5 rounded shadow"
           [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
         >
           <div class="col-md-12 py-1 pt-5">
-            <h1 class="text-secondary">Signup datas <i class="pi pi-lock fs-3 text-black"></i></h1>
+            <h1 class="text-secondary text-uppercase">
+              Signup datas <i class="pi pi-lock fs-3 text-black"></i>
+            </h1>
           </div>
           <div class="col-md-12">
             <label for="email" class="py-2 fw-bold">Email*</label>
             <input
               formControlName="email"
-              placeholder="type your email"
+              placeholder="Type your email"
               type="email"
               class="form-control"
             />
@@ -34,7 +37,12 @@
           </div>
           <div class="col-md-6">
             <label for="password" class="py-2 fw-bold">Password*</label>
-            <input formControlName="password" class="form-control" type="password" />
+            <input
+              formControlName="password"
+              placeholder="Inserisci la password"
+              class="form-control"
+              type="password"
+            />
             @if (
               signupForm.controls['password'].touched &&
               signupForm.controls['password'].hasError('pattern')
@@ -57,7 +65,12 @@
           </div>
           <div class="col-md-6">
             <label for="password" class="py-2 fw-bold">Ripeti password*</label>
-            <input formControlName="ripetiPassword" class="form-control" type="password" />
+            <input
+              formControlName="ripetiPassword"
+              placeholder="Ripeti la password"
+              class="form-control"
+              type="password"
+            />
             @if (
               signupForm.controls['ripetiPassword'].touched &&
               signupForm.controls['ripetiPassword'].hasError('pattern')
@@ -89,13 +102,18 @@
           [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
         >
           <div class="col-md-12 py-1 pt-5">
-            <h1 class="text-secondary">
+            <h1 class="text-secondary text-uppercase">
               General datas <i class="pi pi-id-card fs-3 text-black"></i>
             </h1>
           </div>
           <div class="col-md-6">
             <label for="ragioneSociale" class="py-2 fw-bold"> Ragione sociale*</label>
-            <input type="text" formControlName="ragioneSociale" class="form-control" />
+            <input
+              type="text"
+              formControlName="ragioneSociale"
+              placeholder="Inserisci la ragione sociale"
+              class="form-control"
+            />
             @if (
               signupForm.controls['ragioneSociale'].touched &&
               signupForm.controls['ragioneSociale'].invalid
@@ -105,7 +123,12 @@
           </div>
           <div class="col-md-6">
             <label for="partitaIva" class="py-2 fw-bold">Partita Iva*</label>
-            <input type="text" formControlName="partitaIva" class="form-control" />
+            <input
+              type="text"
+              formControlName="partitaIva"
+              placeholder="Inserisci la partita iva"
+              class="form-control"
+            />
             @if (
               signupForm.controls['partitaIva'].touched &&
               signupForm.controls['partitaIva'].hasError('required')
@@ -121,6 +144,7 @@
           <div class="col-md-12">
             <label for="formaGiuridica" class="py-2 fw-bold"> Forma giuridica*</label>
             <select formControlName="formaGiuridica" class="form-select">
+              <option value="" class="text-muted" disabled>Scegli la forma giuridica</option>
               @for (item of forme; track $index) {
                 <option value="{{ item.id }}">{{ item.name }}</option>
               } @empty {
@@ -141,7 +165,7 @@
         >
           <div formGroupName="indirizzo" class="row p-0 m-0">
             <div class="col-md-12 py-1 pt-5">
-              <h1 class="text-secondary">
+              <h1 class="text-secondary text-uppercase">
                 Address <i class="fs-3 pi pi-map-marker text-black"></i>
               </h1>
             </div>
@@ -157,6 +181,7 @@
                   )
                 "
               >
+                <option value="" class="text-muted" disabled>Scegli il paese</option>
                 @for (item of nazioni; track $index) {
                   <option value="{{ item.id }}">{{ item.name }}</option>
                 } @empty {
@@ -182,6 +207,8 @@
                   )
                 "
               >
+                <option value="" class="text-muted" disabled>Scegli la regione</option>
+
                 @for (item of regioni; track $index) {
                   <option value="{{ item.id }}">{{ item.name }}</option>
                 } @empty {
@@ -204,6 +231,7 @@
                   onChangeCitta(signupForm.controls['indirizzo'].get('citta')?.value, 'indirizzo')
                 "
               >
+                <option value="" class="text-muted" disabled>Scegli la città</option>
                 @for (item of citta; track $index) {
                   <option value="{{ item.id }}">{{ item.name }}</option>
                 } @empty {
@@ -220,6 +248,7 @@
             <div class="col-md-4">
               <label for="cap" class="py-2 fw-bold">Cap*</label>
               <select formControlName="cap" class="form-select">
+                <option value="" class="text-muted" disabled>Scegli il cap</option>
                 @for (item of cap; track $index) {
                   <option value="{{ item.id }}">{{ item.name }}</option>
                 } @empty {
@@ -233,12 +262,32 @@
                 <p class="text-danger">Campo obbligatorio</p>
               }
             </div>
-            <div class="col-12">
+            <div class="col-6">
               <label for="via" class="py-2 fw-bold">Via*</label>
-              <input type="text" class="form-control" formControlName="via" />
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Inserisci la via"
+                formControlName="via"
+              />
               @if (
                 signupForm.controls['indirizzo'].get('via')?.touched &&
                 signupForm.controls['indirizzo'].get('via')?.invalid
+              ) {
+                <p class="text-danger">Campo obbligatorio</p>
+              }
+            </div>
+            <div class="col-6">
+              <label for="numeroCivico" class="py-2 fw-bold">Numero civico*</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Inserisci il numero civico"
+                formControlName="numeroCivico"
+              />
+              @if (
+                signupForm.controls['indirizzo'].get('numeroCivico')?.touched &&
+                signupForm.controls['indirizzo'].get('numeroCivico')?.invalid
               ) {
                 <p class="text-danger">Campo obbligatorio</p>
               }
@@ -247,6 +296,7 @@
           <div class="col-md-8">
             <label for="settore" class="py-2 fw-bold">Settore*</label>
             <select formControlName="settore" class="form-select">
+              <option value="" class="text-muted" disabled>Scegli il settore</option>
               @for (item of settori; track $index) {
                 <option value="{{ item.id }}">{{ item.name }}</option>
               } @empty {
@@ -260,6 +310,7 @@
           <div class="col-md-4">
             <label for="dimensioniAzienda" class="py-2 fw-bold">Dimensioni*</label>
             <select formControlName="dimensioniAzienda" class="form-select">
+              <option value="" class="text-muted" disabled>Scegli le dimensioni</option>
               @for (item of dimensioni; track $index) {
                 <option value="{{ item.id }}">{{ item.label }}</option>
               } @empty {
@@ -279,10 +330,10 @@
                 type="checkbox"
                 id="settore"
                 formControlName="differentWorkStation"
-                class="form-check-input mt-2 border border-black"
+                class="form-check-input mt-3 border border-black"
                 (change)="updateSedeOperativa()"
               />
-              <label for="settore" class="py-2 fw-bold"
+              <label for="settore" class="pb-2 pt-1 fw-bold"
                 >Sede operativa diversa dalla sede legale</label
               >
             </div>
@@ -382,12 +433,22 @@
                   <p class="text-danger">Campo obbligatorio</p>
                 }
               </div>
-              <div class="col-12">
+              <div class="col-6">
                 <label for="via" class="py-2 fw-bold">Via*</label>
                 <input type="text" class="form-control" formControlName="via" />
                 @if (
                   signupForm.controls['sedeOperativa'].get('via')?.touched &&
                   signupForm.controls['sedeOperativa'].get('via')?.invalid
+                ) {
+                  <p class="text-danger">Campo obbligatorio</p>
+                }
+              </div>
+              <div class="col-6">
+                <label for="numeroCivico" class="py-2 fw-bold">Numero civico*</label>
+                <input type="number" class="form-control" formControlName="numeroCivico" />
+                @if (
+                  signupForm.controls['sedeOperativa'].get('numeroCivico')?.touched &&
+                  signupForm.controls['sedeOperativa'].get('numeroCivico')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
                 }
