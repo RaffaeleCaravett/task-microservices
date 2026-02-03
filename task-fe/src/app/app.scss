@@ -7,7 +7,8 @@
     color: brown !important;
   }
 }
-.position-absolute {
+.position-absolute-1 {
+  position: fixed;
   left: 80%;
   top: -500px;
   width: 1000px;
@@ -18,7 +19,6 @@
   pointer-events: none;
   z-index: 0;
 }
-
-.app-dark{
-  background-color: #353739 ;
+.app-dark {
+  background-color: #353739;
 }

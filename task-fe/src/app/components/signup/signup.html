@@ -10,11 +10,16 @@
           [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
         >
           <div class="col-md-12 py-1 pt-5">
-            <h1 class="text-secondary">Signup datas</h1>
+            <h1 class="text-secondary">Signup datas <i class="pi pi-lock fs-3 text-black"></i></h1>
           </div>
           <div class="col-md-12">
             <label for="email" class="py-2 fw-bold">Email*</label>
-            <input formControlName="email" type="email" class="form-control" />
+            <input
+              formControlName="email"
+              placeholder="type your email"
+              type="email"
+              class="form-control"
+            />
             @if (
               signupForm.controls['email'].touched &&
               signupForm.controls['email'].hasError('pattern')
@@ -84,7 +89,9 @@
           [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
         >
           <div class="col-md-12 py-1 pt-5">
-            <h1 class="text-secondary">Dati generali</h1>
+            <h1 class="text-secondary">
+              General datas <i class="pi pi-id-card fs-3 text-black"></i>
+            </h1>
           </div>
           <div class="col-md-6">
             <label for="ragioneSociale" class="py-2 fw-bold"> Ragione sociale*</label>
@@ -134,7 +141,9 @@
         >
           <div formGroupName="indirizzo" class="row p-0 m-0">
             <div class="col-md-12 py-1 pt-5">
-              <h1 class="text-secondary">Address</h1>
+              <h1 class="text-secondary">
+                Address <i class="fs-3 pi pi-map-marker text-black"></i>
+              </h1>
             </div>
             <div class="col-md-12">
               <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>
@@ -270,7 +279,7 @@
                 type="checkbox"
                 id="settore"
                 formControlName="differentWorkStation"
-                class="form-check-input mt-2"
+                class="form-check-input mt-2 border border-black"
                 (change)="updateSedeOperativa()"
               />
               <label for="settore" class="py-2 fw-bold"
@@ -281,7 +290,9 @@
           @if (signupForm.controls['differentWorkStation'].value) {
             <div formGroupName="sedeOperativa" class="row p-0 m-0">
               <div class="col-md-12 pt-5 py-1">
-                <h1 class="text-danger">Sede operativa</h1>
+                <h1 class="text-secondary">
+                  Sede operativa <i class="fs-pi pi-building text-black"></i>
+                </h1>
               </div>
               <div class="col-md-12">
                 <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>

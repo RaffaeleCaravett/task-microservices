@@ -1,5 +1,15 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectorRef, Component, effect, HostListener, inject, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  effect,
+  ElementRef,
+  HostListener,
+  inject,
+  OnInit,
+  viewChild,
+} from '@angular/core';
 import { Router, RouterOutlet, RouterLink } from '@angular/router';
 import { ModeService } from '../../services/mode.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -10,17 +20,24 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   isDark: boolean = false;
   protected modeService: ModeService = inject(ModeService);
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected router: Router = inject(Router);
   homeForm: FormGroup = new FormGroup({});
   protected homeCards: any[] = [];
+  canvas = viewChild<HTMLCanvasElement>('canvas');
   ngOnInit(): void {
     this.onResize(null);
     this.initForm();
     this.initCards();
+  }
+  ngAfterViewInit(): void {
+    const canvasEl = this.canvas();
+    if (!canvasEl) return;
+
+    console.log(canvasEl); // HTMLCanv
   }
 
   initForm() {
