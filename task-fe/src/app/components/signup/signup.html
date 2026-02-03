@@ -1,13 +1,90 @@
-<div class="row text-start fs-3" [ngClass]="isDark ? 'bg-dark' : 'light-signup'">
+<div class="row text-start fs-3" [ngClass]="isDark ? '' : 'light-signup'">
   @if (section != 'access-code' && !showSpinner) {
     @if (step == 1) {
       <form [formGroup]="signupForm" class="row w-75 m-auto">
         <div class="col-12 text-center py-5">
-          <p class="title fw-bold">Create a profile</p>
+          <p class="title fw-bold">Join us <i class="pi pi-user-plus fs-1"></i></p>
         </div>
-        <div class="section row border border-danger p-5 rounded shadow" [ngClass]="isDark?' bg-secondary bg-opacity-10':'light-bg-section'">
+        <div
+          class="section row border border-secondary p-5 rounded shadow"
+          [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
+        >
           <div class="col-md-12 py-1 pt-5">
-            <h1 class="text-danger">Dati generali</h1>
+            <h1 class="text-secondary">Signup datas</h1>
+          </div>
+          <div class="col-md-12">
+            <label for="email" class="py-2 fw-bold">Email*</label>
+            <input formControlName="email" type="email" class="form-control" />
+            @if (
+              signupForm.controls['email'].touched &&
+              signupForm.controls['email'].hasError('pattern')
+            ) {
+              <p class="text-danger">Inserisci una email valida</p>
+            } @else if (
+              signupForm.controls['email'].touched &&
+              signupForm.controls['email'].hasError('required')
+            ) {
+              <p class="text-danger">Campo obbligatorio</p>
+            }
+          </div>
+          <div class="col-md-6">
+            <label for="password" class="py-2 fw-bold">Password*</label>
+            <input formControlName="password" class="form-control" type="password" />
+            @if (
+              signupForm.controls['password'].touched &&
+              signupForm.controls['password'].hasError('pattern')
+            ) {
+              <p class="text-danger">
+                Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1
+                minuscola e minimo 8 caratteri)
+              </p>
+            } @else if (
+              signupForm.controls['password'].touched &&
+              signupForm.controls['password'].hasError('required')
+            ) {
+              <p class="text-danger">Campo obbligatorio</p>
+            } @else if (
+              signupForm.controls['password'].valid &&
+              signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
+            ) {
+              <p class="text-success">Le password combaciano</p>
+            }
+          </div>
+          <div class="col-md-6">
+            <label for="password" class="py-2 fw-bold">Ripeti password*</label>
+            <input formControlName="ripetiPassword" class="form-control" type="password" />
+            @if (
+              signupForm.controls['ripetiPassword'].touched &&
+              signupForm.controls['ripetiPassword'].hasError('pattern')
+            ) {
+              <p class="text-danger">
+                Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1
+                minuscola e minimo 8 caratteri)
+              </p>
+            } @else if (
+              signupForm.controls['ripetiPassword'].touched &&
+              signupForm.controls['ripetiPassword'].hasError('required')
+            ) {
+              <p class="text-danger">Campo obbligatorio</p>
+            } @else if (
+              signupForm.controls['password'].valid &&
+              signupForm.controls['password'].value != signupForm.controls['ripetiPassword'].value
+            ) {
+              <p class="text-danger">La password non combacia</p>
+            } @else if (
+              signupForm.controls['password'].valid &&
+              signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
+            ) {
+              <p class="text-success">Le password combaciano</p>
+            }
+          </div>
+        </div>
+        <div
+          class="section row border border-secondary p-5 rounded shadow"
+          [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
+        >
+          <div class="col-md-12 py-1 pt-5">
+            <h1 class="text-secondary">Dati generali</h1>
           </div>
           <div class="col-md-6">
             <label for="ragioneSociale" class="py-2 fw-bold"> Ragione sociale*</label>
@@ -51,10 +128,13 @@
             }
           </div>
         </div>
-        <div class="section row border border-danger p-5 rounded shadow" [ngClass]="isDark?' bg-secondary bg-opacity-10':'light-bg-section'">
+        <div
+          class="section row border border-secondary p-5 rounded shadow"
+          [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
+        >
           <div formGroupName="indirizzo" class="row p-0 m-0">
             <div class="col-md-12 py-1 pt-5">
-              <h1 class="text-danger">Indirizzo</h1>
+              <h1 class="text-secondary">Address</h1>
             </div>
             <div class="col-md-12">
               <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>
@@ -304,72 +384,6 @@
             </div>
           }
         </div>
-
-        <div class="col-md-12">
-          <label for="email" class="py-2 fw-bold">Email*</label>
-          <input formControlName="email" type="email" class="form-control" />
-          @if (
-            signupForm.controls['email'].touched && signupForm.controls['email'].hasError('pattern')
-          ) {
-            <p class="text-danger">Inserisci una email valida</p>
-          } @else if (
-            signupForm.controls['email'].touched &&
-            signupForm.controls['email'].hasError('required')
-          ) {
-            <p class="text-danger">Campo obbligatorio</p>
-          }
-        </div>
-        <div class="col-md-6">
-          <label for="password" class="py-2 fw-bold">Password*</label>
-          <input formControlName="password" class="form-control" type="password" />
-          @if (
-            signupForm.controls['password'].touched &&
-            signupForm.controls['password'].hasError('pattern')
-          ) {
-            <p class="text-danger">
-              Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1
-              minuscola e minimo 8 caratteri)
-            </p>
-          } @else if (
-            signupForm.controls['password'].touched &&
-            signupForm.controls['password'].hasError('required')
-          ) {
-            <p class="text-danger">Campo obbligatorio</p>
-          } @else if (
-            signupForm.controls['password'].valid &&
-            signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
-          ) {
-            <p class="text-success">Le password combaciano</p>
-          }
-        </div>
-        <div class="col-md-6">
-          <label for="password" class="py-2 fw-bold">Ripeti password*</label>
-          <input formControlName="ripetiPassword" class="form-control" type="password" />
-          @if (
-            signupForm.controls['ripetiPassword'].touched &&
-            signupForm.controls['ripetiPassword'].hasError('pattern')
-          ) {
-            <p class="text-danger">
-              Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1
-              minuscola e minimo 8 caratteri)
-            </p>
-          } @else if (
-            signupForm.controls['ripetiPassword'].touched &&
-            signupForm.controls['ripetiPassword'].hasError('required')
-          ) {
-            <p class="text-danger">Campo obbligatorio</p>
-          } @else if (
-            signupForm.controls['password'].valid &&
-            signupForm.controls['password'].value != signupForm.controls['ripetiPassword'].value
-          ) {
-            <p class="text-danger">La password non combacia</p>
-          } @else if (
-            signupForm.controls['password'].valid &&
-            signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
-          ) {
-            <p class="text-success">Le password combaciano</p>
-          }
-        </div>
       </form>
     } @else if (step == 2) {
       <div class="col-12 text-center"><p class="h2 fw-bold">Choose a plan</p></div>
@@ -440,7 +454,7 @@
       <div class="row w-75 m-auto">
         <div class="col-12 text-center"><p class="h2 fw-bold">Summary & Payment</p></div>
         <div class="col-md-12 py-1 pt-5">
-          <h2>Dati generali</h2>
+          <h2>General datas</h2>
         </div>
         <div class="col-md-6">
           <label class="py-2 fw-bold"> Ragione sociale</label>
