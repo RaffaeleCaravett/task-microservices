@@ -191,3 +191,10 @@ export interface accessCode {
   creationTime: string;
   isUsed: boolean;
 }
+
+export interface HomeCars {
+  id: number;
+  title: string;
+  description: string;
+  icon: string;
+}

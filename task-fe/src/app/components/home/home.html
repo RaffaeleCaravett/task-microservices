@@ -1,18 +1,20 @@
-<div
-  class="row text-center py-5 p-5 position-relative overflow-hidden"
-  [ngClass]="isDark ? ['dark-home', 'text-black'] : 'light-home'"
->
+<div class="row text-center py-5 p-5">
   <div class="col-12 d-flex align-items-center justify-content-center pt-5">
     <h1 class="title text-uppercase fw-bold w-50">Take control of your things</h1>
   </div>
   <div class="col-12 p-0">
     <h1 class="title-small m-auto w-50">Don't let other people do it for you, in their way.</h1>
   </div>
-  <div class="col-md-12 py-5 d-flex justify-content-center position-relative">
+  <div class="col-md-12 py-5 d-flex justify-content-center">
     <div class="d-flex gap-4 justify-content-center align-items-stretch p-3">
-      <form [formGroup]="homeForm" >
+      <form [formGroup]="homeForm">
         <div class="border rounded p-1 bg-white d-flex gap-1">
-          <input type="email" formControlName="email" class="form-control border-0 fs-4" placeholder="type your email"/><button
+          <input
+            type="email"
+            formControlName="email"
+            class="form-control border-0 fs-4"
+            placeholder="type your email"
+          /><button
             class="btn btn-lg fs-4"
             (click)="checkPermission()"
             [ngClass]="isDark ? 'dark-btn-signup' : 'light-btn-signup'"
@@ -21,11 +23,35 @@
           </button>
         </div>
       </form>
-      <button class="btn btn-lg px-5 py-2 fs-4" [ngClass]="isDark ? ['dark-btn-login'] : 'light-btn-login'" routerLink="/login">
+      <button
+        class="btn btn-lg px-5 py-2 fs-4"
+        [ngClass]="isDark ? ['dark-btn-login'] : 'light-btn-login'"
+        routerLink="/login"
+      >
         Login
       </button>
     </div>
   </div>
   <div class="p-5"></div>
-  <div class="position-absolute" [ngClass]="isDark ? 'bg-danger' : 'bg-success'"></div>
+  <div class="row">
+    @for (card of homeCards; track $index) {
+      <div class="col-lg-3 col-md-6 p-3">
+        <div
+          class="border rounded h-100 p-3 shadow-sm border-black"
+          [ngClass]="isDark ? 'dark-home-card' : 'light-home-card'"
+        >
+          <div class="title d-flex justify-content-between">
+            <h4 class="text-start">{{ card.title }}</h4>
+            <i
+              [ngClass]="isDark ? ['text-danger', card.icon] : ['text-success', card.icon]"
+              class="fs-4 fw-bold"
+            ></i>
+          </div>
+          <div class="description fs-4 py-3" [style]="'line-height:1.1'">
+            {{ card.description }}
+          </div>
+        </div>
+      </div>
+    }
+  </div>
 </div>
