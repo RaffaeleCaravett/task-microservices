@@ -1,3 +1,6 @@
-<app-nav></app-nav>
-<router-outlet />
-<app-foot></app-foot>
+<div class="m-0 p-0 position-relative" [ngClass]="isDark ? 'app-dark' : 'light-app'">
+  <app-nav></app-nav>
+  <router-outlet />
+  <app-foot></app-foot>
+  <div class="position-absolute-1" [ngClass]="isDark ? 'bg-danger' : 'bg-success'"></div>
+</div>

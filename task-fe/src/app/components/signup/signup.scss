@@ -22,7 +22,21 @@ input[type='number'] {
   background: #fff !important;
   color: black !important;
 }
-.bg-dark {
+.section-dark {
+  background-color: #474849 !important;
+  .form-control,
+  .form-select,
+  .form-check-input {
+    font-weight: bold;
+    background: none !important;
+    outline: none!important;
+    box-shadow: none!important;
+  }
+  .form-control,
+  .form-select {
+    border: 0px !important;
+    border-bottom: 1px solid black !important;
+  }
   button {
     font-weight: 600 !important;
     color: red !important;
@@ -55,5 +69,10 @@ input[type='number'] {
   line-height: 1.1;
 }
 .light-bg-section {
-  background: rgb(237, 237, 180) 
+  background: rgb(236, 236, 217);
+}
+.text-danger, .text-success {
+  padding-top: 15px !important;
+  font-size: 18px;
+  line-height: 1.2;
 }

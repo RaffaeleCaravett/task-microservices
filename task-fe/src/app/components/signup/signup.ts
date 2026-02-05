@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from '../../services/auth.service';
 import {
@@ -69,6 +69,7 @@ export class SignupComponent implements OnInit {
   protected paymentSubmitted: boolean = false;
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected modeService: ModeService = inject(ModeService);
+  protected activatedRoute: ActivatedRoute = inject(ActivatedRoute);
   protected isDark: boolean = false;
   ngOnInit(): void {
     this.currentYear = Number(new Date().getFullYear().toString().substring(2, 4));
@@ -91,6 +92,7 @@ export class SignupComponent implements OnInit {
           Validators.required,
         ),
         via: new FormControl('', Validators.required),
+        numeroCivico: new FormControl('', Validators.required),
       }),
       settore: new FormControl('', Validators.required),
       dimensioniAzienda: new FormControl('', Validators.required),
@@ -101,6 +103,7 @@ export class SignupComponent implements OnInit {
         cap: new FormControl({ value: null, disabled: this.capSede.length == 0 }),
         regione: new FormControl({ value: null, disabled: this.regioniSede.length == 0 }),
         via: new FormControl(null),
+        numeroCivico: new FormControl('', Validators.required),
       }),
       email: new FormControl('', [
         Validators.required,
@@ -143,6 +146,12 @@ export class SignupComponent implements OnInit {
       cardHolder: new FormControl('', [Validators.required, Validators.pattern('^.+\\s.+$')]),
     });
     this.getDatas();
+    const email = this.activatedRoute.snapshot.params['email'];
+    if (email) {
+      this.signupForm.patchValue({
+        email: email,
+      });
+    }
   }
   signup() {
     if (
@@ -200,7 +209,10 @@ export class SignupComponent implements OnInit {
       citta: this.signupForm.controls['indirizzo'].get('citta')?.value,
       cap: this.signupForm.controls['indirizzo'].get('cap')?.value,
       regione: this.signupForm.controls['indirizzo'].get('regione')?.value,
-      via: this.signupForm.controls['indirizzo'].get('via')?.value,
+      via:
+        this.signupForm.controls['indirizzo'].get('via')?.value +
+        ' ' +
+        this.signupForm.controls['indirizzo'].get('numeroCivico')?.value,
       settore: this.signupForm.controls['settore'].value,
       nomeAzienda: this.signupForm.controls['ragioneSociale'].value,
       dimensioniAzienda: this.signupForm.controls['dimensioniAzienda'].value,
@@ -208,7 +220,10 @@ export class SignupComponent implements OnInit {
       cittaSede: this.signupForm.controls['sedeOperativa'].get('citta')?.value,
       capSede: this.signupForm.controls['sedeOperativa'].get('cap')?.value,
       regioneSede: this.signupForm.controls['sedeOperativa'].get('regione')?.value,
-      viaSede: this.signupForm.controls['sedeOperativa'].get('via')?.value,
+      viaSede:
+        this.signupForm.controls['sedeOperativa'].get('via')?.value +
+        ' ' +
+        this.signupForm.controls['sedeOperativa'].get('numeroCivico')?.value,
       pianoId: this.choosedPlan!.id,
       subscriptionDays: Number(this.chosedDays),
       metodoPagamentoDTO: this.paymentMethod!,

@@ -1,23 +1,26 @@
 .w-100 {
-  .active{
-    font-weight: bold!important;
+  .active {
+    font-weight: bold !important;
   }
 }
 
-.text-brown{
+.text-brown {
   color: brown;
 }
-.dark-navbar{
-  border-color: #2b2a2a!important;
-  button{
-    color:black!important;
+.dark-navbar {
+  border-color: #2b2a2a !important;
+  button {
+    color: black !important;
   }
 }
-.light-navbar{
-  background-color: beige;
+nav {
+  background-color: rgba(43, 42, 42, 0.2) !important;
+}
+.light-navbar {
+  background-color: rgba(245, 245, 220, 0.2)!important;
   color: brown;
-  border-color: brown!important;
-  button{
-    color:brown!important;
+  border-color: brown !important;
+  button {
+    color: brown !important;
   }
 }
