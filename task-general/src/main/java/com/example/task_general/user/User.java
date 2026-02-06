@@ -32,7 +32,6 @@ public class User extends UserInfos implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "users")
-    @JsonIgnore
     private List<Company> companies;
     @OneToOne(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     private CodiceAccesso codiceAccesso;
