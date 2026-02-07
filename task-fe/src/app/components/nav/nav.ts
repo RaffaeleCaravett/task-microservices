@@ -42,7 +42,7 @@ export class NavComponent implements OnInit {
     this.authService.setUser(null);
     this.authService.setAccessToken(null);
     this.authService.setRefreshToken(null);
-    this.router.navigate(['home/login']);
+    this.router.navigate(['home']);
   }
   getImage(): string {
     var image: string = '';

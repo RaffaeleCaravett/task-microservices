@@ -108,3 +108,17 @@ canvas {
   margin: auto;
   height: 334px;
 }
+
+.scale-animation {
+  animation: scale-anim 1s ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes scale-anim {
+  0% {
+    scale: 0;
+  }
+  100% {
+    scale: 1;
+  }
+}

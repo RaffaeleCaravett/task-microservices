@@ -1,22 +1,24 @@
 <div class="row text-center py-5 p-5">
-  <div class="col-12 d-flex align-items-center justify-content-center pt-5">
-    <h1 class="title text-uppercase fw-bold w-50">Take control of your things</h1>
+  <div class="col-12 text-center pt-5">
+    <h1 class="title text-uppercase fw-bold scale-animation">Take control of your things</h1>
   </div>
-  <div class="col-12 p-0">
+  <div class="col-12 p-0 scale-animation">
     <h1 class="title-small m-auto w-50">Don't let other people do it for you, in their way.</h1>
   </div>
-  <div class="col-md-12 py-5 d-flex justify-content-center">
+  <div class="col-md-12 py-5 d-flex justify-content-center scale-animation">
     <div class="d-flex gap-4 justify-content-center align-items-stretch p-3">
-      <form [formGroup]="homeForm">
+      <form [formGroup]="homeForm" (ngSubmit)="checkPermission()">
         <div class="border rounded p-1 bg-white d-flex gap-1">
           <input
             type="email"
             formControlName="email"
             class="form-control border-0 fs-4"
-            placeholder="type your email"
+            placeholder="appunto@email.com"
           /><button
-            class="btn btn-lg fs-4"
-            (click)="checkPermission()"
+            class="btn btn-lg fs-4 overflow-hidden px-4"
+            pTooltip="Fill the email field"
+            tooltipPosition="left"
+            type="submit"
             [ngClass]="isDark ? 'dark-btn-signup' : 'light-btn-signup'"
           >
             Signup
@@ -24,7 +26,7 @@
         </div>
       </form>
       <button
-        class="btn btn-lg px-5 py-2 fs-4"
+        class="btn btn-lg px-5 py-2 fs-4 overflow-hidden"
         [ngClass]="isDark ? ['dark-btn-login'] : 'light-btn-login'"
         routerLink="/login"
       >
@@ -35,9 +37,9 @@
   <div class="p-5"></div>
   <div class="row">
     @for (card of homeCards; track $index) {
-      <div class="col-lg-3 col-md-6 p-3">
+      <div class="col-lg-3 col-md-6 p-3 scale-card-animation-{{$index}}">
         <div
-          class="border rounded h-100 p-3 shadow-sm border-black"
+          class="border rounded h-100 p-3 shadow-sm border-black overflow-auto"
           [ngClass]="isDark ? 'dark-home-card' : 'light-home-card'"
         >
           <div class="title d-flex justify-content-between fw-bolder">
