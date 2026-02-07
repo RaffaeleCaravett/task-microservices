@@ -1,348 +1,247 @@
-<div class="row text-start fs-3" [ngClass]="isDark ? '' : 'light-signup'">
+<div class="row text-start fs-3 pt-5" [ngClass]="isDark ? '' : 'light-signup'">
   @if (section != 'access-code' && !showSpinner) {
+    <div class="stepper sticky-top pt-5 w-75 m-auto text-center">
+      <div
+        [style.display]="'inline-block'"
+        class="border-bottom pb-2 m-3 border-success bg-secondary shadow rounded-top p-1"
+      >
+        Signup form
+      </div>
+      <div
+        [style.display]="'inline-block'"
+        class="border-bottom pb-2 mx-3 bg-secondary rounded-top p-1 shadow"
+        [ngClass]="step > 1 ? 'border-success' : ''"
+      >
+        Personal plan
+      </div>
+      <div
+        [style.display]="'inline-block'"
+        class="border-bottom pb-2 mx-3 bg-secondary rounded-top p-1 shadow"
+        [ngClass]="step > 2 ? 'border-success' : ''"
+      >
+        Summary
+      </div>
+    </div>
     @if (step == 1) {
       <form [formGroup]="signupForm" class="row w-75 m-auto">
         <div class="col-12 text-center py-5">
           <p class="title fw-bold">Join us <i class="pi pi-user-plus fs-1"></i></p>
           <p class="fs-2 fw-bold">And start planning your dreams.</p>
         </div>
-        <div
-          class="section row border border-secondary p-5 rounded shadow"
-          [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
-        >
-          <div class="col-md-12 py-1 pt-5">
-            <h1 class="text-secondary text-uppercase">
-              Signup datas <i class="pi pi-lock fs-3 text-black"></i>
-            </h1>
-          </div>
-          <div class="col-md-12">
-            <label for="email" class="py-2 fw-bold">Email*</label>
-            <input
-              formControlName="email"
-              placeholder="Type your email"
-              type="email"
-              class="form-control"
-            />
-            @if (
-              signupForm.controls['email'].touched &&
-              signupForm.controls['email'].hasError('pattern')
-            ) {
-              <p class="text-danger">Inserisci una email valida</p>
-            } @else if (
-              signupForm.controls['email'].touched &&
-              signupForm.controls['email'].hasError('required')
-            ) {
-              <p class="text-danger">Campo obbligatorio</p>
-            }
-          </div>
-          <div class="col-md-6">
-            <label for="password" class="py-2 fw-bold">Password*</label>
-            <input
-              formControlName="password"
-              placeholder="Inserisci la password"
-              class="form-control"
-              type="password"
-            />
-            @if (
-              signupForm.controls['password'].touched &&
-              signupForm.controls['password'].hasError('pattern')
-            ) {
-              <p class="text-danger">
-                Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1
-                minuscola e minimo 8 caratteri)
-              </p>
-            } @else if (
-              signupForm.controls['password'].touched &&
-              signupForm.controls['password'].hasError('required')
-            ) {
-              <p class="text-danger">Campo obbligatorio</p>
-            } @else if (
-              signupForm.controls['password'].valid &&
-              signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
-            ) {
-              <p class="text-success">Le password combaciano</p>
-            }
-          </div>
-          <div class="col-md-6">
-            <label for="password" class="py-2 fw-bold">Ripeti password*</label>
-            <input
-              formControlName="ripetiPassword"
-              placeholder="Ripeti la password"
-              class="form-control"
-              type="password"
-            />
-            @if (
-              signupForm.controls['ripetiPassword'].touched &&
-              signupForm.controls['ripetiPassword'].hasError('pattern')
-            ) {
-              <p class="text-danger">
-                Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1
-                minuscola e minimo 8 caratteri)
-              </p>
-            } @else if (
-              signupForm.controls['ripetiPassword'].touched &&
-              signupForm.controls['ripetiPassword'].hasError('required')
-            ) {
-              <p class="text-danger">Campo obbligatorio</p>
-            } @else if (
-              signupForm.controls['password'].valid &&
-              signupForm.controls['password'].value != signupForm.controls['ripetiPassword'].value
-            ) {
-              <p class="text-danger">La password non combacia</p>
-            } @else if (
-              signupForm.controls['password'].valid &&
-              signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
-            ) {
-              <p class="text-success">Le password combaciano</p>
-            }
-          </div>
-        </div>
-        <div
-          class="section row border border-secondary p-5 rounded shadow"
-          [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
-        >
-          <div class="col-md-12 py-1 pt-5">
-            <h1 class="text-secondary text-uppercase">
-              General datas <i class="pi pi-id-card fs-3 text-black"></i>
-            </h1>
-          </div>
-          <div class="col-md-6">
-            <label for="ragioneSociale" class="py-2 fw-bold"> Ragione sociale*</label>
-            <input
-              type="text"
-              formControlName="ragioneSociale"
-              placeholder="Inserisci la ragione sociale"
-              class="form-control"
-            />
-            @if (
-              signupForm.controls['ragioneSociale'].touched &&
-              signupForm.controls['ragioneSociale'].invalid
-            ) {
-              <p class="text-danger">Campo obbligatorio</p>
-            }
-          </div>
-          <div class="col-md-6">
-            <label for="partitaIva" class="py-2 fw-bold">Partita Iva*</label>
-            <input
-              type="text"
-              formControlName="partitaIva"
-              placeholder="Inserisci la partita iva"
-              class="form-control"
-            />
-            @if (
-              signupForm.controls['partitaIva'].touched &&
-              signupForm.controls['partitaIva'].hasError('required')
-            ) {
-              <p class="text-danger">Campo obbligatorio</p>
-            } @else if (
-              signupForm.controls['partitaIva'].touched &&
-              signupForm.controls['partitaIva'].hasError('pattern')
-            ) {
-              <p class="text-danger">Inserisci una partita iva valida</p>
-            }
-          </div>
-          <div class="col-md-12">
-            <label for="formaGiuridica" class="py-2 fw-bold"> Forma giuridica*</label>
-            <select formControlName="formaGiuridica" class="form-select">
-              <option value="" class="text-muted" disabled>Scegli la forma giuridica</option>
-              @for (item of forme; track $index) {
-                <option value="{{ item.id }}">{{ item.name }}</option>
-              } @empty {
-                <option value=""></option>
-              }
-            </select>
-            @if (
-              signupForm.controls['formaGiuridica'].touched &&
-              signupForm.controls['formaGiuridica'].invalid
-            ) {
-              <p class="text-danger">Campo obbligatorio</p>
-            }
-          </div>
-        </div>
-        <div
-          class="section row border border-secondary p-5 rounded shadow"
-          [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
-        >
-          <div formGroupName="indirizzo" class="row p-0 m-0">
+        <div class="col-md-6">
+          <div
+            class="section row border border-secondary p-5 rounded shadow"
+            [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
+          >
             <div class="col-md-12 py-1 pt-5">
               <h1 class="text-secondary text-uppercase">
-                Address <i class="fs-3 pi pi-map-marker text-black"></i>
+                Signup datas
+                <i
+                  class="pi pi-lock fs-3"
+                  [ngClass]="
+                    signupForm.controls['email'].valid &&
+                    signupForm.controls['password'].valid &&
+                    signupForm.controls['ripetiPassword'].valid &&
+                    signupForm.controls['password'].value ==
+                      signupForm.controls['ripetiPassword'].value
+                      ? 'text-success'
+                      : 'text-danger'
+                  "
+                ></i>
               </h1>
             </div>
             <div class="col-md-12">
-              <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>
-              <select
-                formControlName="nazione"
-                class="form-select"
-                (change)="
-                  onChangeNations(
-                    signupForm.controls['indirizzo'].get('nazione')?.value,
-                    'indirizzo'
-                  )
-                "
-              >
-                <option value="" class="text-muted" disabled>Scegli il paese</option>
-                @for (item of nazioni; track $index) {
-                  <option value="{{ item.id }}">{{ item.name }}</option>
-                } @empty {
-                  <option value=""></option>
-                }
-              </select>
+              <label for="email" class="py-2 fw-bold">Email*</label>
+              <input
+                formControlName="email"
+                placeholder="Type your email"
+                type="email"
+                class="form-control"
+              />
               @if (
-                signupForm.controls['indirizzo'].get('nazione')?.touched &&
-                signupForm.controls['indirizzo'].get('nazione')?.invalid
+                signupForm.controls['email'].touched &&
+                signupForm.controls['email'].hasError('pattern')
+              ) {
+                <p class="text-danger">Inserisci una email valida</p>
+              } @else if (
+                signupForm.controls['email'].touched &&
+                signupForm.controls['email'].hasError('required')
               ) {
                 <p class="text-danger">Campo obbligatorio</p>
+              } @else if (
+                signupForm.controls['email'].valid &&
+                signupForm.controls['password'].valid &&
+                signupForm.controls['ripetiPassword'].valid &&
+                signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
+              ) {
+                <p class="text-success">Campo valido</p>
               }
             </div>
-            <div class="col-md-4">
-              <label for="regione" class="py-2 fw-bold">Regione*</label>
-              <select
-                formControlName="regione"
-                class="form-select"
-                (change)="
-                  onChangeRegions(
-                    signupForm.controls['indirizzo'].get('regione')?.value,
-                    'indirizzo'
-                  )
-                "
-              >
-                <option value="" class="text-muted" disabled>Scegli la regione</option>
-
-                @for (item of regioni; track $index) {
-                  <option value="{{ item.id }}">{{ item.name }}</option>
-                } @empty {
-                  <option value=""></option>
-                }
-              </select>
+            <div class="col-md-6">
+              <label for="password" class="py-2 fw-bold">Password*</label>
+              <input
+                formControlName="password"
+                placeholder="Inserisci la password"
+                class="form-control"
+                type="password"
+              />
               @if (
-                signupForm.controls['indirizzo'].get('regione')?.touched &&
-                signupForm.controls['indirizzo'].get('regione')?.invalid
+                signupForm.controls['password'].touched &&
+                signupForm.controls['password'].hasError('pattern')
+              ) {
+                <p class="text-danger">
+                  Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1
+                  minuscola e minimo 8 caratteri)
+                </p>
+              } @else if (
+                signupForm.controls['password'].touched &&
+                signupForm.controls['password'].hasError('required')
               ) {
                 <p class="text-danger">Campo obbligatorio</p>
+              } @else if (
+                signupForm.controls['password'].valid &&
+                signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
+              ) {
+                <p class="text-success">Le password combaciano</p>
               }
             </div>
-            <div class="col-md-4">
-              <label for="citta" class="py-2 fw-bold">Città*</label>
-              <select
-                formControlName="citta"
-                class="form-select"
-                (change)="
-                  onChangeCitta(signupForm.controls['indirizzo'].get('citta')?.value, 'indirizzo')
-                "
-              >
-                <option value="" class="text-muted" disabled>Scegli la città</option>
-                @for (item of citta; track $index) {
-                  <option value="{{ item.id }}">{{ item.name }}</option>
-                } @empty {
-                  <option value=""></option>
-                }
-              </select>
+            <div class="col-md-6">
+              <label for="password" class="py-2 fw-bold">Ripeti password*</label>
+              <input
+                formControlName="ripetiPassword"
+                placeholder="Ripeti la password"
+                class="form-control"
+                type="password"
+              />
               @if (
-                signupForm.controls['indirizzo'].get('citta')?.touched &&
-                signupForm.controls['indirizzo'].get('citta')?.invalid
+                signupForm.controls['ripetiPassword'].touched &&
+                signupForm.controls['ripetiPassword'].hasError('pattern')
+              ) {
+                <p class="text-danger">
+                  Inserisci una password valida (1 maiuscola, 1 simobolo fra @$!%*?&, 1 numero, 1
+                  minuscola e minimo 8 caratteri)
+                </p>
+              } @else if (
+                signupForm.controls['ripetiPassword'].touched &&
+                signupForm.controls['ripetiPassword'].hasError('required')
               ) {
                 <p class="text-danger">Campo obbligatorio</p>
-              }
-            </div>
-            <div class="col-md-4">
-              <label for="cap" class="py-2 fw-bold">Cap*</label>
-              <select formControlName="cap" class="form-select">
-                <option value="" class="text-muted" disabled>Scegli il cap</option>
-                @for (item of cap; track $index) {
-                  <option value="{{ item.id }}">{{ item.name }}</option>
-                } @empty {
-                  <option value=""></option>
-                }
-              </select>
-              @if (
-                signupForm.controls['indirizzo'].get('cap')?.touched &&
-                signupForm.controls['indirizzo'].get('cap')?.invalid
+              } @else if (
+                signupForm.controls['password'].valid &&
+                signupForm.controls['password'].value != signupForm.controls['ripetiPassword'].value
               ) {
-                <p class="text-danger">Campo obbligatorio</p>
+                <p class="text-danger">La password non combacia</p>
+              } @else if (
+                signupForm.controls['password'].valid &&
+                signupForm.controls['password'].value == signupForm.controls['ripetiPassword'].value
+              ) {
+                <p class="text-success">Le password combaciano</p>
               }
             </div>
-            <div class="col-6">
-              <label for="via" class="py-2 fw-bold">Via*</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div
+            class="section row border border-secondary p-5 rounded shadow"
+            [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
+          >
+            <div class="col-md-12 py-1 pt-5">
+              <h1 class="text-secondary text-uppercase">
+                General datas
+                <i
+                  class="pi pi-id-card fs-3"
+                  [ngClass]="
+                    signupForm.controls['ragioneSociale'].valid &&
+                    signupForm.controls['partitaIva'].valid &&
+                    signupForm.controls['formaGiuridica'].valid
+                      ? 'text-success'
+                      : 'text-danger'
+                  "
+                ></i>
+              </h1>
+            </div>
+            <div class="col-md-6">
+              <label for="ragioneSociale" class="py-2 fw-bold"> Ragione sociale*</label>
               <input
                 type="text"
+                formControlName="ragioneSociale"
+                placeholder="Inserisci la ragione sociale"
                 class="form-control"
-                placeholder="Inserisci la via"
-                formControlName="via"
               />
               @if (
-                signupForm.controls['indirizzo'].get('via')?.touched &&
-                signupForm.controls['indirizzo'].get('via')?.invalid
+                signupForm.controls['ragioneSociale'].touched &&
+                signupForm.controls['ragioneSociale'].invalid
               ) {
                 <p class="text-danger">Campo obbligatorio</p>
+              } @else if (
+                signupForm.controls['ragioneSociale'].valid &&
+                signupForm.controls['partitaIva'].valid &&
+                signupForm.controls['formaGiuridica'].valid
+              ) {
+                <p class="text-success">Campo valido</p>
               }
             </div>
-            <div class="col-6">
-              <label for="numeroCivico" class="py-2 fw-bold">Numero civico*</label>
+            <div class="col-md-6">
+              <label for="partitaIva" class="py-2 fw-bold">Partita Iva*</label>
               <input
-                type="number"
+                type="text"
+                formControlName="partitaIva"
+                placeholder="Inserisci la partita iva"
                 class="form-control"
-                placeholder="Inserisci il numero civico"
-                formControlName="numeroCivico"
               />
               @if (
-                signupForm.controls['indirizzo'].get('numeroCivico')?.touched &&
-                signupForm.controls['indirizzo'].get('numeroCivico')?.invalid
+                signupForm.controls['partitaIva'].touched &&
+                signupForm.controls['partitaIva'].hasError('required')
               ) {
                 <p class="text-danger">Campo obbligatorio</p>
+              } @else if (
+                signupForm.controls['partitaIva'].touched &&
+                signupForm.controls['partitaIva'].hasError('pattern')
+              ) {
+                <p class="text-danger">Inserisci una partita iva valida</p>
+              } @else if (
+                signupForm.controls['ragioneSociale'].valid &&
+                signupForm.controls['partitaIva'].valid &&
+                signupForm.controls['formaGiuridica'].valid
+              ) {
+                <p class="text-success">Campo valido</p>
+              }
+            </div>
+            <div class="col-md-12">
+              <label for="formaGiuridica" class="py-2 fw-bold"> Forma giuridica*</label>
+              <select formControlName="formaGiuridica" class="form-select">
+                <option value="" class="text-muted" disabled>Scegli la forma giuridica</option>
+                @for (item of forme; track $index) {
+                  <option value="{{ item.id }}">{{ item.name }}</option>
+                } @empty {
+                  <option value=""></option>
+                }
+              </select>
+              @if (
+                signupForm.controls['formaGiuridica'].touched &&
+                signupForm.controls['formaGiuridica'].invalid
+              ) {
+                <p class="text-danger">Campo obbligatorio</p>
+              } @else if (
+                signupForm.controls['ragioneSociale'].valid &&
+                signupForm.controls['partitaIva'].valid &&
+                signupForm.controls['formaGiuridica'].valid
+              ) {
+                <p class="text-success">Campo valido</p>
               }
             </div>
           </div>
-          <div class="col-md-8">
-            <label for="settore" class="py-2 fw-bold">Settore*</label>
-            <select formControlName="settore" class="form-select">
-              <option value="" class="text-muted" disabled>Scegli il settore</option>
-              @for (item of settori; track $index) {
-                <option value="{{ item.id }}">{{ item.name }}</option>
-              } @empty {
-                <option value=""></option>
-              }
-            </select>
-            @if (signupForm.controls['settore'].touched && signupForm.controls['settore'].invalid) {
-              <p class="text-danger">Campo obbligatorio</p>
-            }
-          </div>
-          <div class="col-md-4">
-            <label for="dimensioniAzienda" class="py-2 fw-bold">Dimensioni*</label>
-            <select formControlName="dimensioniAzienda" class="form-select">
-              <option value="" class="text-muted" disabled>Scegli le dimensioni</option>
-              @for (item of dimensioni; track $index) {
-                <option value="{{ item.id }}">{{ item.label }}</option>
-              } @empty {
-                <option value=""></option>
-              }
-            </select>
-            @if (
-              signupForm.controls['dimensioniAzienda'].touched &&
-              signupForm.controls['dimensioniAzienda'].invalid
-            ) {
-              <p class="text-danger">Campo obbligatorio</p>
-            }
-          </div>
-          <div class="col-md-12 py-4">
-            <div class="form-check">
-              <input
-                type="checkbox"
-                id="settore"
-                formControlName="differentWorkStation"
-                class="form-check-input mt-3 border border-black"
-                (change)="updateSedeOperativa()"
-              />
-              <label for="settore" class="pb-2 pt-1 fw-bold"
-                >Sede operativa diversa dalla sede legale</label
-              >
-            </div>
-          </div>
-          @if (signupForm.controls['differentWorkStation'].value) {
-            <div formGroupName="sedeOperativa" class="row p-0 m-0">
-              <div class="col-md-12 pt-5 py-1">
-                <h1 class="text-secondary">
-                  Sede operativa <i class="fs-pi pi-building text-black"></i>
+        </div>
+        <div class="col-md-12">
+          <div
+            class="section row border border-secondary p-5 rounded shadow"
+            [ngClass]="isDark ? 'section-dark' : 'light-bg-section'"
+          >
+            <div formGroupName="indirizzo" class="row p-0 m-0">
+              <div class="col-md-12 py-1 pt-5">
+                <h1 class="text-secondary text-uppercase">
+                  Address <i class="fs-3 pi pi-map-marker"
+                  [ngClass]="signupForm.controls['indirizzo'].valid?'text-success':'text-danger'"></i>
                 </h1>
               </div>
               <div class="col-md-12">
@@ -352,22 +251,25 @@
                   class="form-select"
                   (change)="
                     onChangeNations(
-                      signupForm.controls['sedeOperativa'].get('nazione')?.value,
-                      'sede'
+                      signupForm.controls['indirizzo'].get('nazione')?.value,
+                      'indirizzo'
                     )
                   "
                 >
-                  @for (item of nazioniSede; track $index) {
+                  <option value="" class="text-muted" disabled>Scegli il paese</option>
+                  @for (item of nazioni; track $index) {
                     <option value="{{ item.id }}">{{ item.name }}</option>
                   } @empty {
                     <option value=""></option>
                   }
                 </select>
                 @if (
-                  signupForm.controls['sedeOperativa'].get('nazione')?.touched &&
-                  signupForm.controls['sedeOperativa'].get('nazione')?.invalid
+                  signupForm.controls['indirizzo'].get('nazione')?.touched &&
+                  signupForm.controls['indirizzo'].get('nazione')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
+                }@else if(signupForm.controls['indirizzo'].valid){
+                  <p class="text-success">Campo valido</p>
                 }
               </div>
               <div class="col-md-4">
@@ -377,22 +279,26 @@
                   class="form-select"
                   (change)="
                     onChangeRegions(
-                      signupForm.controls['sedeOperativa'].get('regione')?.value,
-                      'sede'
+                      signupForm.controls['indirizzo'].get('regione')?.value,
+                      'indirizzo'
                     )
                   "
                 >
-                  @for (item of regioniSede; track $index) {
+                  <option value="" class="text-muted" disabled>Scegli la regione</option>
+
+                  @for (item of regioni; track $index) {
                     <option value="{{ item.id }}">{{ item.name }}</option>
                   } @empty {
                     <option value=""></option>
                   }
                 </select>
                 @if (
-                  signupForm.controls['sedeOperativa'].get('regione')?.touched &&
-                  signupForm.controls['sedeOperativa'].get('regione')?.invalid
+                  signupForm.controls['indirizzo'].get('regione')?.touched &&
+                  signupForm.controls['indirizzo'].get('regione')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
+                }@else if(signupForm.controls['indirizzo'].valid){
+                  <p class="text-success">Campo valido</p>
                 }
               </div>
               <div class="col-md-4">
@@ -401,60 +307,251 @@
                   formControlName="citta"
                   class="form-select"
                   (change)="
-                    onChangeCitta(signupForm.controls['sedeOperativa'].get('citta')?.value, 'sede')
+                    onChangeCitta(signupForm.controls['indirizzo'].get('citta')?.value, 'indirizzo')
                   "
                 >
-                  @for (item of cittaSede; track $index) {
+                  <option value="" class="text-muted" disabled>Scegli la città</option>
+                  @for (item of citta; track $index) {
                     <option value="{{ item.id }}">{{ item.name }}</option>
                   } @empty {
                     <option value=""></option>
                   }
                 </select>
                 @if (
-                  signupForm.controls['sedeOperativa'].get('citta')?.touched &&
-                  signupForm.controls['sedeOperativa'].get('citta')?.invalid
+                  signupForm.controls['indirizzo'].get('citta')?.touched &&
+                  signupForm.controls['indirizzo'].get('citta')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
+                }@else if(signupForm.controls['indirizzo'].valid){
+                  <p class="text-success">Campo valido</p>
                 }
               </div>
               <div class="col-md-4">
                 <label for="cap" class="py-2 fw-bold">Cap*</label>
                 <select formControlName="cap" class="form-select">
-                  @for (item of capSede; track $index) {
+                  <option value="" class="text-muted" disabled>Scegli il cap</option>
+                  @for (item of cap; track $index) {
                     <option value="{{ item.id }}">{{ item.name }}</option>
                   } @empty {
                     <option value=""></option>
                   }
                 </select>
                 @if (
-                  signupForm.controls['sedeOperativa'].get('cap')?.touched &&
-                  signupForm.controls['sedeOperativa'].get('cap')?.invalid
+                  signupForm.controls['indirizzo'].get('cap')?.touched &&
+                  signupForm.controls['indirizzo'].get('cap')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
+                }@else if(signupForm.controls['indirizzo'].valid){
+                  <p class="text-success">Campo valido</p>
                 }
               </div>
               <div class="col-6">
                 <label for="via" class="py-2 fw-bold">Via*</label>
-                <input type="text" class="form-control" formControlName="via" />
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Inserisci la via"
+                  formControlName="via"
+                />
                 @if (
-                  signupForm.controls['sedeOperativa'].get('via')?.touched &&
-                  signupForm.controls['sedeOperativa'].get('via')?.invalid
+                  signupForm.controls['indirizzo'].get('via')?.touched &&
+                  signupForm.controls['indirizzo'].get('via')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
+                }@else if(signupForm.controls['indirizzo'].valid){
+                  <p class="text-success">Campo valido</p>
                 }
               </div>
               <div class="col-6">
                 <label for="numeroCivico" class="py-2 fw-bold">Numero civico*</label>
-                <input type="number" class="form-control" formControlName="numeroCivico" />
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="Inserisci il numero civico"
+                  formControlName="numeroCivico"
+                />
                 @if (
-                  signupForm.controls['sedeOperativa'].get('numeroCivico')?.touched &&
-                  signupForm.controls['sedeOperativa'].get('numeroCivico')?.invalid
+                  signupForm.controls['indirizzo'].get('numeroCivico')?.touched &&
+                  signupForm.controls['indirizzo'].get('numeroCivico')?.invalid
                 ) {
                   <p class="text-danger">Campo obbligatorio</p>
+                }@else if(signupForm.controls['indirizzo'].valid){
+                  <p class="text-success">Campo valido</p>
                 }
               </div>
             </div>
-          }
+            <div class="col-md-8">
+              <label for="settore" class="py-2 fw-bold">Settore*</label>
+              <select formControlName="settore" class="form-select">
+                <option value="" class="text-muted" disabled>Scegli il settore</option>
+                @for (item of settori; track $index) {
+                  <option value="{{ item.id }}">{{ item.name }}</option>
+                } @empty {
+                  <option value=""></option>
+                }
+              </select>
+              @if (
+                signupForm.controls['settore'].touched && signupForm.controls['settore'].invalid
+              ) {
+                <p class="text-danger">Campo obbligatorio</p>
+              }@else if(signupForm.controls['indirizzo'].valid){
+                <p class="text-success">Campo valido</p>
+              }
+            </div>
+            <div class="col-md-4">
+              <label for="dimensioniAzienda" class="py-2 fw-bold">Dimensioni*</label>
+              <select formControlName="dimensioniAzienda" class="form-select">
+                <option value="" class="text-muted" disabled>Scegli le dimensioni</option>
+                @for (item of dimensioni; track $index) {
+                  <option value="{{ item.id }}">{{ item.label }}</option>
+                } @empty {
+                  <option value=""></option>
+                }
+              </select>
+              @if (
+                signupForm.controls['dimensioniAzienda'].touched &&
+                signupForm.controls['dimensioniAzienda'].invalid
+              ) {
+                <p class="text-danger">Campo obbligatorio</p>
+              }@else if(signupForm.controls['indirizzo'].valid){
+                <p class="text-success">Campo valido</p>
+              }
+            </div>
+            <div class="col-md-12 py-4">
+              <div class="form-check">
+                <input
+                  type="checkbox"
+                  id="settore"
+                  formControlName="differentWorkStation"
+                  class="form-check-input mt-3 border border-black"
+                  (change)="updateSedeOperativa()"
+                />
+                <label for="settore" class="pb-2 pt-1 fw-bold"
+                  >Sede operativa diversa dalla sede legale</label
+                >
+              </div>
+            </div>
+            @if (signupForm.controls['differentWorkStation'].value) {
+              <div formGroupName="sedeOperativa" class="row p-0 m-0">
+                <div class="col-md-12 pt-5 py-1">
+                  <h1 class="text-secondary">
+                    Sede operativa <i class="fs-pi pi-building text-black"></i>
+                  </h1>
+                </div>
+                <div class="col-md-12">
+                  <label for="nazione" class="py-2 fw-bold"> Paese di registrazione*</label>
+                  <select
+                    formControlName="nazione"
+                    class="form-select"
+                    (change)="
+                      onChangeNations(
+                        signupForm.controls['sedeOperativa'].get('nazione')?.value,
+                        'sede'
+                      )
+                    "
+                  >
+                    @for (item of nazioniSede; track $index) {
+                      <option value="{{ item.id }}">{{ item.name }}</option>
+                    } @empty {
+                      <option value=""></option>
+                    }
+                  </select>
+                  @if (
+                    signupForm.controls['sedeOperativa'].get('nazione')?.touched &&
+                    signupForm.controls['sedeOperativa'].get('nazione')?.invalid
+                  ) {
+                    <p class="text-danger">Campo obbligatorio</p>
+                  }
+                </div>
+                <div class="col-md-4">
+                  <label for="regione" class="py-2 fw-bold">Regione*</label>
+                  <select
+                    formControlName="regione"
+                    class="form-select"
+                    (change)="
+                      onChangeRegions(
+                        signupForm.controls['sedeOperativa'].get('regione')?.value,
+                        'sede'
+                      )
+                    "
+                  >
+                    @for (item of regioniSede; track $index) {
+                      <option value="{{ item.id }}">{{ item.name }}</option>
+                    } @empty {
+                      <option value=""></option>
+                    }
+                  </select>
+                  @if (
+                    signupForm.controls['sedeOperativa'].get('regione')?.touched &&
+                    signupForm.controls['sedeOperativa'].get('regione')?.invalid
+                  ) {
+                    <p class="text-danger">Campo obbligatorio</p>
+                  }
+                </div>
+                <div class="col-md-4">
+                  <label for="citta" class="py-2 fw-bold">Città*</label>
+                  <select
+                    formControlName="citta"
+                    class="form-select"
+                    (change)="
+                      onChangeCitta(
+                        signupForm.controls['sedeOperativa'].get('citta')?.value,
+                        'sede'
+                      )
+                    "
+                  >
+                    @for (item of cittaSede; track $index) {
+                      <option value="{{ item.id }}">{{ item.name }}</option>
+                    } @empty {
+                      <option value=""></option>
+                    }
+                  </select>
+                  @if (
+                    signupForm.controls['sedeOperativa'].get('citta')?.touched &&
+                    signupForm.controls['sedeOperativa'].get('citta')?.invalid
+                  ) {
+                    <p class="text-danger">Campo obbligatorio</p>
+                  }
+                </div>
+                <div class="col-md-4">
+                  <label for="cap" class="py-2 fw-bold">Cap*</label>
+                  <select formControlName="cap" class="form-select">
+                    @for (item of capSede; track $index) {
+                      <option value="{{ item.id }}">{{ item.name }}</option>
+                    } @empty {
+                      <option value=""></option>
+                    }
+                  </select>
+                  @if (
+                    signupForm.controls['sedeOperativa'].get('cap')?.touched &&
+                    signupForm.controls['sedeOperativa'].get('cap')?.invalid
+                  ) {
+                    <p class="text-danger">Campo obbligatorio</p>
+                  }
+                </div>
+                <div class="col-6">
+                  <label for="via" class="py-2 fw-bold">Via*</label>
+                  <input type="text" class="form-control" formControlName="via" />
+                  @if (
+                    signupForm.controls['sedeOperativa'].get('via')?.touched &&
+                    signupForm.controls['sedeOperativa'].get('via')?.invalid
+                  ) {
+                    <p class="text-danger">Campo obbligatorio</p>
+                  }
+                </div>
+                <div class="col-6">
+                  <label for="numeroCivico" class="py-2 fw-bold">Numero civico*</label>
+                  <input type="number" class="form-control" formControlName="numeroCivico" />
+                  @if (
+                    signupForm.controls['sedeOperativa'].get('numeroCivico')?.touched &&
+                    signupForm.controls['sedeOperativa'].get('numeroCivico')?.invalid
+                  ) {
+                    <p class="text-danger">Campo obbligatorio</p>
+                  }
+                </div>
+              </div>
+            }
+          </div>
         </div>
       </form>
     } @else if (step == 2) {

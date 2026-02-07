@@ -15,10 +15,11 @@ import { ModeService } from '../../services/mode.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { Tooltip } from "primeng/tooltip";
 
 @Component({
   selector: 'app-home',
-  imports: [NgClass, ReactiveFormsModule, RouterLink],
+  imports: [NgClass, ReactiveFormsModule, RouterLink, Tooltip],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

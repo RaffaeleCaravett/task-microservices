@@ -24,9 +24,11 @@ input[type='number'] {
 }
 .section-dark {
   background-color: #474849 !important;
+  .form-check-input{
+    background-color: #474849;
+  }
   .form-control,
-  .form-select,
-  .form-check-input {
+  .form-select {
     font-weight: bold;
     background: none !important;
     outline: none!important;

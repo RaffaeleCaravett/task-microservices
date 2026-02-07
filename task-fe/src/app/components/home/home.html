@@ -1,6 +1,6 @@
 <div class="row text-center py-5 p-5">
-  <div class="col-12 d-flex align-items-center justify-content-center pt-5">
-    <h1 class="title text-uppercase fw-bold w-50">Take control of your things</h1>
+  <div class="col-12 text-center pt-5">
+    <h1 class="title text-uppercase fw-bold">Take control of your things</h1>
   </div>
   <div class="col-12 p-0">
     <h1 class="title-small m-auto w-50">Don't let other people do it for you, in their way.</h1>
@@ -13,9 +13,11 @@
             type="email"
             formControlName="email"
             class="form-control border-0 fs-4"
-            placeholder="type your email"
+            placeholder="taskMaster@email.com"
           /><button
-            class="btn btn-lg fs-4"
+            class="btn btn-lg fs-4 overflow-hidden px-4"
+            pTooltip="Fill the email field"
+            tooltipPosition="left"
             (click)="checkPermission()"
             [ngClass]="isDark ? 'dark-btn-signup' : 'light-btn-signup'"
           >
@@ -24,7 +26,7 @@
         </div>
       </form>
       <button
-        class="btn btn-lg px-5 py-2 fs-4"
+        class="btn btn-lg px-5 py-2 fs-4 overflow-hidden"
         [ngClass]="isDark ? ['dark-btn-login'] : 'light-btn-login'"
         routerLink="/login"
       >
@@ -37,7 +39,7 @@
     @for (card of homeCards; track $index) {
       <div class="col-lg-3 col-md-6 p-3">
         <div
-          class="border rounded h-100 p-3 shadow-sm border-black"
+          class="border rounded h-100 p-3 shadow-sm border-black overflow-auto"
           [ngClass]="isDark ? 'dark-home-card' : 'light-home-card'"
         >
           <div class="title d-flex justify-content-between fw-bolder">
