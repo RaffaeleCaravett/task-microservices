@@ -103,7 +103,7 @@ export interface Company {
   ragioneSociale: string;
   partitaIva: string;
   formaGiuridica: formaGiuridica;
-  indirizzo: indirizzo;
+  indirizzo: indirizzo[];
   settore: settore;
   dimensioniAzienda: dimensioni;
   sedeOperativa?: indirizzo;

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Component, effect, inject, OnInit } from '@angular/core';
 import { MenuService } from '../../../services/menu.service';
 import { filter, take } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
@@ -17,6 +17,7 @@ import { TableModule } from 'primeng/table';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ProjectState, TaskState } from '../../../enums/enums';
 import { ProfileService } from '../../../services/profile.service';
+import { ModeService } from '../../../services/mode.service';
 
 @Component({
   selector: 'app-profile',
@@ -41,6 +42,10 @@ export class ProfileComponent implements OnInit {
   protected menuService: MenuService = inject(MenuService);
   protected companyService: CompanyService = inject(CompanyService);
   protected authService: AuthService = inject(AuthService);
+  private modeService: ModeService = inject(ModeService);
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  protected profileService: ProfileService = inject(ProfileService);
+
   protected section: string = 'Generale';
   protected user: User | null = null;
   protected company: Company | null = null;
@@ -49,12 +54,11 @@ export class ProfileComponent implements OnInit {
   protected searchProjectForm = new FormGroup({
     search: new FormControl(''),
   });
+  protected isDark: boolean = false;
   protected searchUserForm: FormGroup = new FormGroup({});
   status: string[] = ['ACTIVE', 'INACTIVE'];
   loading: boolean = true;
   protected tasks: task[] = [];
-  protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-  protected profileService: ProfileService = inject(ProfileService);
   protected chart: any;
   protected chartUsersOptions: any = null;
   protected chartProjectsOptions: any = null;
@@ -234,7 +238,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '01' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -252,7 +256,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '01' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -270,7 +274,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '01' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
             ],
@@ -288,7 +292,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '02' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -306,7 +310,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '02' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -324,7 +328,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '02' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
             ],
@@ -342,7 +346,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '03' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -360,7 +364,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '03' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -370,7 +374,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '04' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -388,7 +392,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '04' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -406,7 +410,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '04' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -416,7 +420,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '05' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -434,7 +438,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '05' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -452,7 +456,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '05' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -462,7 +466,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '06' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -480,7 +484,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '06' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -498,7 +502,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '06' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -508,7 +512,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '07' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -526,7 +530,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '07' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -544,7 +548,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '07' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -554,7 +558,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '08' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -572,7 +576,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '08' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -590,7 +594,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '08' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -600,7 +604,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '09' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -618,7 +622,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '09' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -636,7 +640,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '09' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -646,7 +650,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '10' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -664,7 +668,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '10' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -682,7 +686,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '10' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -692,7 +696,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '11' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -710,7 +714,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '11' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -728,7 +732,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '11' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
               {
@@ -738,7 +742,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '12' &&
-                      t.state == TaskState.CREATED
+                      t.state == TaskState.CREATED,
                   )?.length || 3,
               },
             ],
@@ -756,7 +760,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '12' &&
-                      t.state == TaskState.ON_GOING
+                      t.state == TaskState.ON_GOING,
                   )?.length || 3,
               },
             ],
@@ -774,7 +778,7 @@ export class ProfileComponent implements OnInit {
                     (t) =>
                       t.createdAt.split('-')[0] == '2025' &&
                       t.createdAt.split('-')[1] == '12' &&
-                      t.state == TaskState.COMPLETED
+                      t.state == TaskState.COMPLETED,
                   )?.length || 3,
               },
             ],
@@ -813,7 +817,7 @@ export class ProfileComponent implements OnInit {
       if (this.searchProjectForm.controls['search'].value) {
         this.projectsToShow =
           this.company?.projects.filter((p) =>
-            p.name.includes(this.searchProjectForm.controls['search'].value!)
+            p.name.includes(this.searchProjectForm.controls['search'].value!),
           ) || [];
       } else {
         this.projectsToShow = this.company?.projects || [];
@@ -851,7 +855,7 @@ export class ProfileComponent implements OnInit {
           status: status || '',
         },
         this.page,
-        this.size
+        this.size,
       )
       .pipe(take(1))
       .subscribe({
@@ -860,5 +864,11 @@ export class ProfileComponent implements OnInit {
           this.cdr.detectChanges();
         },
       });
+  }
+  constructor() {
+    effect(() => {
+      this.isDark = this.modeService.isDark();
+      this.cdr.markForCheck();
+    });
   }
 }
