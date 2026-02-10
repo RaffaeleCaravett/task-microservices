@@ -7,8 +7,7 @@
   <div class="background position-absolute top-0 start-0 h-100 w-100"></div>
   <div class="pb-5 text-center z-index">
     <div class="positon-relative title-container">
-      <p class="title position-relative left">Some people <span class="text-danger pe-4 text-uppercase">join</span> <span class="fs-4">and some don't</span></p>
-      <p class="fs-3 position-relative right">But some people just dream <span class="title">and some <span class="text-danger text-uppercase">live</span></span></p>
+      <p class="title position-relative py-3">Welcome back.</p>
     </div>
     @if (section == 'login' && !isLoginLoading) {
       <form [formGroup]="loginForm" class="m-auto py-5 row text-center">
@@ -75,7 +74,9 @@
       <div class="py-5 my-5">
         <p class="h2">
           Insert the access code. <br />
-          We've sent one to your email address.
+          @if (!alreadyCode) {
+            We've sent one to your email address.
+          }
         </p>
         <div class="card bg-transparent flex justify-center border-0 py-3">
           <p-inputotp [(ngModel)]="value" size="large" class="m-auto" [length]="6" />
@@ -106,13 +107,15 @@
     <p
       class="btn"
       pTooltip="Insert code"
-      (click)="section == 'login' ? (section = 'access-code') : verifyCode(value)"
+      (click)="
+        section == 'login' ? (section = 'access-code') : verifyCode(value); alreadyCode = true
+      "
     >
       Already have a code <i class="pi pi-pencil"></i>
     </p>
   } @else {
     @if (type != 'user') {
-      <p pTooltip="Signin" (click)="section == 'login' ? login() : (section = 'login')" class="btn">
+      <p pTooltip="Signin" (click)="section == 'login' ? login() : (section = 'login');alreadyCode = false;" class="btn">
         <i class="pi pi-arrow-up-left pe-2"></i>Back to signin
       </p>
     }
@@ -121,4 +124,3 @@
 <div class="py-3"></div>
 <div class="py-3"></div>
 <div class="py-5 my-5"></div>
-

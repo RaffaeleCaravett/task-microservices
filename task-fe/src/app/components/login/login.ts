@@ -36,6 +36,7 @@ import { debug } from 'three/src/nodes/TSL.js';
   styleUrl: './login.scss',
 })
 export class LoginComponent implements OnInit {
+  alreadyCode:boolean = false;
   loginForm: FormGroup = new FormGroup({});
   router: Router = inject(Router);
   toastr: ToastrService = inject(ToastrService);
@@ -77,8 +78,8 @@ export class LoginComponent implements OnInit {
             this.isLoginLoading = true;
             this.cdr.markForCheck();
             setTimeout(() => {
-              debugger
               if (this.type == 'company') {
+                this.alreadyCode = false;
                 this.section = 'access-code';
                 this.isLoginLoading = false;
                 this.cdr.markForCheck();
