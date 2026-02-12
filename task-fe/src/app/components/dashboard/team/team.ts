@@ -68,7 +68,7 @@ export class TeamComponent implements OnInit {
           this.messageService.add({
             severity: 'success',
             summary: 'Added!',
-            detail: 'User added succesfuly! Now share the code with him!',
+            detail: 'User added succesfuly, now share the code with him!',
             life: 3000,
           });
           this.accessCode = data?.code;
