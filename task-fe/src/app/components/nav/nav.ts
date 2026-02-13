@@ -51,13 +51,6 @@ export class NavComponent implements OnInit {
       image = (this.authService.getUser() as User)?.immagine?.filter((i) => i.isCurrent)[0]?.image;
     } else if (this.authService.getCompany()) {
       this.company = this.authService.getCompany();
-      this.companyService.getUsers(this.company!.id).subscribe({
-        next: (data: Page<User>) => {
-          if (data) {
-            this.users = data;
-          }
-        },
-      });
       image = (this.authService.getCompany() as Company)?.immagine?.filter((i) => i.isCurrent)[0]
         ?.image;
     }
@@ -68,16 +61,7 @@ export class NavComponent implements OnInit {
   }
 
   addNewProject() {
-    if (this.users.content.length > 0) {
       const dialog = this.dialog.open(AddProjectComponent, { data: this.company });
-    } else {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Attention',
-        detail: "You don't have users to add yet. Invite some users first!",
-        life: 3000,
-      });
-    }
   }
   protected toggleMode(){
     this.modeService.toggleMode();

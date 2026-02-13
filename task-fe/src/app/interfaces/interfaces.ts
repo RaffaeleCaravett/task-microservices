@@ -103,7 +103,7 @@ export interface Company {
   ragioneSociale: string;
   partitaIva: string;
   formaGiuridica: formaGiuridica;
-  indirizzo: indirizzo;
+  indirizzo: indirizzo[];
   settore: settore;
   dimensioniAzienda: dimensioni;
   sedeOperativa?: indirizzo;
@@ -198,4 +198,13 @@ export interface HomeCars {
   title: string;
   description: string;
   icon: string;
+}
+export interface BasicPageFilter {
+  page: number;
+  size: number;
+  sort: string;
+  order: string;
+}
+export interface CompanyProjectsFilters extends BasicPageFilter {
+  projectName: string | null;
 }

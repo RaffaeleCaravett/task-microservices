@@ -9,3 +9,38 @@ td,
 th {
   padding: 1.5%;
 }
+
+.dark-profile{
+  background: #474849;
+  label{
+    color:black;
+    font-size: 22px;
+  }
+  p{
+    font-size: 18px!important;
+    font-weight: bold;
+  }
+  .title{
+    background-color: #353739;
+  }
+}
+.light-profile{
+  background: rgb(236, 236, 217)!important;
+  label{
+    color:brown;
+    font-size: 22px;
+  }
+  p{
+    font-size: 18px!important;
+    font-weight: bold;
+  }
+  .title{
+    background-color: beige;
+  }
+}
+h2{
+  font-size: 5vw;
+  i{
+  font-size: 5vw!important;
+  }
+}

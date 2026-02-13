@@ -7,18 +7,7 @@
     color: brown !important;
   }
 }
-.position-absolute-1 {
-  position: fixed;
-  left: 80%;
-  top: -500px;
-  width: 1000px;
-  height: 1000px;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.3;
-  pointer-events: none;
-  z-index: 0;
-}
+
 .app-dark {
   background-color: #353739;
 }

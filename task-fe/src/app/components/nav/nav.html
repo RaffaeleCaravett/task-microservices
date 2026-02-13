@@ -4,103 +4,114 @@
 >
   <div class="container">
     <!-- Brand -->
-    <a class="navbar-brand" routerLink="{{authService.getIsLoggedIn()?'dashboard/landing':''}}">
-      <img
-        src="/assets/logo/logo.png"
-        width="80"
-        height="80"
-        class="d-inline-block align-top"
-        alt=""
-      />
-    </a>
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      <li class="nav-item">
-        <a class="nav-link fw-semibold" routerLink="{{authService.getIsLoggedIn()?'dashboard/landing':''}}"
-          ><button class="btn fw-bold" [ngClass]="isDark ? ['text-black'] : ''">
-            <h2>Appunto</h2>
-          </button></a
-        >
-      </li>
-    </ul>
-    <!-- Mobile toggle -->
     @if (authService.getIsLoggedIn()) {
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#mainNavbar"
-        aria-controls="mainNavbar"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
+      <a
+        class="navbar-brand"
+        routerLink="{{ authService.getIsLoggedIn() ? 'dashboard/landing' : '' }}"
       >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="mainNavbar">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active fw-semibold" routerLink="dashboard">Dashboard</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" routerLink="dashboard/progetti">Progetti</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" routerLink="dashboard/team">Team</a>
-          </li>
-        </ul>
-
-        <div class="d-flex align-items-center gap-2">
-          <div class="dropdown">
-            <button
-              class="btn btn-outline-secondary btn-sm dropdown-toggle"
-              type="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <img
-                src="{{ getImage() }}"
-                [style.width]="'30px'"
-                [style.height]="'30px'"
-                alt="image_not_found"
-              />
-              {{
-                authService.getUser() == null
-                  ? authService.getCompany()?.nomeAzienda
-                  : authService.getUser().nome
-              }}
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><a class="dropdown-item" routerLink="dashboard/landing">Ufficio</a></li>
-              <li>
-                <a class="dropdown-item" routerLink="dashboard/landing/impostazioni"
-                  >Impostazioni</a
-                >
-              </li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <a class="dropdown-item text-danger" (click)="logout()">Logout</a>
-              </li>
-            </ul>
-          </div>
-
-          <!-- CTA -->
-          <button class="btn btn-primary btn-sm" (click)="addNewProject()">+ New project</button>
-        </div>
-      </div>
-    } @else {
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center"></ul>
-      <div class="d-flex align-items-center gap-2 w-100 justify-content-end">
-        <button class="btn" type="button" (click)="toggleMode()">
-          @if (isDark) {
-            <i class="pi pi-sun fs-3 text-danger" pTooltip="Light mode"></i>
-          } @else {
-            <i class="pi pi-moon fs-3 text-success" pTooltip="Dark mode"></i>
-          }
-        </button>
-      </div>
+        <img
+          src="/assets/logo/logo.png"
+          width="80"
+          height="80"
+          class="d-inline-block align-top"
+          alt=""
+        />
+      </a>
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a
+            class="nav-link fw-semibold"
+            routerLink="{{ authService.getIsLoggedIn() ? 'dashboard/landing' : '' }}"
+            ><button class="btn fw-bold" [ngClass]="isDark ? ['text-black'] : ''">
+              <h2>Appunto</h2>
+            </button></a
+          >
+        </li>
+      </ul>
     }
+    <!-- Mobile toggle -->
+
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center"></ul>
+    <div class="d-flex align-items-center gap-2 w-100 justify-content-end">
+      @if (authService.getIsLoggedIn()) {
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#mainNavbar"
+          aria-controls="mainNavbar"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link fw-semibold" [routerLinkActive]="'active'" routerLink="dashboard"
+                >Dashboard</a
+              >
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link" [routerLinkActive]="'active'" routerLink="dashboard/team">Team</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center gap-2">
+            <div class="dropdown">
+              <button
+                class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  src="{{ getImage() }}"
+                  [style.width]="'30px'"
+                  [style.height]="'30px'"
+                  alt="image_not_found"
+                />
+                {{
+                  authService.getUser() == null
+                    ? authService.getCompany()?.nomeAzienda
+                    : authService.getUser().nome
+                }}
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" routerLink="dashboard/landing">Ufficio</a></li>
+                <li>
+                  <a class="dropdown-item" routerLink="dashboard/landing/impostazioni"
+                    >Impostazioni</a
+                  >
+                </li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item text-danger" (click)="logout()">Logout</a>
+                </li>
+              </ul>
+            </div>
+
+            <!-- CTA -->
+            <button
+              class="btn"
+              [ngClass]="isDark ? 'btn-secondary' : 'btn-success'"
+              (click)="addNewProject()"
+            >
+              + New project
+            </button>
+          </div>
+        </div>
+      }
+      <button class="btn" type="button" (click)="toggleMode()">
+        @if (isDark) {
+          <i class="pi pi-sun fs-3 text-danger" pTooltip="Light mode"></i>
+        } @else {
+          <i class="pi pi-moon fs-3 text-success" pTooltip="Dark mode"></i>
+        }
+      </button>
+    </div>
   </div>
 </nav>
 <p-toast />
