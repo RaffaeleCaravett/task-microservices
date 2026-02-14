@@ -4,7 +4,7 @@
 >
   <div class="container">
     <!-- Brand -->
-    @if (authService.getIsLoggedIn()) {
+    @if (isLoggedIn) {
       <a
         class="navbar-brand"
         routerLink="{{ authService.getIsLoggedIn() ? 'dashboard/landing' : '' }}"
@@ -33,7 +33,7 @@
 
     <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-center"></ul>
     <div class="d-flex align-items-center gap-2 w-100 justify-content-end">
-      @if (authService.getIsLoggedIn()) {
+      @if (isLoggedIn) {
         <button
           class="navbar-toggler"
           type="button"

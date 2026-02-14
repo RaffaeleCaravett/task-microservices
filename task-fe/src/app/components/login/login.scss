@@ -1,4 +1,78 @@
 ::ng-deep.p-inputtext {
-  background: #fff !important;
-  color: black!important;
+  background: transparent !important;
+  color: black !important;
+  border: 1px solid black!important;
+}
+.type-menu-container {
+  overflow: hidden;
+  height: 100px;
+  .type-menu-hidden {
+    transition: 1s;
+    left: 60%;
+    top: -100px;
+  }
+  .type-menu-visible {
+    transition: 1s;
+    left: 43%;
+    top: 0px;
+  }
+}
+.option {
+  cursor: pointer;
+  border:3px solid transparent;
+  &:hover {
+    scale: 1.005;
+    transition: 0.3s;
+  }
+}
+.form-control {
+  outline: 0 !important;
+  box-shadow: none !important;
+}
+.fake-input {
+  width: fit-content;
+  min-width: 400px;
+}
+.type-container {
+  flex-direction: row;
+}
+
+@media screen and (max-width: 450px) {
+  .type-container {
+    flex-direction: column;
+  }
+}
+
+.selected-dark-button{
+  border:3px solid rgb(84, 24, 24);
+  color: rgb(84, 24, 24);
+  scale: 1.005;
+}
+.selected-light-button{
+  border:3px solid green;
+  color: green;
+  scale: 1.005;
+}
+.background {
+  background-image: url('/assets/utils/cloud.webp');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  opacity: 0.08;
+  rotate: 0deg;
+  z-index: 0 !important;
+  animation: opacity-back 0.6s cubic-bezier(.22,.61,.36,1);
+  transform-origin: center;
+}
+@keyframes opacity-back {
+  from {
+    transform: translateY(-20px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+.z-index{
+  z-index: 1000!important;
 }

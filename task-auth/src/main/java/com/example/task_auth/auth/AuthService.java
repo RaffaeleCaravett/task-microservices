@@ -36,9 +36,7 @@ public class AuthService {
             if (bcrypt.matches(userLoginDTO.password(), user.getPassword())) {
                 if (!user.getIsConfirmed()) {
                     var accessCode = codiceAccessoRepository.findByUser_Email(userLoginDTO.email());
-                    if (accessCode.isPresent() && accessCode.get().getCode().equals(code)) {
-                        codiceAccessoRepository.delete(accessCode.get());
-                    } else {
+                    if (accessCode.isEmpty() || !accessCode.get().getCode().equals(code)) {
                         throw new UnauthorizedException("Non hai i permessi per accedere");
                     }
                 }
