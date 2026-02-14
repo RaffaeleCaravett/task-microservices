@@ -33,6 +33,14 @@ public class AuthController {
         return authService.companyLogin(userLoginDTO);
     }
 
+    @PostMapping("/user/login")
+    public SignupSuccess userLogin(@RequestBody @Valid UserLoginDTO userLoginDTO, @RequestParam String code, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
+        }
+        return authService.login(userLoginDTO, code);
+    }
+
     @GetMapping("/validate/code")
     public SignupSuccess validateCode(@RequestParam String code, @RequestParam String email, @RequestParam String type) {
         try {
