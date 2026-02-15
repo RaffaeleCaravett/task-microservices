@@ -42,6 +42,7 @@ public class CompanySignupDTO {
     @Max(value = 4, message = "Il campo dimensioni azienda è invalido: valore non presente in db")
     @Min(value = 1, message = "Il campo dimensioni azienda è invalido: valore inferiore a 1")
     private Long dimensioniAzienda;
+    private Boolean isDifferentWorkStation = false;
     @Nullable
     private Long paeseDiRegistrazioneSede;
     @Nullable
