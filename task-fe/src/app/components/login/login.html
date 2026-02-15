@@ -1,16 +1,15 @@
 <div class="text-end px-5">
-  <p-button
-    label="Don't have an account"
-    variant="outlined"
-    severity="warn"
-    pTooltip="Go to signup"
-    (click)="goToSignup()"
-  >
-  </p-button>
+  <p class="btn" pTooltip="Signup" (click)="goToSignup()">
+    Don't have an account <i class="pi pi-arrow-up-right"></i>
+  </p>
 </div>
-<div class="d-flex justify-content-center align-items-center position-relative pt-5 mt-5 cloud">
+<div class="d-flex justify-content-center align-items-center position-relative cloud">
   <div class="background position-absolute top-0 start-0 h-100 w-100"></div>
-  <div class="py-5 text-center z-index">
+  <div class="pb-5 text-center z-index">
+    <div class="positon-relative title-container">
+      <p class="title position-relative left">Some people <span class="text-danger pe-4">join</span> <span class="fs-4">and some don't</span></p>
+      <p class="fs-3 position-relative right">But some people dream <span class="title">and some <span class="text-danger">live</span></span></p>
+    </div>
     @if (section == 'login' && !isLoginLoading) {
       <form [formGroup]="loginForm" class="m-auto py-5 row text-center">
         <div class="d-flex gap-3 align-items-center justify-content-center pt-3 type-container">
@@ -51,7 +50,7 @@
           </div>
           <div
             class="border-bottom m-auto fake-input rounded border-secondary d-flex align-items-center justify-content-center mt-5"
-            [ngStyle]="type && type == 'user' ? {} : {'visibility':'hidden'}"
+            [ngStyle]="type && type == 'user' ? {} : { visibility: 'hidden' }"
           >
             <span class="fs-3 email px-3 fw-bold">Code</span>
             <input
@@ -100,43 +99,25 @@
         </p>
       </div>
     }
-   
   </div>
 </div>
- <div class="text-center" [ngStyle]="type == '' ? { visibility: 'hidden' } : {}">
-      @if (section == 'login' && type != 'user') {
-        @if (isDark) {
-          <p-button
-            label="Alreay have a code"
-            variant="outlined"
-            severity="danger"
-            (click)="section == 'login' ? (section = 'access-code') : verifyCode(value)"
-          />
-        } @else {
-          <p-button
-            label="Already have a code"
-            variant="outlined"
-            severity="success"
-            (click)="section == 'login' ? (section = 'access-code') : verifyCode(value)"
-          />
-        }
-      } @else {
-        @if (type != 'user') {
-          @if (isDark) {
-            <p-button
-              label="Back to login"
-              variant="outlined"
-              severity="danger"
-              (click)="section == 'login' ? login() : (section = 'login')"
-            />
-          } @else {
-            <p-button
-              label="Back to login"
-              variant="outlined"
-              severity="success"
-              (click)="section == 'login' ? login() : (section = 'login')"
-            />
-          }
-        }
-      }
-    </div>
+<div class="text-center" [ngStyle]="type == '' ? { visibility: 'hidden' } : {}">
+  @if (section == 'login' && type != 'user') {
+    <p
+      class="btn"
+      pTooltip="Insert code"
+      (click)="section == 'login' ? (section = 'access-code') : verifyCode(value)"
+    >
+      Already have a code <i class="pi pi-pencil"></i>
+    </p>
+  } @else {
+    @if (type != 'user') {
+      <p pTooltip="Signin" (click)="section == 'login' ? login() : (section = 'login')" class="btn">
+        <i class="pi pi-arrow-up-left pe-2"></i>Back to signin
+      </p>
+    }
+  }
+</div>
+<div class="py-3"></div>
+<div class="py-3"></div>
+<div class="py-5 my-5"></div>

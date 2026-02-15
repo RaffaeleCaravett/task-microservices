@@ -1,6 +1,5 @@
 <nav
   class="navbar navbar-expand-lg border-secondary sticky-top z-6 p-5"
-  [ngClass]="isDark ? '' : 'light-navbar'"
 >
   <div class="w-100 d-flex justify-content-between">
     <!-- Brand -->
@@ -43,7 +42,7 @@
             </div>
           </div>
         </div>
-        <div class="w-25 position-relative mode-container">
+        <div class="w-25 position-relative mode-container text-end">
           <button class="btn" type="button" (click)="toggleMode()">
             @if (isDark) {
               <i class="pi pi-sun fs-3 text-danger" pTooltip="Light mode"></i>
