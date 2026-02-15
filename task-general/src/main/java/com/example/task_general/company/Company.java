@@ -9,6 +9,7 @@ import com.example.task_general.settore.Settore;
 import com.example.task_general.user.Role;
 import com.example.task_general.user.User;
 import com.example.task_general.user.UserInfos;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,6 +40,7 @@ public class Company extends UserInfos implements UserDetails {
     private Settore settore;
     private String partitaIva;
     private String email;
+    @JsonIgnore
     private String password;
     private String nomeAzienda;
     @ManyToOne(fetch = FetchType.EAGER)
@@ -60,6 +62,7 @@ public class Company extends UserInfos implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @JsonIgnore
     private List<Project> projects;
 
     @Override

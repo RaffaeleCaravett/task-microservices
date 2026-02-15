@@ -33,6 +33,7 @@ public class User extends UserInfos implements UserDetails {
     @JsonIgnore
     private List<Company> companies;
     @OneToOne(mappedBy = "user",orphanRemoval = true,cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @JsonIgnore
     private CodiceAccesso codiceAccesso;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

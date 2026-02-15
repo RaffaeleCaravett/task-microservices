@@ -72,6 +72,9 @@ public class UserService {
             if (userLightFilters.status() != null) {
                 spec = spec.and(UserRepository.statusEquals(userLightFilters.status().equals("ACTIVE")));
             }
+            if (id != null) {
+                spec = spec.and(UserRepository.companyIdEquals(id));
+            }
             return userRepository.findAll(spec, pageable);
         } catch (Exception e) {
             throw new InternalServerException("Qualcosa è successo internamente. Risolviamo subito.");

@@ -29,4 +29,9 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
         if (status == null) return null;
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isConfirmed"), status);
     }
+
+    static Specification<User> companyIdEquals(Long id) {
+        if (id == null) return null;
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("companies").get("id"), id);
+    }
 }
