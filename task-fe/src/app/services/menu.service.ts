@@ -1,24 +1,26 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal, WritableSignal } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuService {
-  private readonly menu: BehaviorSubject<string[]> = new BehaviorSubject<string[]>([]);
-  public readonly menuObservable: Observable<string[]> = this.menu.asObservable();
-  private readonly voice: BehaviorSubject<string> = new BehaviorSubject<string>('');
-  public readonly voiceObservable: Observable<string> = this.voice.asObservable();
-  public setMenu(menu: string[]) {
-    this.menu.next(menu);
+  private menu: WritableSignal<{ id: number; value: string; icon: string }[]> = signal([]);
+
+  constructor() {
+    this.menu.set([
+      { id: 1, value: 'Projects', icon: 'pi-bullseye' },
+      { id: 2, value: 'People', icon: 'pi-users' },
+      { id: 3, value: 'Overview', icon: 'pi-bars' },
+      { id: 4, value: 'Goals', icon: 'pi-arrow-up-right' },
+      { id: 5, value: 'To achieve', icon: 'pi-list' },
+      { id: 6, value: 'Achieved', icon: 'pi-list-check' },
+      { id: 7, value: 'Motivation', icon: 'pi-plus' },
+      { id: 8, value: 'About us', icon: 'pi-info-circle' },
+      { id: 9, value: 'Leave', icon: 'pi-sign-out' },
+    ]);
   }
-  public getMenu(): Observable<string[]> {
-    return this.menuObservable;
-  }
-  public setVoice(voice: string) {
-    this.voice.next(voice);
-  }
-  public getVoice(): Observable<string> {
-    return this.voiceObservable;
+
+  getMenu(): { id: number; value: string; icon: string }[] {
+    return this.menu();
   }
 }
