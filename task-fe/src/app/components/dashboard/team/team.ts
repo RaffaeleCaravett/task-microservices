@@ -26,13 +26,17 @@ export class TeamComponent implements OnInit {
   protected accessCode: string = '';
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected searchUsersForm: FormGroup = new FormGroup({});
+  protected page: number = 0;
+  protected size: number = 20;
   ngOnInit(): void {
-    this.companyService.getUsers(this.company.id, true).subscribe({
-      next: (data: Page<User>) => {
-        this.users = data;
-        this.cdr.detectChanges();
-      },
-    });
+    this.companyService
+      .getUsers(this.company.id, { page: this.page, size: this.size }, true)
+      .subscribe({
+        next: (data: Page<User>) => {
+          this.users = data;
+          this.cdr.detectChanges();
+        },
+      });
     this.searchUsersForm = new FormGroup({
       search: new FormControl(''),
     });
@@ -68,7 +72,7 @@ export class TeamComponent implements OnInit {
             life: 3000,
           });
           this.accessCode = data?.code;
-          this.companyService.getUsers(this.company.id, true).subscribe({
+          this.companyService.getUsers(this.company.id,  { page: this.page, size: this.size }, true).subscribe({
             next: (users: Page<User>) => {
               this.users = users;
               this.cdr.markForCheck();

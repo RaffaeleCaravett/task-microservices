@@ -10,9 +10,18 @@ import { accessCode, CompanyProjectsFilters, Page, project, User } from '../inte
 export class CompanyService {
   private http: HttpClient = inject(HttpClient);
 
-  getUsers(companyId: number, skipFilters?: boolean): Observable<Page<User>> {
+  getUsers(
+    companyId: number,
+    filters: { page: number; size: number },
+    skipFilters?: boolean,
+  ): Observable<Page<User>> {
     return this.http
-      .get<Page<User>>(API_URL.general + '/company/users/' + companyId)
+      .get<Page<User>>(
+        API_URL.general +
+          '/company/users/' +
+          companyId +
+          `?page=${filters.page}&size=${filters.size}`,
+      )
       .pipe(map((u) => this.filterUsersPage(u, skipFilters)))
       .pipe(map((u) => this.addColor(u)));
   }
@@ -51,7 +60,10 @@ export class CompanyService {
     return backgrounds[random];
   }
 
-  getCompanyProjects(filters: CompanyProjectsFilters, companyId: number):Observable<Page<project>> {
+  getCompanyProjects(
+    filters: CompanyProjectsFilters,
+    companyId: number,
+  ): Observable<Page<project>> {
     let requestParams: string = '';
     Object.entries(filters).forEach(([key, value]) => {
       if (value) {
@@ -59,6 +71,8 @@ export class CompanyService {
       }
     });
     requestParams = requestParams.substring(0, requestParams.length - 1);
-    return this.http.get<Page<project>>(API_URL.general + '/project/' + companyId + '?' + requestParams);
+    return this.http.get<Page<project>>(
+      API_URL.general + '/project/' + companyId + '?' + requestParams,
+    );
   }
 }

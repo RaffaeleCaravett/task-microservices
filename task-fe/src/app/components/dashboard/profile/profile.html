@@ -9,7 +9,7 @@
           </h4>
         </div>
         @if (!addMode()) {
-          <div class="col-lg-3 py-5" [ngClass]="projectsToShow.length === 0 ? 'd-none' : ''">
+          <div class="col-lg-3 py-5" [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow? 'd-none' : ''">
             <form [formGroup]="searchProjectForm" class="d-flex m-auto">
               <input
                 type="text"
@@ -19,9 +19,9 @@
               />
             </form>
           </div>
-          <div class="col-lg-3" [ngClass]="projectsToShow.length === 0 ? '' : 'd-none'"></div>
+          <div class="col-lg-3" [ngClass]="projectsToShow?.content?.length === 0  || !projectsToShow? '' : 'd-none'"></div>
           <div class="col-lg-9 py-5">
-            @for (item of projectsToShow; track $index) {
+            @for (item of projectsToShow?.content; track $index) {
               <div
                 class="m-1 m-auto bg-light shadow-sm p-3 border rounded"
                 [style.height]="'fit-content'"
