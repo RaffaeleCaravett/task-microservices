@@ -68,7 +68,7 @@ export class ProfileComponent implements OnInit {
   protected user: User | null = null;
   protected company: Company | null = null;
   protected users!: Page<User>;
-  protected projectsToShow: project[] = [];
+  protected projectsToShow!: Page<project>;
   protected searchProjectForm = new FormGroup({
     search: new FormControl(''),
   });
@@ -125,15 +125,8 @@ export class ProfileComponent implements OnInit {
     const projectName = this.searchProjectForm.controls['search'].value;
     let filters = this.buildFilters(projectName);
     this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
-      next: (data: any) => {
-        this.projectsToShow = data.content;
-        this.pageable = {
-          first: data.first,
-          last: data.last,
-          numberOfElements: data.numberOfElements,
-          totalElements: data.totalElements,
-          totalPages: data.totalPages,
-        };
+      next: (data: Page<project>) => {
+        this.projectsToShow = data;
       },
     });
   }

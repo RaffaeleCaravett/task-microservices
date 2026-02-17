@@ -37,13 +37,12 @@
                 <p class="py-2 text-start">{{ item?.description }}</p>
                 <p class="text-end">{{ item?.createdAt }}</p>
               </div>
-            } @empty {
+            } 
               <div class="text-center py-5">
                 <button class="btn btn-primary my-5" (click)="switchToAddMode()">
                   + Add project
                 </button>
               </div>
-            }
           </div>
         } @else {
           <form [formGroup]="addProject">

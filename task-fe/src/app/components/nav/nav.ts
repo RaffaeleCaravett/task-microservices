@@ -87,5 +87,20 @@ export class NavComponent implements OnInit {
   toggleMenu() {
     this.showMenu = !this.showMenu;
   }
-  manageRoute(route: string) {}
+  manageRoute(route: string) {
+    switch (route) {
+      case 'Projects': {
+        this.router.navigate(['dashboard/landing']);
+        break;
+      }
+      case 'People': {
+        this.router.navigate(['dashboard/team']);
+        break;
+      }
+      case 'Goals': {
+        break;
+      }
+    }
+    this.showMenu = false;
+  }
 }

@@ -1,142 +1,163 @@
 <div class="container text-center py-5">
   <p-toast></p-toast>
   <div class="row py-5">
-    <div class="col-12 py-5">
-      <h2>Your team</h2>
+    <div class="col-12 py-5 text-uppercase">
+      <h2>Take care of your team.</h2>
     </div>
-    <div class="col-12 text-end pt-5 my-5">
-      <button class="btn btn-primary" (click)="manageAdd()">+ Add someone</button>
-    </div>
-    @if (addSomeone) {
-    <div class="row py-5">
-      <div class="w-75 m-auto p-3 bg-white border shadow-sm">
-        <p class="text-end">
-          <button class="btn btn-outline-danger" (click)="addForm.reset(); accessCode = ''">
-            <i class="pi pi-trash"></i>
-          </button>
-        </p>
-        <h2>Add someone</h2>
-        <form [formGroup]="addForm" class="row">
-          <div class="col-md-6">
-            <label for="email" class="p-3">Email</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="email"
-              placeholder="type the email .."
-            />
-            <p class="text-danger">
-              @if(addForm.controls['email'].hasError('required') &&
-              addForm.controls['email'].touched) {Campo obbligatorio } @else if(
-              addForm.controls['email'].hasError('pattern')
-              &&addForm.controls['email'].touched){Inserisci una email valida : example@valid.it }
-            </p>
-          </div>
-          <div class="col-md-6">
-            <label for="password" class="p-3">Password</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="password"
-              placeholder="type the password .."
-            />
-            <p class="text-danger">
-              @if(addForm.controls['password'].hasError('required')
-              &&addForm.controls['password'].touched) {Campo obbligatorio } @else if(
-              addForm.controls['password'].hasError('pattern')
-              &&addForm.controls['password'].touched){Inserisci una password valida : Password1@ }
-            </p>
-          </div>
-          <div class="col-md-6">
-            <label for="nome" class="p-3">Nome</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="nome"
-              placeholder="type the name .."
-            />
-            <p class="text-danger">
-              @if(addForm.controls['nome'].hasError('required') &&addForm.controls['nome'].touched)
-              {Campo obbligatorio }
-            </p>
-          </div>
-          <div class="col-md-6">
-            <label for="cognome" class="p-3">Cognome</label>
-            <input
-              type="text"
-              class="form-control"
-              formControlName="cognome"
-              placeholder="type the surname .."
-            />
-            <p class="text-danger">
-              @if(addForm.controls['cognome'].hasError('required')
-              &&addForm.controls['cognome'].touched) {Campo obbligatorio }
-            </p>
-          </div>
-          <div class="col-md-12 p-4 text-center">
-            <button
-              class="btn-primary btn"
-              [disabled]="addForm.invalid"
-              type="button"
-              (click)="add()"
-            >
-              Add
-            </button>
-          </div>
-          @if(accessCode){
-          <div class="col-12 p-2">
-            <span class="fw-bold me-3">Il codice di accesso è :</span>
-            <span class="fs-4">{{ accessCode }}</span>
-            <p class="text-danger">
-              Copialo subito e invialo allo user per non perderlo, altrimenti puoi cancellare lo
-              user e ricrearlo.
-            </p>
-          </div>
-          }
+    @if (!addSomeone) {
+      <div class="col-lg-3 py-5" [ngClass]="users.content.length === 0 ? 'd-none' : ''">
+        <form [formGroup]="searchUsersForm" class="d-flex m-auto">
+          <input
+            type="text"
+            class="form-control text-end"
+            formControlName="search"
+            placeholder="Search between your project..."
+          />
         </form>
       </div>
-    </div>
+      <div class="col-lg-3" [ngClass]="users.content.length === 0 ? '' : 'd-none'"></div>
+      <div class="col-lg-9 py-5 my-5">
+        <div class="row py-5">
+          @for (item of users?.content; track $index) {
+            <div class="col-lg-3 col-md-4 col-sm-6 p-3 m-auto">
+              <div class="card w-100 position-relative" [style.minHeight]="'318px'">
+                <div
+                  class="card-img-top p-5 d-flex justify-content-center align-items-center fs-2"
+                  [ngClass]="item.color"
+                >
+                  {{ getInitials(item) }}
+                </div>
+                <div class="card-body">
+                  <h5 class="card-title">{{ item.nome + ' ' + item.cognome }}</h5>
+                  <p class="card-text">
+                    {{ item.email }}
+                    <br />
+                    created at: {{ item.createdAt | date: ' dd-MM-yyyy' }}
+                  </p>
+                  <button class="btn btn-primary position-absolute bottom-0 end-0 m-3">
+                    Overview
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+        <div class="text-center py-5">
+          <button class="btn btn-primary my-5" (click)="manageAdd()">+ Add someone</button>
+        </div>
+      </div>
+    } @else {
+      <div class="row py-5">
+        <div class="w-75 m-auto p-3 bg-white border shadow rounded">
+          <p class="text-end">
+            <button
+              class="btn btn-outline-danger"
+              pTooltip="Leave"
+              (click)="addForm.reset(); accessCode = ''; addSomeone = false"
+            >
+              <i class="pi pi-trash"></i>
+            </button>
+          </p>
+          <form [formGroup]="addForm" class="row">
+            <div class="col-md-6">
+              <label for="email" class="p-3">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="email"
+                placeholder="type the email .."
+              />
+              <p class="text-danger">
+                @if (
+                  addForm.controls['email'].hasError('required') &&
+                  addForm.controls['email'].touched
+                ) {
+                  Campo obbligatorio
+                } @else if (
+                  addForm.controls['email'].hasError('pattern') && addForm.controls['email'].touched
+                ) {
+                  Inserisci una email valida : example@valid.it
+                }
+              </p>
+            </div>
+            <div class="col-md-6">
+              <label for="password" class="p-3">Password</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="password"
+                placeholder="type the password .."
+              />
+              <p class="text-danger">
+                @if (
+                  addForm.controls['password'].hasError('required') &&
+                  addForm.controls['password'].touched
+                ) {
+                  Campo obbligatorio
+                } @else if (
+                  addForm.controls['password'].hasError('pattern') &&
+                  addForm.controls['password'].touched
+                ) {
+                  Inserisci una password valida : Password1@
+                }
+              </p>
+            </div>
+            <div class="col-md-6">
+              <label for="nome" class="p-3">Nome</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="nome"
+                placeholder="type the name .."
+              />
+              <p class="text-danger">
+                @if (
+                  addForm.controls['nome'].hasError('required') && addForm.controls['nome'].touched
+                ) {
+                  Campo obbligatorio
+                }
+              </p>
+            </div>
+            <div class="col-md-6">
+              <label for="cognome" class="p-3">Cognome</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="cognome"
+                placeholder="type the surname .."
+              />
+              <p class="text-danger">
+                @if (
+                  addForm.controls['cognome'].hasError('required') &&
+                  addForm.controls['cognome'].touched
+                ) {
+                  Campo obbligatorio
+                }
+              </p>
+            </div>
+            <div class="col-md-12 p-4 text-center">
+              <button
+                class="btn-primary btn"
+                [disabled]="addForm.invalid"
+                type="button"
+                (click)="add()"
+              >
+                Add
+              </button>
+            </div>
+            @if (accessCode) {
+              <div class="col-12 p-2">
+                <span class="fw-bold me-3 py-2">Il codice di accesso è :</span>
+                <span class="fs-4 py-2">{{ accessCode }}</span>
+                <p class="text-danger pt-3">
+                  Copialo subito e invialo al membro del tuo team per non perderlo. In alternativa,
+                  puoi cancellare lo user e ricrearlo.
+                </p>
+              </div>
+            }
+          </form>
+        </div>
+      </div>
     }
-    <div class="row">
-      @for (item of users?.content; track $index) {
-      <div class="col-lg-3 col-md-4 col-sm-6 p-3 m-auto">
-        <div class="card w-100 position-relative" [style.minHeight]="'318px'">
-          <div
-            class="card-img-top p-5 d-flex justify-content-center align-items-center fs-2"
-            [ngClass]="item.color"
-          >
-            {{ getInitials(item) }}
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{ item.nome + ' ' + item.cognome }}</h5>
-            <p class="card-text">
-              {{ item.email }}
-              <br />
-              created at: {{ item.createdAt | date : ' dd-MM-yyyy' }}
-            </p>
-            <button class="btn btn-primary position-absolute bottom-0 end-0 m-3">Overview</button>
-          </div>
-        </div>
-      </div>
-
-      }@empty {
-      <div class="col-lg-3 col-md-4 col-sm-6 p-3 m-auto py-5">
-        <div class="card" style="width: 18rem">
-          <div
-            class="card-img-top p-5 bg-secondary d-flex justify-content-center align-items-center fs-2"
-          >
-            No one
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">Still empty</h5>
-            <p class="card-text">
-              Actually you have no one into your team. It's time to add someone.
-            </p>
-            <button class="btn btn-primary">Add someone</button>
-          </div>
-        </div>
-      </div>
-      }
-    </div>
   </div>
 </div>

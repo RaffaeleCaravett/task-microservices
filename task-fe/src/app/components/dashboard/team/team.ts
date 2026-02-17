@@ -6,13 +6,14 @@ import { DatePipe, NgClass } from '@angular/common';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
+import { Tooltip, TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-team',
-  imports: [DatePipe, ReactiveFormsModule, NgClass, ToastModule],
+  imports: [DatePipe, ReactiveFormsModule, NgClass, ToastModule, Tooltip],
   templateUrl: './team.html',
   styleUrl: './team.scss',
-  providers: [MessageService, NgClass],
+  providers: [MessageService, NgClass, TooltipModule],
 })
 export class TeamComponent implements OnInit {
   protected users!: Page<User>;
@@ -24,12 +25,16 @@ export class TeamComponent implements OnInit {
   protected messageService: MessageService = inject(MessageService);
   protected accessCode: string = '';
   protected cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
+  protected searchUsersForm: FormGroup = new FormGroup({});
   ngOnInit(): void {
     this.companyService.getUsers(this.company.id, true).subscribe({
       next: (data: Page<User>) => {
         this.users = data;
         this.cdr.detectChanges();
       },
+    });
+    this.searchUsersForm = new FormGroup({
+      search: new FormControl(''),
     });
     this.addForm = new FormGroup({
       email: new FormControl('', [
