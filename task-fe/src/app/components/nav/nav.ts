@@ -35,7 +35,7 @@ export class NavComponent implements OnInit {
   protected menuService: MenuService = inject(MenuService);
   isLoggedIn: boolean = false;
   protected showMenu: boolean = false;
-  protected menuVoices: {id:number,value:string, icon:string}[] = [];
+  protected menuVoices: { id: number; value: string; icon: string }[] = [];
   ngOnInit(): void {
     this.menuVoices = this.menuService.getMenu();
     this.showMenu = false;
@@ -87,4 +87,5 @@ export class NavComponent implements OnInit {
   toggleMenu() {
     this.showMenu = !this.showMenu;
   }
+  manageRoute(route: string) {}
 }

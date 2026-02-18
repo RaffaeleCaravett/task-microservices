@@ -30,6 +30,7 @@
                     class="fs-3 d-flex align-items-end gap-2 menu-item"
                     [ngStyle]="user && v.value == 'people' ? { display: 'none' } : {}"
                     [ngStyle]="v.value == 'Leave'?{'color':'red'}:{}"
+                    (click)="manageRoute(v.value)"
                   >
                     <i class="fs-5 pi {{ v.icon }}" ></i> {{ v.value }}
                   </p>
