@@ -86,16 +86,19 @@ export class ProfileComponent implements OnInit {
   protected size: number = 20;
   protected sort: string = 'id';
   protected order: string = 'asc';
+  protected pageable: any;
   protected usersForCount: number = 0;
   protected addMode: WritableSignal<boolean> = signal(false);
   protected addProject: FormGroup = new FormGroup({});
   protected addProjectFormSubmitted: boolean = false;
   protected selectedManager!: User;
   showManagers: WritableSignal<boolean> = signal(false);
+  protected filteredUsers: User[] = [];
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
     if (this.company) {
+      this.filteredUsers = [...this.company.users];
       this.search();
     }
     setTimeout(() => {
@@ -122,7 +125,16 @@ export class ProfileComponent implements OnInit {
     const projectName = this.searchProjectForm.controls['search'].value;
     let filters = this.buildFilters(projectName);
     this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
-      next: (data: any) => {},
+      next: (data: any) => {
+        this.projectsToShow = data.content;
+        this.pageable = {
+          first: data.first,
+          last: data.last,
+          numberOfElements: data.numberOfElements,
+          totalElements: data.totalElements,
+          totalPages: data.totalPages,
+        };
+      },
     });
   }
 

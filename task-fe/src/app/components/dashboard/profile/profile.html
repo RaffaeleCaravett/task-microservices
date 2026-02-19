@@ -82,8 +82,13 @@
                       formControlName="managerId"
                       placeholder="Choose a manager"
                       class="form-control border-bottom-0"
+                      (click)="showManagers.set(true)"
                     />
-                    <i class="pi pi-chevron-down"></i>
+                    @if (!showManagers()) {
+                      <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
+                    } @else {
+                      <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
+                    }
                   </div>
                   @if (showManagers()) {
                     <div class="d-flex align-items-center">
