@@ -44,3 +44,9 @@ h2{
   font-size: 5vw!important;
   }
 }
+.form-control, .form-select, textarea {
+  box-shadow: none;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
