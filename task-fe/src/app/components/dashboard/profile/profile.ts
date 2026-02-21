@@ -61,7 +61,6 @@ export class ProfileComponent implements OnInit {
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected profileService: ProfileService = inject(ProfileService);
 
-  protected section: string = 'Generale';
   protected user: User | null = null;
   protected company: Company | null = null;
   protected users!: Page<User>;
@@ -96,7 +95,7 @@ export class ProfileComponent implements OnInit {
     }, 1000);
 
     this.searchProjectForm.valueChanges.pipe(debounceTime(300)).subscribe((data)=>{
-      console.log(data)
+      
     })
   }
 
