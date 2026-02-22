@@ -24,4 +24,5 @@ public class ProjectDTO {
     @NotNull(message = "Mana l'azienda")
     private Long companyId;
     private Long typeId;
+    private String state;
 }

@@ -39,7 +39,7 @@ public class ProjectService {
 
         Project project = new Project();
         project.setCreatedAt(LocalDate.now());
-        project.setProjectState(ProjectState.STARTED);
+        project.setProjectState(ProjectState.valueOf(projectDTO.getState()));
         project.setTitle(projectDTO.getTitle());
         project.setDescription(projectDTO.getDescription());
         project.setCompany(companyService.findById(projectDTO.getCompanyId()));
