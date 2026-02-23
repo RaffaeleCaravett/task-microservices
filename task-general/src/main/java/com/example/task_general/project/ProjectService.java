@@ -7,6 +7,7 @@ import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.EntityNotPresentException;
 import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.UnauthorizedException;
+import com.example.task_general.projectType.ProjectTypeService;
 import com.example.task_general.user.UserService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -28,6 +29,7 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final CompanyService companyService;
     private final UserService userService;
+    private final ProjectTypeService projectTypeService;
 
     public Project create(ProjectDTO projectDTO, Company company) {
         var foundCompany = companyService.findById(projectDTO.getCompanyId());
@@ -44,7 +46,7 @@ public class ProjectService {
         project.setManager(userService.findById(projectDTO.getManagerId()));
         project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
         project.setTasks(new ArrayList<>());
-        project.setType()
+        project.setProjectType(projectTypeService.findById(projectDTO.getTypeId()));
         return projectRepository.save(project);
     }
 
