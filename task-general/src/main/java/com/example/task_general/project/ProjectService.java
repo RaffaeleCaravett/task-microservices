@@ -3,6 +3,7 @@ package com.example.task_general.project;
 import com.example.task_general.company.Company;
 import com.example.task_general.company.CompanyService;
 import com.example.task_general.dtos.entitiesDTO.ProjectDTO;
+import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.EntityNotPresentException;
 import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.UnauthorizedException;
@@ -28,7 +29,12 @@ public class ProjectService {
     private final CompanyService companyService;
     private final UserService userService;
 
-    public Project addProject(ProjectDTO projectDTO) {
+    public Project create(ProjectDTO projectDTO, Company company) {
+        var foundCompany = companyService.findById(projectDTO.getCompanyId());
+        if(!foundCompany.getId().equals(company.getId())){
+            throw new BadRequestException("Non puoi creare progetti per altre companie");
+        }
+
         Project project = new Project();
         project.setCreatedAt(LocalDate.now());
         project.setProjectState(ProjectState.STARTED);
@@ -38,6 +44,7 @@ public class ProjectService {
         project.setManager(userService.findById(projectDTO.getManagerId()));
         project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
         project.setTasks(new ArrayList<>());
+        project.setType()
         return projectRepository.save(project);
     }
 
