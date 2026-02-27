@@ -78,3 +78,11 @@ nav {
     }
   }
 }
+
+.menu-item {
+  cursor: pointer;
+  &:hover{
+    scale: 1.01;
+    transition: .3s;
+  }
+}

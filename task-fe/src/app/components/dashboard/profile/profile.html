@@ -47,7 +47,7 @@
                 <p class="text-end">{{ item?.createdAt }}</p>
               </div>
             } @empty {
-              <div class="text-center">
+              <div class="text-center py-5">
                 <p class="fs-1">Ops ...</p>
                 <p class="fs-2 pt-4">Currently you have no active projects, let's add some!</p>
                 <button class="btn btn-secondary mt-3" routerLink="/dashboard/progetti" [ngClass]="isDark?'btn-secondary':'btn-success'">+ Add project</button>

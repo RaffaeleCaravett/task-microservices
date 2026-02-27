@@ -28,7 +28,7 @@
               >
                 @for (v of menuVoices; track v.id) {
                   <p
-                    class="fs-3 d-flex align-items-end gap-2"
+                    class="fs-3 d-flex align-items-end gap-2 menu-item"
                     [ngStyle]="user && v.value == 'people' ? { display: 'none' } : {}"
                     [ngStyle]="v.value == 'Leave'?{'color':'red'}:{}"
                   >
