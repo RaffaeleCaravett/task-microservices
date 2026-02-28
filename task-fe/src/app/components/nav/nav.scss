@@ -29,18 +29,20 @@ nav {
 .toggle-i {
   cursor: pointer;
 }
-.menu-container {
-  top: 30px;
-  height: 375px;
   .menu {
-    top: 5px;
+    top: 45px;
     transition: 0.4s;
   }
   .menu-hidden {
-    transition: 0.4s;
-    top: -370px;
+    transition: 0.6s;
+    max-height: 0px;
+    top: 45px;
+    overflow: hidden;
+    padding:0!important;
+    border: none!important;
+    box-shadow:none!important;
+    width: 0;
   }
-}
 @media screen and (max-width: 400px) {
   .mode-container {
     top: -40px;

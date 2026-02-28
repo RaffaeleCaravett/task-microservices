@@ -10,7 +10,7 @@
       <p class="title position-relative py-3">Welcome back.</p>
     </div>
     @if (section == 'login' && !isLoginLoading) {
-      <form [formGroup]="loginForm" class="m-auto py-5 row text-center">
+      <form [formGroup]="loginForm" class="m-auto py-5 my-4 row text-center">
         <div class="d-flex gap-3 align-items-center justify-content-center pt-3 type-container">
           @for (item of types; track $index) {
             <p
@@ -105,7 +105,7 @@
 <div class="text-center" [ngStyle]="type == '' ? { visibility: 'hidden' } : {}">
   @if (section == 'login' && type != 'user') {
     <p
-      class="btn"
+      class="btn p-0"
       pTooltip="Insert code"
       (click)="
         section == 'login' ? (section = 'access-code') : verifyCode(value); alreadyCode = true
