@@ -52,12 +52,12 @@ public class Company extends UserInfos implements UserDetails {
     private List<Indirizzo> sedeLegale;
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<MetodoPagamento> metodoPagamento;
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "companies_users",
             joinColumns = @JoinColumn(name = "company_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-
+    @JsonIgnore
     private List<User> users;
     @Enumerated(EnumType.STRING)
     private Role role;

@@ -101,8 +101,17 @@ public class AuthService {
                 user.setCompanies(user.getCompanies());
             }
             user.setEmail(userLoginDTO.getEmail());
-            userRepository.save(user);
             user.setPassword(passwordEncoder.encode(userLoginDTO.getPassword()));
+            userRepository.save(user);
+            var users = company.getUsers();
+            if(null!= users){
+                users.add(user);
+            }else{
+                users = new ArrayList<>();
+                users.add(user);
+            }
+            company.setUsers(users);
+            companyRepository.save(company);
             return createUserAccessCode(user.getId());
         } catch (Exception e) {
             throw new InternalServerException("E' successo un problema imprevisto nella registrazione");
