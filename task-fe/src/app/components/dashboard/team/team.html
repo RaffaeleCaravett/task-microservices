@@ -5,13 +5,16 @@
       <h2>Take care of your team.</h2>
     </div>
     @if (!addSomeone) {
+      <div class="text-end pt-5 col-12">
+        <button class="btn btn-primary my-5" (click)="manageAdd()">+ Add someone</button>
+      </div>
       <div class="col-lg-3 py-5" [ngClass]="users?.content?.length === 0 ? 'd-none' : ''">
         <form [formGroup]="searchUsersForm" class="d-flex m-auto">
           <input
             type="text"
             class="form-control text-end"
             formControlName="search"
-            placeholder="Search between your project..."
+            placeholder="Search between your team..."
           />
         </form>
       </div>
@@ -19,31 +22,43 @@
       <div class="col-lg-9 py-5 my-5">
         <div class="row py-5">
           @for (item of users?.content; track $index) {
-            <div class="col-lg-3 col-md-4 col-sm-6 p-3 m-auto">
-              <div class="card w-100 position-relative" [style.minHeight]="'318px'">
+            <div class="col-md-4 p-3 m-auto">
+              <div class="w-100 position-relative rounded p-2 shadow" [style.minHeight]="'318px'">
                 <div
-                  class="card-img-top p-5 d-flex justify-content-center align-items-center fs-2"
-                  [ngClass]="item.color"
+                  class="card-img-top d-flex justify-content-center rounded-circle align-items-center fs-2 bg-light m-auto"
+                  [style.height]="'100px'"
+                  [style.width]="'100px'"
                 >
                   {{ getInitials(item) }}
                 </div>
-                <div class="card-body">
+                <div class="pt-4">
                   <h5 class="card-title">{{ item.nome + ' ' + item.cognome }}</h5>
                   <p class="card-text">
                     {{ item.email }}
                     <br />
                     created at: {{ item.createdAt | date: ' dd-MM-yyyy' }}
                   </p>
-                  <button class="btn btn-primary position-absolute bottom-0 end-0 m-3">
-                    Overview
-                  </button>
+                  <div class="dropdown position-absolute bottom-0 end-0 p-2">
+                    <button
+                      class="btn btn-primary dropdown-toggle"
+                      type="button"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      ...
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><button class="dropdown-item" type="button">Edit</button></li>
+                      <li><button class="dropdown-item" type="button">Block</button></li>
+                      <li>
+                        <button class="dropdown-item text-danger" type="button">Delete</button>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
               </div>
             </div>
           }
-        </div>
-        <div class="text-center py-5">
-          <button class="btn btn-primary my-5" (click)="manageAdd()">+ Add someone</button>
         </div>
       </div>
     } @else {

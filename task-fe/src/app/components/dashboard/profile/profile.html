@@ -9,7 +9,10 @@
           </h4>
         </div>
         @if (!addMode()) {
-          <div class="col-lg-3 py-5" [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow? 'd-none' : ''">
+          <div
+            class="col-lg-3 py-5"
+            [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow ? 'd-none' : ''"
+          >
             <form [formGroup]="searchProjectForm" class="d-flex m-auto">
               <input
                 type="text"
@@ -19,7 +22,10 @@
               />
             </form>
           </div>
-          <div class="col-lg-3" [ngClass]="projectsToShow?.content?.length === 0  || !projectsToShow? '' : 'd-none'"></div>
+          <div
+            class="col-lg-3"
+            [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow ? '' : 'd-none'"
+          ></div>
           <div class="col-lg-9 py-5">
             @for (item of projectsToShow?.content; track $index) {
               <div
@@ -37,12 +43,12 @@
                 <p class="py-2 text-start">{{ item?.description }}</p>
                 <p class="text-end">{{ item?.createdAt }}</p>
               </div>
-            } 
-              <div class="text-center py-5">
-                <button class="btn btn-primary my-5" (click)="switchToAddMode()">
-                  + Add project
-                </button>
-              </div>
+            }
+            <div class="text-center py-5">
+              <button class="btn btn-primary my-5" (click)="switchToAddMode()">
+                + Add project
+              </button>
+            </div>
           </div>
         } @else {
           <form [formGroup]="addProject">
@@ -82,33 +88,89 @@
                       placeholder="Choose a manager"
                       class="form-control border-bottom-0"
                       (click)="showManagers.set(true)"
+                      (input)="showManagers.set(true)"
                     />
-                    @if (!showManagers()) {
-                      <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
-                    } @else {
-                      <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
-                    }
+                    <div class="d-flex gap-2">
+                      @if (addProject.controls['managerId'].value.length > 0) {
+                        <i
+                          class="pi pi-times"
+                          (click)="
+                            addProject.controls['managerId'].setValue(''); selectedManager = null
+                          "
+                        ></i>
+                      }
+                      @if (!showManagers()) {
+                        <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
+                      } @else {
+                        <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
+                      }
+                    </div>
                   </div>
                   @if (showManagers()) {
-                    <div class="d-flex align-items-center">
-                      @for (item of company?.users; track $index) {
-                        <p (click)="chooseManager(item)">{{ item.nome + ' ' + item.cognome }}</p>
-                        <i class="pi pi-check text-success"></i>
-                        <i class="pi pi-delete text-danger"></i>
-                      }
+                    <div class="position-relative bg-white">
+                      <div
+                        class="position-absolute overflow-auto top-0 bg-white border w-100 p-1 rounded shadow"
+                        [style.maxHeight]="'500px'"
+                      >
+                        @for (item of filteredUsers; track $index) {
+                          <div (click)="chooseManager(item)">
+                            {{ item.nome + ' ' + item.cognome }}
+                          </div>
+                        } @empty {
+                          <div>No managers ...</div>
+                        }
+                      </div>
                     </div>
                   }
                   @if (
-                    addProjectFormSubmitted && addProject.controls['title'].hasError('required')
+                    addProjectFormSubmitted && addProject.controls['managerId'].hasError('required')
                   ) {
                     <div>
-                      <p class="text-danger">Inserisci il titolo</p>
+                      <p class="text-danger">Scegli il manager per questo progetto</p>
                     </div>
-                  } @else if (
-                    addProjectFormSubmitted && addProject.controls['title'].hasError('maxLength')
+                  } @else if (addProjectFormSubmitted) {
+                    <div>
+                      <p class="text-success">Campo valido</p>
+                    </div>
+                  }
+                </div>
+                <div class="col-md-6 my-4">
+                  <div class="d-flex align-items-center border-bottom rounded">
+                    <select type="text" formControlName="typeId" class="form-select">
+                      <option value="" selected disabled>Choose a type</option>
+                      @for (item of types; track $index) {
+                        <option [value]="item.id">{{ item.tipoProgetto }}</option>
+                      }
+                    </select>
+                  </div>
+
+                  @if (
+                    addProjectFormSubmitted && addProject.controls['typeId'].hasError('required')
                   ) {
                     <div>
-                      <p class="text-danger">Massimo 100 caratteri</p>
+                      <p class="text-danger">Inserisci il tipo</p>
+                    </div>
+                  } @else if (addProjectFormSubmitted) {
+                    <div>
+                      <p class="text-success">Campo valido</p>
+                    </div>
+                  }
+                </div>
+                <div class="col-md-6 my-4">
+                  <div class="d-flex align-items-center border-bottom rounded">
+                    <select type="text" formControlName="state" class="form-select">
+                      <option value="" selected disabled>Choose a state</option>
+                      @for (item of states; track $index) {
+                        <option [value]="item">{{ item }}</option>
+                      }
+                    </select>
+                  </div>
+
+                  @if (
+                    addProjectFormSubmitted && addProject.controls['state'].hasError('required')
+                  ) {
+                    <div>
+                      <p class="text-danger">Inserisci lo stato</p>
                     </div>
                   } @else if (addProjectFormSubmitted) {
                     <div>
@@ -119,29 +181,37 @@
                 <div class="col-md-12 my-4">
                   <textarea
                     placeholder="Description"
-                    maxlength="400"
+                    maxlength="600"
                     rows="5"
                     formControlName="description"
                     class="form-control"
                   >
                   </textarea>
                   @if (
-                    addProjectFormSubmitted && addProject.controls['title'].hasError('required')
+                    addProjectFormSubmitted &&
+                    addProject.controls['description'].hasError('required')
                   ) {
                     <div class="col-12">
-                      <p class="text-danger">Inserisci il titolo</p>
+                      <p class="text-danger">Inserisci la descrizione</p>
                     </div>
                   } @else if (
-                    addProjectFormSubmitted && addProject.controls['title'].hasError('maxLength')
+                    addProjectFormSubmitted &&
+                    addProject.controls['description'].hasError('maxLength')
                   ) {
                     <div class="col-12">
-                      <p class="text-danger">Massimo 100 caratteri</p>
+                      <p class="text-danger">Massimo 600 caratteri</p>
                     </div>
                   } @else if (addProjectFormSubmitted) {
                     <div class="col-12">
                       <p class="text-success">Campo valido</p>
                     </div>
                   }
+                </div>
+                <div class="col-12 text-end py-3">
+                  <button class="btn btn-primary" (click)="createProject()">
+                    <i class="pi pi-plus"></i>
+                    Add project
+                  </button>
                 </div>
               </div>
             </div>

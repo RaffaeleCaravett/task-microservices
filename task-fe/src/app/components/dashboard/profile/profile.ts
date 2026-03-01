@@ -16,6 +16,8 @@ import {
   CompanyProjectsFilters,
   Page,
   project,
+  projectDTO,
+  projectType,
   task,
   User,
 } from '../../../interfaces/interfaces';
@@ -38,6 +40,7 @@ import { TableModule } from 'primeng/table';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ProfileService } from '../../../services/profile.service';
 import { ModeService } from '../../../services/mode.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-profile',
@@ -91,9 +94,12 @@ export class ProfileComponent implements OnInit {
   protected addMode: WritableSignal<boolean> = signal(false);
   protected addProject: FormGroup = new FormGroup({});
   protected addProjectFormSubmitted: boolean = false;
-  protected selectedManager!: User;
+  protected selectedManager: User | null = null;
   showManagers: WritableSignal<boolean> = signal(false);
   protected filteredUsers: User[] = [];
+  protected types: projectType[] = [];
+  protected states: string[] = [];
+  protected messageService: MessageService = inject(MessageService);
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
@@ -108,17 +114,22 @@ export class ProfileComponent implements OnInit {
 
     this.searchProjectForm.valueChanges.pipe(debounceTime(300)).subscribe((data) => {});
     this.addProject = new FormGroup({
-      title: new FormControl('', Validators.required),
-      description: new FormControl('', Validators.required),
+      title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      description: new FormControl('', [Validators.required, Validators.maxLength(600)]),
       managerId: new FormControl('', Validators.required),
       typeId: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
     });
+    this.addProject.valueChanges.pipe(debounceTime(300)).subscribe((data) => {
+      this.filterManagers(data.managerId);
+    });
+    this.loadDatas();
   }
   chooseManager(item: User) {
-    this.addProject.controls['managerId'].setValue(item.id);
+    this.addProject.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
     this.addProject.updateValueAndValidity();
     this.selectedManager = item;
+    this.showManagers.set(false);
   }
 
   search() {
@@ -131,6 +142,19 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  filterManagers(value: string | null | undefined) {
+    if (value) {
+      let filtered = this.company?.users.filter(
+        (u: User) =>
+          u.nome.toLowerCase().includes(value.toLowerCase()) ||
+          u.cognome.toLowerCase().includes(value.toLowerCase()),
+      );
+      this.filteredUsers = filtered || [];
+    } else {
+      this.filteredUsers = this.company?.users || [];
+    }
+    this.cdr.markForCheck();
+  }
   buildFilters(projectName: string | null): CompanyProjectsFilters {
     return {
       page: this.page,
@@ -143,6 +167,44 @@ export class ProfileComponent implements OnInit {
 
   switchToAddMode() {
     this.addMode.set(true);
+  }
+
+  loadDatas() {
+    this.profileService.getProjectTypes().subscribe({
+      next: (data: projectType[]) => {
+        this.types = data;
+      },
+    });
+    this.states = ['PENDING', 'STARTED', 'STOPPED', 'COMPLETED'];
+  }
+
+  createProject() {
+    this.addProjectFormSubmitted = true;
+    if (this.addProject.invalid || !this.selectedManager) {
+      return;
+    }
+    let project: projectDTO = {
+      title: this.addProject.controls['title'].value,
+      description: this.addProject.controls['description'].value,
+      managerId: this.selectedManager.id,
+      typeId: this.addProject.controls['typeId'].value,
+      state: this.addProject.controls['state'].value,
+      companyId: this.company?.id || 0,
+    };
+    this.profileService.createProject(project).subscribe({
+      next: (data: project) => {
+        if (data && data.id) {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Project added',
+            detail: 'Congratulations, you\ve succesfuly added your project. Go work for it!',
+            life: 3000,
+          });
+        }
+        this.addMode.set(false);
+        this.loadDatas();
+      },
+    });
   }
   constructor() {
     effect(() => {

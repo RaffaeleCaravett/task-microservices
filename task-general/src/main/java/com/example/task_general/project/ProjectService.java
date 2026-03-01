@@ -36,18 +36,24 @@ public class ProjectService {
         if(!foundCompany.getId().equals(company.getId())){
             throw new BadRequestException("Non puoi creare progetti per altre companie");
         }
+       try{
+           Project project = new Project();
+           project.setCreatedAt(LocalDate.now());
+           project.setProjectState(ProjectState.valueOf(projectDTO.getState()));
+           project.setTitle(projectDTO.getTitle());
+           project.setDescription(projectDTO.getDescription());
+           project.setCompany(companyService.findById(projectDTO.getCompanyId()));
+           project.setManager(userService.findById(projectDTO.getManagerId()));
+           if(null != projectDTO.getDevelopers()) {
+               project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
+           }
+           project.setTasks(new ArrayList<>());
+           project.setProjectType(projectTypeService.findById(projectDTO.getTypeId()));
+           return projectRepository.save(project);
+       }catch (Exception e){
+           throw new InternalServerException("Something bad happened, we're working on it to solve as soon as possible.");
+       }
 
-        Project project = new Project();
-        project.setCreatedAt(LocalDate.now());
-        project.setProjectState(ProjectState.valueOf(projectDTO.getState()));
-        project.setTitle(projectDTO.getTitle());
-        project.setDescription(projectDTO.getDescription());
-        project.setCompany(companyService.findById(projectDTO.getCompanyId()));
-        project.setManager(userService.findById(projectDTO.getManagerId()));
-        project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
-        project.setTasks(new ArrayList<>());
-        project.setProjectType(projectTypeService.findById(projectDTO.getTypeId()));
-        return projectRepository.save(project);
     }
 
     public Project addManagerToProject(Long projectId, Long userId, Company company) {

@@ -24,7 +24,7 @@ public class ProjectController {
         return projectService.filterByCompanyIdAndName(id, projectName, pageable);
     }
 
-    @PostMapping("/{id}")
+    @PostMapping("")
     public Project createProject(@RequestBody @Valid ProjectDTO projectDTO, BindingResult bindingResult, @AuthenticationPrincipal Company company) {
         if(bindingResult.hasErrors()){
             throw new BadRequestException(bindingResult.getAllErrors().getFirst().getDefaultMessage());

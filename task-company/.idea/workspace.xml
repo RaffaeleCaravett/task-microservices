@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="94856bcc-874f-4f96-ab73-a157275a6477" name="Changes" comment="ready to do fe now">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/auth/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/auth/AuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/Company.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/company/Company.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-fe/src/app/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../task-fe/src/app/interfaces/interfaces.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/dtos/entitiesDTO/ProjectDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/dtos/entitiesDTO/ProjectDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../task-general/src/main/java/com/example/task_general/project/ProjectService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

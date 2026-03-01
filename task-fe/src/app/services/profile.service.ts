@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { EnvironmentInjector, inject, Injectable } from '@angular/core';
 import { API_URL } from '../core/environment';
 import { map, Observable } from 'rxjs';
-import { Page, User } from '../interfaces/interfaces';
+import { Page, project, projectDTO, projectType, User } from '../interfaces/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -14,19 +14,12 @@ export class ProfileService {
     companyId: number,
     filters: { email?: string; fullname?: string; status?: string },
     page: number,
-    size: number
+    size: number,
   ): Observable<Page<User>> {
     return this.http
-      .post<Page<User>>(
-        API_URL.general +
-          '/users/byCompanyAndFilters/' +
-          companyId +
-          '?page=' +
-          page +
-          '&size=' +
-          size,
-        filters
-      )
+      .post<
+        Page<User>
+      >(API_URL.general + '/users/byCompanyAndFilters/' + companyId + '?page=' + page + '&size=' + size, filters)
       .pipe(map((u) => this.addColor(u)));
   }
 
@@ -52,5 +45,13 @@ export class ProfileService {
       random = random - 1;
     }
     return backgrounds[random];
+  }
+
+  getProjectTypes(): Observable<projectType[]> {
+    return this.http.get<projectType[]>(API_URL.general + '/company/types');
+  }
+
+  createProject(projectDTO: projectDTO): Observable<project> {
+    return this.http.post<project>(API_URL.general + '/project', projectDTO);
   }
 }
