@@ -15,7 +15,7 @@ import { MenuService } from '../../services/menu.service';
 
 @Component({
   selector: 'app-nav',
-  imports: [RouterLinkActive, RouterLink, ToastModule, NgClass, Tooltip, NgStyle],
+  imports: [ToastModule, NgClass, Tooltip, NgStyle],
   templateUrl: './nav.html',
   styleUrl: './nav.scss',
   providers: [MessageService],

@@ -4,10 +4,11 @@ import { NavComponent } from './components/nav/nav';
 import { FootComponent } from './components/foot/foot';
 import { NgClass } from '@angular/common';
 import { ModeService } from './services/mode.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, NavComponent, FootComponent, NgClass],
+  imports: [RouterOutlet, NavComponent, FootComponent, ToastModule],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })

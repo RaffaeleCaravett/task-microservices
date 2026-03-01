@@ -7,7 +7,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { MenuService } from '../../../services/menu.service';
-import { filter, take } from 'rxjs';
+import { debounceTime, filter, take } from 'rxjs';
 import { AuthService } from '../../../services/auth.service';
 import {
   Company,
@@ -94,6 +94,10 @@ export class ProfileComponent implements OnInit {
       this.loading = false;
       this.cdr.detectChanges();
     }, 1000);
+
+    this.searchProjectForm.valueChanges.pipe(debounceTime(300)).subscribe((data)=>{
+      console.log(data)
+    })
   }
 
   search() {

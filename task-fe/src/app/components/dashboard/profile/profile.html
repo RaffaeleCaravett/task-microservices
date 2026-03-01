@@ -4,53 +4,19 @@
     } @else {
       <div class="col-12 overflow-auto p-3">
         <div class="row" [style.height]="'100%'">
-          <div class="col-md-3 p-2">
-            <div class="border border-secondary rounded p-2">
-              <h3 class="fw-bold">Total projects</h3>
-              <h2>{{projectsToShow.length}}</h2>
-            </div>
-          </div>
-          <div class="col-md-3 p-2">
-            <div class="border border-secondary rounded p-2">
-              <h3 class="fw-bold">Total projects</h3>
-              <h2>{{projectsToShow.length}}</h2>
-            </div>
-          </div>
-          <div class="col-md-3 p-2">
-            <div class="border border-secondary rounded p-2">
-              <h3 class="fw-bold">Total projects</h3>
-              <h2>{{projectsToShow.length}}</h2>
-            </div>
-          </div>
-          <div class="col-md-3 p-2">
-            <div class="border border-secondary rounded p-2">
-              <h3 class="fw-bold">Total projects</h3>
-              <h2>{{projectsToShow.length}}</h2>
-            </div>
-          </div>
           <div class="col-md-12 py-5 fw-bold text-uppercase text-center rounded-top title">
-            <h2><i class="pi pi-sitemap fs-2"></i> Your projects</h2>
+            <h4 class="w-75 m-auto">
+              If you don’t have a plan for yourself, someone else has one for you.
+            </h4>
           </div>
-          <div class="col-lg-3 py-5y">
+          <div class="col-lg-3 py-5">
             <form [formGroup]="searchProjectForm" class="d-flex m-auto">
               <input
                 type="text"
                 class="form-control text-end"
                 formControlName="search"
-                placeholder="Search ..."
-              /> 
-              <button
-                class="btn mx-2 pt-1"
-                [disabled]="
-                  !company?.projects ||
-                  company?.projects == undefined ||
-                  (company?.projects && company?.projects?.length == 0)
-                "
-                (click)="search()"
-                [ngClass]="isDark?'btn-secondary':'btn-success'"
-              >
-                search
-              </button>
+                placeholder="Search between your project..."
+              />
             </form>
           </div>
           <div class="col-lg-9 py-5">
@@ -71,10 +37,14 @@
                 <p class="text-end">{{ item?.createdAt }}</p>
               </div>
             } @empty {
-              <div class="text-center">
-                <p class="fs-1">Ops ...</p>
-                <p class="fs-2 pt-4">Currently you have no active projects, let's add some!</p>
-                <button class="btn btn-secondary mt-3" routerLink="/dashboard/progetti" [ngClass]="isDark?'btn-secondary':'btn-success'">+ Add project</button>
+              <div class="text-center py-5">
+                <button
+                  class="btn btn-secondary my-5"
+                  routerLink="/dashboard/progetti"
+                  [ngClass]="isDark ? 'btn-secondary' : 'btn-success'"
+                >
+                  + Add project
+                </button>
               </div>
             }
           </div>
