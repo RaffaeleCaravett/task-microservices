@@ -10,37 +10,49 @@ th {
   padding: 1.5%;
 }
 
-.dark-profile{
+.dark-profile {
   background: #474849;
-  label{
-    color:black;
+  label {
+    color: black;
     font-size: 22px;
   }
-  p{
-    font-size: 18px!important;
+  p {
+    font-size: 18px !important;
     font-weight: bold;
   }
-  .title{
+  .title {
     background-color: #353739;
   }
 }
-.light-profile{
-  background: rgb(236, 236, 217)!important;
-  label{
-    color:brown;
+.light-profile {
+  background: rgb(236, 236, 217) !important;
+  label {
+    color: brown;
     font-size: 22px;
   }
-  p{
-    font-size: 18px!important;
+  p {
+    font-size: 18px !important;
     font-weight: bold;
   }
-  .title{
+  .title {
     background-color: beige;
   }
 }
-h2{
+h2 {
   font-size: 5vw;
-  i{
-  font-size: 5vw!important;
+  i {
+    font-size: 5vw !important;
   }
+}
+.form-control,
+.form-select,
+textarea {
+  box-shadow: none;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+.pi-chevron-up,
+.pi-chevron-down {
+  cursor: pointer;
 }

@@ -3,9 +3,11 @@ package com.example.task_general.project;
 import com.example.task_general.company.Company;
 import com.example.task_general.company.CompanyService;
 import com.example.task_general.dtos.entitiesDTO.ProjectDTO;
+import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.EntityNotPresentException;
 import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.UnauthorizedException;
+import com.example.task_general.projectType.ProjectTypeService;
 import com.example.task_general.user.UserService;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
@@ -27,17 +29,24 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final CompanyService companyService;
     private final UserService userService;
+    private final ProjectTypeService projectTypeService;
 
-    public Project addProject(ProjectDTO projectDTO) {
+    public Project create(ProjectDTO projectDTO, Company company) {
+        var foundCompany = companyService.findById(projectDTO.getCompanyId());
+        if(!foundCompany.getId().equals(company.getId())){
+            throw new BadRequestException("Non puoi creare progetti per altre companie");
+        }
+
         Project project = new Project();
         project.setCreatedAt(LocalDate.now());
-        project.setProjectState(ProjectState.STARTED);
+        project.setProjectState(ProjectState.valueOf(projectDTO.getState()));
         project.setTitle(projectDTO.getTitle());
         project.setDescription(projectDTO.getDescription());
         project.setCompany(companyService.findById(projectDTO.getCompanyId()));
         project.setManager(userService.findById(projectDTO.getManagerId()));
         project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
         project.setTasks(new ArrayList<>());
+        project.setProjectType(projectTypeService.findById(projectDTO.getTypeId()));
         return projectRepository.save(project);
     }
 

@@ -8,8 +8,7 @@
         <div class="w-75 text-center">
           <div class="positione-relative">
             <p
-              class="fs-2 d-flex justify-content-end gap-2 align-items-center position-absolute menu-title"
-              [ngClass]="isDark ? 'text-danger' : 'text-success'"
+              class="fs-2 d-flex justify-content-end gap-2 align-items-center position-absolute menu-title text-primary"
             >
               Succeed
               <i
@@ -31,6 +30,7 @@
                     class="fs-3 d-flex align-items-end gap-2 menu-item"
                     [ngStyle]="user && v.value == 'people' ? { display: 'none' } : {}"
                     [ngStyle]="v.value == 'Leave'?{'color':'red'}:{}"
+                    (click)="manageRoute(v.value)"
                   >
                     <i class="fs-5 pi {{ v.icon }}" ></i> {{ v.value }}
                   </p>

@@ -5,6 +5,8 @@ import {
   effect,
   inject,
   OnInit,
+  signal,
+  WritableSignal,
 } from '@angular/core';
 import { MenuService } from '../../../services/menu.service';
 import { debounceTime, filter, take } from 'rxjs';
@@ -19,8 +21,13 @@ import {
 } from '../../../interfaces/interfaces';
 import { DatePipe, NgClass } from '@angular/common';
 import { CompanyService } from '../../../services/company.service';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { Table } from 'primeng/table';
+import {
+  FormControl,
+  FormGroup,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { TagModule } from 'primeng/tag';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -29,10 +36,8 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
-import { ProjectState, TaskState } from '../../../enums/enums';
 import { ProfileService } from '../../../services/profile.service';
 import { ModeService } from '../../../services/mode.service';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -48,7 +53,6 @@ import { RouterLink } from '@angular/router';
     FormsModule,
     CanvasJSAngularChartsModule,
     NgClass,
-    RouterLink,
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
@@ -61,11 +65,10 @@ export class ProfileComponent implements OnInit {
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   protected profileService: ProfileService = inject(ProfileService);
 
-  protected section: string = 'Generale';
   protected user: User | null = null;
   protected company: Company | null = null;
   protected users!: Page<User>;
-  protected projectsToShow: project[] = [];
+  protected projectsToShow!: Page<project>;
   protected searchProjectForm = new FormGroup({
     search: new FormControl(''),
   });
@@ -83,11 +86,19 @@ export class ProfileComponent implements OnInit {
   protected size: number = 20;
   protected sort: string = 'id';
   protected order: string = 'asc';
+  protected pageable: any;
   protected usersForCount: number = 0;
+  protected addMode: WritableSignal<boolean> = signal(false);
+  protected addProject: FormGroup = new FormGroup({});
+  protected addProjectFormSubmitted: boolean = false;
+  protected selectedManager!: User;
+  showManagers: WritableSignal<boolean> = signal(false);
+  protected filteredUsers: User[] = [];
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
     if (this.company) {
+      this.filteredUsers = [...this.company.users];
       this.search();
     }
     setTimeout(() => {
@@ -95,16 +106,28 @@ export class ProfileComponent implements OnInit {
       this.cdr.detectChanges();
     }, 1000);
 
-    this.searchProjectForm.valueChanges.pipe(debounceTime(300)).subscribe((data)=>{
-      console.log(data)
-    })
+    this.searchProjectForm.valueChanges.pipe(debounceTime(300)).subscribe((data) => {});
+    this.addProject = new FormGroup({
+      title: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      managerId: new FormControl('', Validators.required),
+      typeId: new FormControl('', Validators.required),
+      state: new FormControl('', Validators.required),
+    });
+  }
+  chooseManager(item: User) {
+    this.addProject.controls['managerId'].setValue(item.id);
+    this.addProject.updateValueAndValidity();
+    this.selectedManager = item;
   }
 
   search() {
     const projectName = this.searchProjectForm.controls['search'].value;
     let filters = this.buildFilters(projectName);
     this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
-      next: (data: any) => {},
+      next: (data: Page<project>) => {
+        this.projectsToShow = data;
+      },
     });
   }
 
@@ -118,6 +141,9 @@ export class ProfileComponent implements OnInit {
     };
   }
 
+  switchToAddMode() {
+    this.addMode.set(true);
+  }
   constructor() {
     effect(() => {
       this.isDark = this.modeService.isDark();

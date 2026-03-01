@@ -1,15 +1,15 @@
-<div class="row py-5 px-3 d-flex align-items-stretch">
-  @if (section == 'Generale') {
-    @if (user) {
-    } @else {
-      <div class="col-12 overflow-auto p-3">
-        <div class="row" [style.height]="'100%'">
-          <div class="col-md-12 py-5 fw-bold text-uppercase text-center rounded-top title">
-            <h4 class="w-75 m-auto">
-              If you don’t have a plan for yourself, someone else has one for you.
-            </h4>
-          </div>
-          <div class="col-lg-3 py-5">
+<div class="row py-5 px-3 my-5 d-flex align-items-stretch">
+  @if (user) {
+  } @else {
+    <div class="col-12 overflow-auto p-3">
+      <div class="row" [style.height]="'100%'">
+        <div class="col-md-12 py-5 fw-bold text-uppercase text-center rounded-top title">
+          <h4 class="w-75 m-auto">
+            If you don’t have a plan for yourself, someone else has one for you.
+          </h4>
+        </div>
+        @if (!addMode()) {
+          <div class="col-lg-3 py-5" [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow? 'd-none' : ''">
             <form [formGroup]="searchProjectForm" class="d-flex m-auto">
               <input
                 type="text"
@@ -19,8 +19,9 @@
               />
             </form>
           </div>
+          <div class="col-lg-3" [ngClass]="projectsToShow?.content?.length === 0  || !projectsToShow? '' : 'd-none'"></div>
           <div class="col-lg-9 py-5">
-            @for (item of projectsToShow; track $index) {
+            @for (item of projectsToShow?.content; track $index) {
               <div
                 class="m-1 m-auto bg-light shadow-sm p-3 border rounded"
                 [style.height]="'fit-content'"
@@ -36,57 +37,116 @@
                 <p class="py-2 text-start">{{ item?.description }}</p>
                 <p class="text-end">{{ item?.createdAt }}</p>
               </div>
-            } @empty {
+            } 
               <div class="text-center py-5">
-                <button
-                  class="btn btn-secondary my-5"
-                  routerLink="/dashboard/progetti"
-                  [ngClass]="isDark ? 'btn-secondary' : 'btn-success'"
-                >
+                <button class="btn btn-primary my-5" (click)="switchToAddMode()">
                   + Add project
                 </button>
               </div>
-            }
           </div>
-        </div>
-      </div>
-    }
-  } @else if (section == 'Monitora statistiche') {
-    <div class="row">
-      <div class="col-md-12 py-5 p-3">
-        <div class="p-2 bg-white">
-          <h2 class="text-center">General statistics</h2>
-        </div>
-      </div>
-      <div class="col-md-6 p-3">
-        <div class="p-2 bg-white">
-          <div>
-            <canvasjs-chart
-              [options]="chartUsersOptions"
-              [styles]="{ width: '100%', height: '360px' }"
-            ></canvasjs-chart>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 p-3">
-        <div class="p-2 bg-white">
-          <div>
-            <canvasjs-chart
-              [options]="chartProjectsOptions"
-              [styles]="{ width: '100%', height: '360px' }"
-            ></canvasjs-chart>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12 p-3">
-        <div class="p-2 bg-white">
-          <div>
-            <canvasjs-chart
-              [options]="chartTaskOptions"
-              [styles]="{ width: '100%', height: '360px' }"
-            ></canvasjs-chart>
-          </div>
-        </div>
+        } @else {
+          <form [formGroup]="addProject">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-6 my-4">
+                  <input
+                    type="text"
+                    placeholder="Title"
+                    maxlength="100"
+                    formControlName="title"
+                    class="form-control"
+                  />
+                  @if (
+                    addProjectFormSubmitted && addProject.controls['title'].hasError('required')
+                  ) {
+                    <div>
+                      <p class="text-danger">Inserisci il titolo</p>
+                    </div>
+                  } @else if (
+                    addProjectFormSubmitted && addProject.controls['title'].hasError('maxLength')
+                  ) {
+                    <div>
+                      <p class="text-danger">Massimo 100 caratteri</p>
+                    </div>
+                  } @else if (addProjectFormSubmitted) {
+                    <div>
+                      <p class="text-success">Campo valido</p>
+                    </div>
+                  }
+                </div>
+                <div class="col-md-6 my-4">
+                  <div class="d-flex align-items-center border-bottom rounded">
+                    <input
+                      type="text"
+                      formControlName="managerId"
+                      placeholder="Choose a manager"
+                      class="form-control border-bottom-0"
+                      (click)="showManagers.set(true)"
+                    />
+                    @if (!showManagers()) {
+                      <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
+                    } @else {
+                      <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
+                    }
+                  </div>
+                  @if (showManagers()) {
+                    <div class="d-flex align-items-center">
+                      @for (item of company?.users; track $index) {
+                        <p (click)="chooseManager(item)">{{ item.nome + ' ' + item.cognome }}</p>
+                        <i class="pi pi-check text-success"></i>
+                        <i class="pi pi-delete text-danger"></i>
+                      }
+                    </div>
+                  }
+                  @if (
+                    addProjectFormSubmitted && addProject.controls['title'].hasError('required')
+                  ) {
+                    <div>
+                      <p class="text-danger">Inserisci il titolo</p>
+                    </div>
+                  } @else if (
+                    addProjectFormSubmitted && addProject.controls['title'].hasError('maxLength')
+                  ) {
+                    <div>
+                      <p class="text-danger">Massimo 100 caratteri</p>
+                    </div>
+                  } @else if (addProjectFormSubmitted) {
+                    <div>
+                      <p class="text-success">Campo valido</p>
+                    </div>
+                  }
+                </div>
+                <div class="col-md-12 my-4">
+                  <textarea
+                    placeholder="Description"
+                    maxlength="400"
+                    rows="5"
+                    formControlName="description"
+                    class="form-control"
+                  >
+                  </textarea>
+                  @if (
+                    addProjectFormSubmitted && addProject.controls['title'].hasError('required')
+                  ) {
+                    <div class="col-12">
+                      <p class="text-danger">Inserisci il titolo</p>
+                    </div>
+                  } @else if (
+                    addProjectFormSubmitted && addProject.controls['title'].hasError('maxLength')
+                  ) {
+                    <div class="col-12">
+                      <p class="text-danger">Massimo 100 caratteri</p>
+                    </div>
+                  } @else if (addProjectFormSubmitted) {
+                    <div class="col-12">
+                      <p class="text-success">Campo valido</p>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          </form>
+        }
       </div>
     </div>
   }

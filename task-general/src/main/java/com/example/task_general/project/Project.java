@@ -1,6 +1,7 @@
 package com.example.task_general.project;
 
 import com.example.task_general.company.Company;
+import com.example.task_general.projectType.ProjectType;
 import com.example.task_general.task.Task;
 import com.example.task_general.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -42,4 +43,6 @@ public class Project {
     @JoinColumn(name = "company_id")
     @JsonIgnore
     private Company company;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private ProjectType projectType;
 }
