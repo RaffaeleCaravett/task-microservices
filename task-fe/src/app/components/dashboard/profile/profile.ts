@@ -230,6 +230,14 @@ export class ProfileComponent implements OnInit {
     }
     this.showManagers.set(false);
   }
+  chooseType(value:string){
+    this.selectedItemForEdit!.projectType = this.types.filter(t=>t.tipoProgetto === value)[0];
+    this.editType.set(false);
+  }
+    chooseState(value:string){
+    this.selectedItemForEdit!.projectState = this.states.filter(t=>t === value)[0];
+    this.editState.set(false);
+  }
 
   search(fromStates?: boolean) {
     if (fromStates) {
@@ -379,6 +387,7 @@ export class ProfileComponent implements OnInit {
   openEdit(item: project) {
     this.showEditModal.set(true);
     this.selectedItemForEdit = JSON.parse(JSON.stringify(item));
+    this.selectedManagerForEdit = this.selectedItemForEdit!.manager;
     document.body.style.overflow = 'hidden';
     this.editProjectForm.patchValue({
       title: this.selectedItemForEdit!.title,

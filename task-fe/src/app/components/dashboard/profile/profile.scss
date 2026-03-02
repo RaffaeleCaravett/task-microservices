@@ -159,3 +159,16 @@ textarea {
 .title-input{
   max-width: 300px;
 }
+.manager_type{
+  display:flex;
+  justify-content:space-between;
+  gap:25px;
+}
+@media screen and (max-width:400px) {
+  .manager_type{
+  display:flex;
+  justify-content:center;
+  flex-direction: column;
+  gap:25px;
+}
+}
