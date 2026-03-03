@@ -53,7 +53,7 @@
             "
           >
             <form [formGroup]="searchProjectForm" class="row">
-              <div class="col-md-3 my-5 px-5">
+              <div class="col-xl-3 col-md-4 my-5 px-5">
                 <div class="input-container">
                   <label class="fw-bold text-uppercase text-muted text-center">Title</label>
                   <input
@@ -64,7 +64,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-3 my-5 px-5">
+              <div class="col-xl-3 col-md-4 my-5 px-5">
                 <div class="input-container">
                   <label class="fw-bold text-uppercase text-muted text-center">description</label>
                   <input
@@ -75,7 +75,7 @@
                   />
                 </div>
               </div>
-              <div class="col-md-3 my-5">
+              <div class="col-xl-3 col-md-4 my-5 px-5">
                 <div class="input-container">
                   <label class="fw-bold text-uppercase text-muted text-center">manager</label>
                   <input
@@ -86,32 +86,40 @@
                   />
                 </div>
               </div>
-              <div class="col-md-3 my-5">
-                <input
-                  type="text"
-                  class="form-control m-auto"
-                  formControlName="projectState"
-                  placeholder="Search by state..."
-                  [style.maxWidth]="'350px'"
-                />
+              <div class="col-xl-3 col-md-4 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">state</label>
+                  <input
+                    type="text"
+                    class="form-control border-0"
+                    formControlName="projectState"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
               </div>
-              <div class="col-md-3 my-5">
-                <input
-                  type="text"
-                  class="form-control m-auto"
-                  formControlName="projectType"
-                  placeholder="Search by type..."
-                  [style.maxWidth]="'350px'"
-                />
+              <div class="col-xl-3 col-md-4 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">type</label>
+                  <select
+                    type="text"
+                    class="form-select border-0"
+                    formControlName="projectType"
+                    [style.maxWidth]="'350px'"
+                  >
+                  </select>
+                </div>
               </div>
-              <div class="col-md-3 my-5">
-                <input
-                  type="text"
-                  class="form-control m-auto"
-                  formControlName="createdAt"
-                  placeholder="Search by creation date..."
-                  [style.maxWidth]="'350px'"
-                />
+              <div class="col-xl-3 col-md-4 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">creation date</label>
+                  <input
+                    type="date"
+                    class="form-control border-0"
+                    placeholder=""
+                    formControlName="createdAt"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
               </div>
             </form>
             <div class="text-end">
