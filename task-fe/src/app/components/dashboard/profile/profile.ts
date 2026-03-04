@@ -106,6 +106,7 @@ export class ProfileComponent implements OnInit {
   protected states: string[] = [];
   protected messageService: MessageService = inject(MessageService);
   protected filtersOpened: WritableSignal<boolean> = signal(false);
+  protected stateSelected: string = 'PENDING';
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();

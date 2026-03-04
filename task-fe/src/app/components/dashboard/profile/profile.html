@@ -14,6 +14,20 @@
             <button class="btn btn-primary my-5" (click)="switchToAddMode()">+ Add project</button>
           </div>
         </div>
+        @for (state of states; track state) {
+          <div class="col-md-3 text-center">
+            <label [ngClass]="stateSelected == state ? 'border-bottom' : 'text-muted'">
+              <button
+                class="btn"
+                [ngClass]="stateSelected == state ? ['text-primary', 'fw-bold'] : 'text-muted'"
+                (click)="stateSelected = state"
+              >
+                {{ state }}
+              </button>
+            </label>
+          </div>
+        }
+
         @if (!addMode()) {
           <div class="col-12 text-muted text-end px-3 d-flex justify-content-end">
             <button
@@ -39,33 +53,38 @@
             "
           >
             <form [formGroup]="searchProjectForm" class="row">
-              <div class="col-md-3 my-5">
-                <input
-                  type="text"
-                  class="form-control m-auto"
-                  formControlName="title"
-                  placeholder="Search by title..."
-                  [style.maxWidth]="'350px'"
-                />
+              <div class="col-md-3 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">Title</label>
+                  <input
+                    type="text"
+                    class="form-control border-0"
+                    formControlName="title"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">description</label>
+                  <input
+                    type="text"
+                    class="form-control border-0"
+                    formControlName="description"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
               </div>
               <div class="col-md-3 my-5">
-                <input
-                  type="text"
-                  class="form-control m-auto"
-                  formControlName="description"
-                  placeholder="Search by description..."
-                  [style.maxWidth]="'350px'"
-                />
-              </div>
-              <div class="col-md-3 my-5">
-                <label class="text-uppercase text-muted fw-bold"> manager</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  formControlName="managerId"
-                  placeholder="Search by manager..."
-                  [style.maxWidth]="'350px'"
-                />
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">manager</label>
+                  <input
+                    type="text"
+                    class="form-control border-0"
+                    formControlName="managerId"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
               </div>
               <div class="col-md-3 my-5">
                 <input

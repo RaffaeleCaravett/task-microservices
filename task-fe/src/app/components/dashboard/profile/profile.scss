@@ -1,5 +1,5 @@
 label {
-  color: rgb(2, 2, 150);
+  // color: rgb(2, 2, 150);
   font-size: 16px;
 }
 .overflow-scroll {
@@ -48,9 +48,13 @@ h2 {
 .form-select,
 textarea {
   box-shadow: none;
-  border-top: 0;
-  border-left: 0;
-  border-right: 0;
+//   border-top: 0;
+//   border-left: 0;
+//   border-right: 0;
+}
+.input-container{
+  border-bottom: 1px solid lightgray;
+  margin: auto;
 }
 .pi-chevron-up,
 .pi-chevron-down,
