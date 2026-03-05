@@ -48,11 +48,12 @@ h2 {
 .form-select,
 textarea {
   box-shadow: none;
-//   border-top: 0;
-//   border-left: 0;
-//   border-right: 0;
+  //   border-top: 0;
+  //   border-left: 0;
+  //   border-right: 0;
+  background-color: rgba(248, 249, 250);
 }
-.input-container{
+.input-container {
   border-bottom: 1px solid lightgray;
   margin: auto;
 }
@@ -62,10 +63,49 @@ textarea {
   cursor: pointer;
 }
 
-
-.opened-filters{
+.opened-filters {
   height: fit-content;
 }
-.closed-filters{
+.closed-filters {
   height: 0;
+}
+.type_PERSONALE {
+  color: rgb(0, 43, 128);
+  background-color: rgb(117, 144, 240);
+  border: 1px solid rgb(38, 71, 220)!important;
+}
+.type_AZIENDALE {
+   color: rgb(128, 0, 75);
+  background-color: rgb(240, 117, 215);
+  border: 1px solid rgb(220, 38, 175)!important;
+}
+.type_ESTERNO {
+    color: rgb(128, 68, 0);
+  background-color: rgb(240, 185, 117);
+  border: 1px solid rgb(220, 138, 38)!important;
+}
+
+.state_PENDING{
+  color: rgb(128, 124, 0);
+  background-color: rgb(236, 240, 117);
+  border: 1px solid rgb(220, 217, 38)!important;
+  width: fit-content;
+}
+.state_STARTED{
+  color: green;
+  background-color: rgb(117, 240, 117);
+  border: 1px solid rgb(38, 220, 38)!important;
+  width: fit-content;
+}
+.state_STOPPED{
+  color: rgb(123, 0, 0);
+  background-color: rgb(240, 117, 117);
+  border: 1px solid rgb(220, 38, 38)!important;
+  width: fit-content;
+}
+.state_COMPLETED{
+  color: rgb(0, 128, 85);
+  background-color: rgb(117, 240, 199);
+  border: 1px solid rgb(38, 220, 156)!important;
+  width: fit-content;
 }

@@ -64,15 +64,15 @@ export class CompanyService {
     filters: CompanyProjectsFilters,
     companyId: number,
   ): Observable<Page<project>> {
-    let requestParams: string = '';
-    Object.entries(filters).forEach(([key, value]) => {
-      if (value) {
-        requestParams += `${key}=${value}` + '&';
-      }
-    });
-    requestParams = requestParams.substring(0, requestParams.length - 1);
-    return this.http.get<Page<project>>(
-      API_URL.general + '/project/' + companyId + '?' + requestParams,
+    // let requestParams: string = '';
+    // Object.entries(filters).forEach(([key, value]) => {
+    //   if (value) {
+    //     requestParams += `${key}=${value}` + '&';
+    //   }
+    // });
+    // requestParams = requestParams.substring(0, requestParams.length - 1);
+    return this.http.post<Page<project>>(
+      API_URL.general + '/project/' + companyId, filters
     );
   }
 }

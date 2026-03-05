@@ -225,4 +225,9 @@ export interface BasicPageFilter {
 }
 export interface CompanyProjectsFilters extends BasicPageFilter {
   projectName: string | null;
+  state: 'PENDING' | 'STARTED' | 'STOPPED' | 'COMPLETED';
+  description: string | null;
+  manager: string | null;
+  type: string | null;
+  date: string | null;
 }

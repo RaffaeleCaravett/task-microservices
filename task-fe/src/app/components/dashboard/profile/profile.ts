@@ -41,6 +41,9 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ProfileService } from '../../../services/profile.service';
 import { ModeService } from '../../../services/mode.service';
 import { MessageService } from 'primeng/api';
+import { ProjectState } from '../../../enums/enums';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-profile',
@@ -56,6 +59,8 @@ import { MessageService } from 'primeng/api';
     FormsModule,
     CanvasJSAngularChartsModule,
     NgClass,
+    ProgressSpinnerModule,
+    Tooltip,
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
@@ -76,7 +81,6 @@ export class ProfileComponent implements OnInit {
     title: new FormControl(''),
     description: new FormControl(''),
     managerId: new FormControl(''),
-    projectState: new FormControl(''),
     createdAt: new FormControl(''),
     projectType: new FormControl(''),
   });
@@ -103,10 +107,13 @@ export class ProfileComponent implements OnInit {
   showManagers: WritableSignal<boolean> = signal(false);
   protected filteredUsers: User[] = [];
   protected types: projectType[] = [];
-  protected states: string[] = [];
+  protected states: ProjectState[] = [];
   protected messageService: MessageService = inject(MessageService);
   protected filtersOpened: WritableSignal<boolean> = signal(false);
-  protected stateSelected: string = 'PENDING';
+  protected stateSelected: ProjectState = ProjectState.PENDING;
+  protected isLoadingProjects: WritableSignal<boolean> = signal(false);
+  protected isAddingProject: WritableSignal<boolean> = signal(false);
+
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
@@ -140,15 +147,23 @@ export class ProfileComponent implements OnInit {
   }
 
   search() {
-    const title = this.searchProjectForm.controls['title'].value;
-    let filters = this.buildFilters(title);
+    this.isLoadingProjects.set(true);
+    let filters = this.buildFilters();
     this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
       next: (data: Page<project>) => {
-        this.projectsToShow = data;
+        setTimeout(() => {
+          this.projectsToShow = data;
+          this.isLoadingProjects.set(false);
+          this.cdr.markForCheck();
+        }, 500);
       },
     });
   }
-
+  reset() {
+    this.searchProjectForm.reset();
+    this.stateSelected = ProjectState.PENDING;
+    this.search();
+  }
   filterManagers(value: string | null | undefined) {
     if (value) {
       let filtered = this.company?.users.filter(
@@ -162,13 +177,18 @@ export class ProfileComponent implements OnInit {
     }
     this.cdr.markForCheck();
   }
-  buildFilters(projectName: string | null): CompanyProjectsFilters {
+  buildFilters(): CompanyProjectsFilters {
     return {
       page: this.page,
       size: this.size,
       sort: this.sort,
       order: this.order,
-      projectName: projectName,
+      projectName: this.searchProjectForm.controls['title'].value,
+      state: this.stateSelected,
+      description: this.searchProjectForm.controls['description'].value,
+      manager: this.searchProjectForm.controls['managerId'].value,
+      type: this.searchProjectForm.controls['projectType'].value,
+      date: this.searchProjectForm.controls['createdAt'].value,
     };
   }
 
@@ -182,7 +202,12 @@ export class ProfileComponent implements OnInit {
         this.types = data;
       },
     });
-    this.states = ['PENDING', 'STARTED', 'STOPPED', 'COMPLETED'];
+    this.states = [
+      ProjectState.PENDING,
+      ProjectState.STARTED,
+      ProjectState.STOPPED,
+      ProjectState.COMPLETED,
+    ];
   }
 
   createProject() {
@@ -198,24 +223,28 @@ export class ProfileComponent implements OnInit {
       state: this.addProject.controls['state'].value,
       companyId: this.company?.id || 0,
     };
+    this.isAddingProject.set(true);
     this.profileService.createProject(project).subscribe({
       next: (data: project) => {
-        if (data && data.id) {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Project added',
-            detail: 'Congratulations, you\ve succesfuly added your project. Go work for it!',
-            life: 3000,
-          });
-        }
-        this.addMode.set(false);
-        this.loadDatas();
+        setTimeout(() => {
+          this.isAddingProject.set(false);
+          if (data && data.id) {
+            this.messageService.add({
+              severity: 'success',
+              summary: 'Project added',
+              detail: 'Congratulations, you\ve succesfuly added your project. Go work for it!',
+              life: 3000,
+            });
+          }
+          this.addMode.set(false);
+          this.loadDatas();
+          this.search();
+          this.addProject.reset();
+        }, 1000);
       },
     });
   }
-  applyFilters() {
-    
-  }
+  applyFilters() {}
   constructor() {
     effect(() => {
       this.isDark = this.modeService.isDark();
