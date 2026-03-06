@@ -179,7 +179,11 @@
                       >
                         <div><i class="pi pi-briefcase fs-4"></i> {{ item.title }}</div>
                         <div class="d-flex">
-                          <button class="btn text-white" pTooltip="Open menu">
+                          <button
+                            class="btn text-white"
+                            pTooltip="Open menu"
+                            (click)="showEditModal.set(true)"
+                          >
                             <i class="pi pi-list"></i>
                           </button>
                           <button class="btn text-white" pTooltip="Delete project">
@@ -480,3 +484,16 @@
     </div>
   }
 </div>
+
+@if (showEditModal()) {
+  <div class="edit_modal">
+    <div class="edit_modal_content">
+      <div class="col-12 text-end">
+        <button class="btn" (click)="showEditModal.set(false)">
+          <i class="pi pi-times fs-3 text-danger"></i>
+        </button>
+      </div>
+      <div class="col-12">iihihih</div>
+    </div>
+  </div>
+}

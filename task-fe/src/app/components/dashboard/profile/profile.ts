@@ -114,6 +114,8 @@ export class ProfileComponent implements OnInit {
   protected isLoadingProjects: WritableSignal<boolean> = signal(false);
   protected isAddingProject: WritableSignal<boolean> = signal(false);
   protected sizeForm: FormGroup = new FormGroup({});
+  protected showEditModal: WritableSignal<boolean> = signal(false);
+  
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
