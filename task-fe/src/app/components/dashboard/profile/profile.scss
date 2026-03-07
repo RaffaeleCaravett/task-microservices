@@ -64,48 +64,72 @@ textarea {
 }
 
 .opened-filters {
-  height: fit-content;
+  background-color:#0006;
+  position: fixed;
+  height: 100vh!important;
+  right: 0px;
+  top: 0px;
+  z-index: 10000 !important;
+  background: rgba(200, 200, 200, 0.8);
+  form {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    max-width: 400px;
+  }
 }
 .closed-filters {
-  height: 0;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+  width: 0;
+  padding: 0;
 }
 .type_PERSONALE {
   color: rgb(0, 43, 128);
   background-color: rgb(117, 144, 240);
-  border: 1px solid rgb(38, 71, 220)!important;
+  border: 1px solid rgb(38, 71, 220) !important;
 }
 .type_AZIENDALE {
-   color: rgb(128, 0, 75);
+  color: rgb(128, 0, 75);
   background-color: rgb(240, 117, 215);
-  border: 1px solid rgb(220, 38, 175)!important;
+  border: 1px solid rgb(220, 38, 175) !important;
 }
 .type_ESTERNO {
-    color: rgb(128, 68, 0);
+  color: rgb(128, 68, 0);
   background-color: rgb(240, 185, 117);
-  border: 1px solid rgb(220, 138, 38)!important;
+  border: 1px solid rgb(220, 138, 38) !important;
 }
 
-.state_PENDING{
+.state_PENDING,
+.panel_PENDING {
   color: rgb(128, 124, 0);
   background-color: rgb(236, 240, 117);
-  border: 1px solid rgb(220, 217, 38)!important;
+  border: 1px solid rgb(220, 217, 38) !important;
   width: fit-content;
 }
-.state_STARTED{
+.state_STARTED,
+.panel_STARTED {
   color: green;
   background-color: rgb(117, 240, 117);
-  border: 1px solid rgb(38, 220, 38)!important;
+  border: 1px solid rgb(38, 220, 38) !important;
   width: fit-content;
 }
-.state_STOPPED{
+.state_STOPPED,
+.panel_STOPPED {
   color: rgb(123, 0, 0);
   background-color: rgb(240, 117, 117);
-  border: 1px solid rgb(220, 38, 38)!important;
+  border: 1px solid rgb(220, 38, 38) !important;
   width: fit-content;
 }
-.state_COMPLETED{
+.state_COMPLETED,
+.panel_COMPLETED {
   color: rgb(0, 128, 85);
   background-color: rgb(117, 240, 199);
-  border: 1px solid rgb(38, 220, 156)!important;
+  border: 1px solid rgb(38, 220, 156) !important;
   width: fit-content;
+}
+
+.add-project {
+  border-left: 6px solid gold;
 }

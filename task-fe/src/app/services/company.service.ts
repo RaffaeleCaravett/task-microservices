@@ -72,7 +72,11 @@ export class CompanyService {
     // });
     // requestParams = requestParams.substring(0, requestParams.length - 1);
     return this.http.post<Page<project>>(
-      API_URL.general + '/project/' + companyId, filters
+      API_URL.general +
+        '/project/' +
+        companyId +
+        `?page=${filters.page || 0}&size=${filters.size || 10}&sort=${filters.sort || 'id'}&order=${filters.order || 0}`,
+      filters,
     );
   }
 }

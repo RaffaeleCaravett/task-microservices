@@ -92,10 +92,10 @@ export class ProfileComponent implements OnInit {
   protected chartUsersOptions: any = null;
   protected chartProjectsOptions: any = null;
   protected chartTaskOptions: any = null;
-  protected sizes: number[] = [10, 20, 50];
+  protected sizes: number[] = [6, 18, 48];
   protected paginationForm: FormGroup = new FormGroup({});
   protected page: number = 0;
-  protected size: number = 20;
+  protected size: number = 6;
   protected sort: string = 'id';
   protected order: string = 'asc';
   protected pageable: any;
@@ -113,7 +113,7 @@ export class ProfileComponent implements OnInit {
   protected stateSelected: ProjectState = ProjectState.PENDING;
   protected isLoadingProjects: WritableSignal<boolean> = signal(false);
   protected isAddingProject: WritableSignal<boolean> = signal(false);
-
+  protected sizeForm: FormGroup = new FormGroup({});
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
@@ -137,7 +137,16 @@ export class ProfileComponent implements OnInit {
     this.addProject.valueChanges.pipe(debounceTime(300)).subscribe((data) => {
       this.filterManagers(data.managerId);
     });
+    this.sizeForm = new FormGroup({
+      size: new FormControl(this.size),
+    });
     this.loadDatas();
+  }
+  changeSize() {
+    console.log(this.sizeForm.controls['size'].value);
+    this.size = this.sizeForm.controls['size'].value;
+    console.log(this.size);
+    this.search();
   }
   chooseManager(item: User) {
     this.addProject.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
@@ -146,7 +155,10 @@ export class ProfileComponent implements OnInit {
     this.showManagers.set(false);
   }
 
-  search() {
+  search(fromStates?: boolean) {
+    if (fromStates) {
+      this.page = 0;
+    }
     this.isLoadingProjects.set(true);
     let filters = this.buildFilters();
     this.companyService.getCompanyProjects(filters, this.company!.id).subscribe({
@@ -163,6 +175,26 @@ export class ProfileComponent implements OnInit {
     this.searchProjectForm.reset();
     this.stateSelected = ProjectState.PENDING;
     this.search();
+  }
+
+  previous() {
+    if (this.page != 0) {
+      this.page -= 1;
+      this.search();
+    }
+  }
+  next() {
+    if (this.page + 1 != this.projectsToShow.totalPages) {
+      this.page += 1;
+      this.search();
+    }
+  }
+  blockScroll(block: boolean) {
+    if (block) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   }
   filterManagers(value: string | null | undefined) {
     if (value) {
@@ -239,7 +271,12 @@ export class ProfileComponent implements OnInit {
           this.addMode.set(false);
           this.loadDatas();
           this.search();
-          this.addProject.reset();
+          this.addProject.controls['title'].setValue('');
+          this.addProject.controls['managerId'].setValue('');
+          this.addProject.controls['description'].setValue('');
+          this.addProject.controls['typeId'].setValue('');
+          this.addProject.controls['state'].setValue('');
+          this.addProjectFormSubmitted = false;
         }, 1000);
       },
     });
