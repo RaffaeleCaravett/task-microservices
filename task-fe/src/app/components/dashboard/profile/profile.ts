@@ -211,6 +211,18 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
+  updateDescription(){
+    if(this.editProjectForm.controls['description'].value){
+      this.editDescription.set(false);
+    }else{
+      this.messageService.add({
+              severity: 'error',
+              summary: 'Type a description',
+              detail: 'Description is mandatory for a project.',
+              life: 3000,
+            });
+    }
+  }
   changeSize() {
     console.log(this.sizeForm.controls['size'].value);
     this.size = this.sizeForm.controls['size'].value;
