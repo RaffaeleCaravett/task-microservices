@@ -65,7 +65,7 @@ import { ButtonModule } from 'primeng/button';
     Tooltip,
     MenuModule,
     ButtonModule,
-    DatePipe
+    DatePipe,
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
@@ -127,6 +127,7 @@ export class ProfileComponent implements OnInit {
   editType: WritableSignal<boolean> = signal(false);
   editState: WritableSignal<boolean> = signal(false);
   editManager: WritableSignal<boolean> = signal(false);
+  editCreatedAt: WritableSignal<boolean> = signal(false);
   protected items: MenuItem[] = [
     {
       label: 'Options',
@@ -177,32 +178,34 @@ export class ProfileComponent implements OnInit {
       managerId: new FormControl('', Validators.required),
       typeId: new FormControl('', Validators.required),
       state: new FormControl('', Validators.required),
+      createdAt: new FormControl('', Validators.required),
     });
     this.editProjectForm.valueChanges.subscribe((value: any) => {
       this.handleEditProjectChange(value);
     });
     this.loadDatas();
   }
-  checkManagerForEdit(){
-    if(this.selectedManagerForEdit){
+  checkManagerForEdit() {
+    if (this.selectedManagerForEdit) {
       this.editManager.set(false);
-    }else{
+    } else {
       this.messageService.add({
-              severity: 'error',
-              summary: 'Choose a manager',
-              detail: 'Select a manager for the project.',
-              life: 3000,
-            });
+        severity: 'error',
+        summary: 'Choose a manager',
+        detail: 'Select a manager for the project.',
+        life: 3000,
+      });
     }
   }
 
   handleEditProjectChange(value: any) {
     this.selectedItemForEdit!.title = value.title;
     this.selectedItemForEdit!.description = value.description;
-     if(this.selectedItemForEdit!.projectType.id != value.typeId){
+    if (this.selectedItemForEdit!.projectType.id != value.typeId) {
       //To do
     }
     this.selectedItemForEdit!.projectState = value.state;
+    this.selectedItemForEdit!.createdAt = value.createdAt;
   }
   refreshUsers() {
     this.companyService.getUserList(this.company!.id).subscribe({
@@ -211,16 +214,16 @@ export class ProfileComponent implements OnInit {
       },
     });
   }
-  updateDescription(){
-    if(this.editProjectForm.controls['description'].value){
+  updateDescription() {
+    if (this.editProjectForm.controls['description'].value) {
       this.editDescription.set(false);
-    }else{
+    } else {
       this.messageService.add({
-              severity: 'error',
-              summary: 'Type a description',
-              detail: 'Description is mandatory for a project.',
-              life: 3000,
-            });
+        severity: 'error',
+        summary: 'Type a description',
+        detail: 'Description is mandatory for a project.',
+        life: 3000,
+      });
     }
   }
   changeSize() {
@@ -229,25 +232,25 @@ export class ProfileComponent implements OnInit {
     console.log(this.size);
     this.search();
   }
-  chooseManager(item: User, edit?:boolean) {
-    if(!edit){
-    this.addProject.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
-    this.addProject.updateValueAndValidity();
-    this.selectedManager = item;
-    }else{
-    this.editProjectForm.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
-    this.editProjectForm.updateValueAndValidity();
-    this.selectedManagerForEdit = item;
-    this.selectedItemForEdit!.manager = this.selectedManagerForEdit;
+  chooseManager(item: User, edit?: boolean) {
+    if (!edit) {
+      this.addProject.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
+      this.addProject.updateValueAndValidity();
+      this.selectedManager = item;
+    } else {
+      this.editProjectForm.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
+      this.editProjectForm.updateValueAndValidity();
+      this.selectedManagerForEdit = item;
+      this.selectedItemForEdit!.manager = this.selectedManagerForEdit;
     }
     this.showManagers.set(false);
   }
-  chooseType(value:string){
-    this.selectedItemForEdit!.projectType = this.types.filter(t=>t.tipoProgetto === value)[0];
+  chooseType(value: string) {
+    this.selectedItemForEdit!.projectType = this.types.filter((t) => t.tipoProgetto === value)[0];
     this.editType.set(false);
   }
-    chooseState(value:string){
-    this.selectedItemForEdit!.projectState = this.states.filter(t=>t === value)[0];
+  chooseState(value: string) {
+    this.selectedItemForEdit!.projectState = this.states.filter((t) => t === value)[0];
     this.editState.set(false);
   }
 
@@ -295,9 +298,8 @@ export class ProfileComponent implements OnInit {
   filterManagers(value: string | null | undefined) {
     this.selectedManagerForEdit = null;
     if (value) {
-      let filtered = this.company?.users.filter(
-        (u: User) =>
-          (u.nome.toLowerCase() + ' ' + u.cognome.toLowerCase()).includes(value.toLowerCase())
+      let filtered = this.company?.users.filter((u: User) =>
+        (u.nome.toLowerCase() + ' ' + u.cognome.toLowerCase()).includes(value.toLowerCase()),
       );
       this.filteredUsers = filtered || [];
     } else {
@@ -404,9 +406,11 @@ export class ProfileComponent implements OnInit {
     this.editProjectForm.patchValue({
       title: this.selectedItemForEdit!.title,
       description: this.selectedItemForEdit!.description,
-      managerId: this.selectedItemForEdit!.manager.nome + ' ' + this.selectedItemForEdit!.manager.cognome,
+      managerId:
+        this.selectedItemForEdit!.manager.nome + ' ' + this.selectedItemForEdit!.manager.cognome,
       typeId: this.selectedItemForEdit!.projectType.id,
       state: this.selectedItemForEdit!.projectState,
+      createdAt: this.selectedItemForEdit!.createdAt,
     });
   }
   closeEdit() {
@@ -417,6 +421,9 @@ export class ProfileComponent implements OnInit {
     this.editManager.set(false);
     this.editState.set(false);
     this.editType.set(false);
+    this.editCreatedAt.set(false);
+    this.selectedManagerForEdit = null;
+    this.filteredUsers = [...(this.company?.users || [])];
     document.body.style.overflow = '';
   }
   applyFilters() {}

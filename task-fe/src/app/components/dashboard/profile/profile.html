@@ -722,15 +722,13 @@
               </div>
             }
           </div>
-          <div class="col-12 text-end">
-            <div class="d-flex flex-column gap-1">
-              <label class="fw-bold text-uppercase text-muted"
-                >creato in data
-                <button (click)="editTitle.set(true)" class="btn">
-                  <i class="ms-2 pi pi-pencil"></i></button
-              ></label>
-              <div>{{ selectedItemForEdit?.createdAt | date: 'dd/MM/yyyy' }}</div>
-            </div>
+          <div class="col-12 d-flex justify-content-end">
+              <div class="d-flex flex-column gap-1">
+                <label class="fw-bold text-uppercase text-muted"
+                  >creato in data
+                  </label>
+                <div>{{ selectedItemForEdit?.createdAt | date: 'dd/MM/yyyy' }}</div>
+              </div>
           </div>
         </div>
       </form>
