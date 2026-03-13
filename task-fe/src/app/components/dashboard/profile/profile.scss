@@ -62,11 +62,16 @@ textarea {
 .pi-times {
   cursor: pointer;
 }
-
-.opened-filters{
-  background-color:#0006;
+.favourite {
+  border-left: 7px solid gold !important;
+}
+.text-gold {
+  color: gold !important;
+}
+.opened-filters {
+  background-color: #0006;
   position: fixed;
-  height: 100%!important;
+  height: 100% !important;
   right: 0px;
   top: 0px;
   z-index: 10000 !important;
@@ -75,21 +80,24 @@ textarea {
     right: 0px;
     top: 0px;
     max-width: 400px;
+    height: 100%;
+    overflow: auto;
   }
 }
- .edit_modal{
- background-color:#0006;
+.edit_modal {
+  background-color: #0006;
   position: fixed;
-  height: 100%!important;
+  height: 100% !important;
   width: 100%;
   right: 0px;
   top: 0px;
-  z-index: 10000 !important; 
-.edit_modal_content{
-   position: absolute;
-    top: 0px;
-}
-
+  z-index: 10000 !important;
+  .edit_modal_content {
+    position: absolute;
+    top: 20%;
+    width: 75%;
+    left: 12%;
+  }
 }
 .closed-filters {
   position: absolute;
@@ -145,4 +153,8 @@ textarea {
 
 .add-project {
   border-left: 6px solid gold;
+}
+
+.title-input{
+  max-width: 300px;
 }

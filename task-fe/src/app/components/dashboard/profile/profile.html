@@ -173,20 +173,60 @@
                 </div>
                 @for (item of projectsToShow?.content; track $index) {
                   <div class="col-xl-4 col-md-6 p-5">
-                    <div class="border shadow panel rounded h-100">
+                    <div
+                      class="border shadow panel rounded h-100"
+                      [ngClass]="item.favourite ? 'favourite' : ''"
+                    >
                       <div
-                        class="rounded-top panel_title w-100 d-flex align-items-center gap-2 justify-content-between text-white p-3 fs-4 bg-primary"
+                        class="rounded-top panel_title w-100 d-flex align-items-center gap-2 justify-content-between p-3 fs-4 bg-primary"
+                        [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
                       >
                         <div><i class="pi pi-briefcase fs-4"></i> {{ item.title }}</div>
                         <div class="d-flex">
+                          <div class="dropdown">
+                            <button
+                              class="btn dropdown-toggle"
+                              [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                              type="button"
+                              data-bs-toggle="dropdown"
+                              aria-expanded="false"
+                            >
+                              <i class="pi pi-list"></i>
+                            </button>
+                            <ul
+                              class="dropdown-menu"
+                              [ngClass]="item.favourite ? 'bg-primary' : ''"
+                            >
+                              <li>
+                                <button
+                                  class="dropdown-item"
+                                  [ngClass]="item.favourite ? 'text-gold' : ''"
+                                  type="button"
+                                  (click)="openEdit(item)"
+                                >
+                                  <i class="pi pi-pencil me-2"></i>Edit
+                                </button>
+                              </li>
+                              <li>
+                                <button
+                                  class="dropdown-item"
+                                  [ngClass]="item.favourite ? 'text-gold' : ''"
+                                  type="button"
+                                  (click)="manageFavourite(item)"
+                                >
+                                  <i class="pi pi-star me-2"></i
+                                  >{{
+                                    item.favourite ? 'Remove from favourites' : 'Mark as favourite'
+                                  }}
+                                </button>
+                              </li>
+                            </ul>
+                          </div>
                           <button
-                            class="btn text-white"
-                            pTooltip="Open menu"
-                            (click)="showEditModal.set(true)"
+                            class="btn"
+                            [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                            pTooltip="Delete project"
                           >
-                            <i class="pi pi-list"></i>
-                          </button>
-                          <button class="btn text-white" pTooltip="Delete project">
                             <i class="pi pi-trash"></i>
                           </button>
                         </div>
@@ -487,13 +527,39 @@
 
 @if (showEditModal()) {
   <div class="edit_modal">
-    <div class="edit_modal_content">
-      <div class="col-12 text-end">
-        <button class="btn" (click)="showEditModal.set(false)">
-          <i class="pi pi-times fs-3 text-danger"></i>
-        </button>
-      </div>
-      <div class="col-12">iihihih</div>
+    <div class="edit_modal_content w-75 bg-white rounded">
+      <form [formGroup]="editProjectForm">
+        <div
+          class="modal_title rounded-top p-2 col-12 d-flex justify-content-between align-items-center px-2 bg-primary"
+          [ngClass]="selectedItemForEdit?.favourite ? 'text-gold' : 'text-white'"
+        >
+          <div class="fs-2">Edit</div>
+          <div class="text-end">
+            <button class="btn" (click)="closeEdit()">
+              <i class="pi pi-times fs-3 text-danger"></i>
+            </button>
+          </div>
+        </div>
+        <div class="modal_body p-3">
+          <div class="row fs-4">
+            <div class="col-12">
+              @if (!editTitle()) {
+                <span class="fw-bold">{{ selectedItemForEdit?.title }}</span>
+                <button pTooltip="edit" (click)="editTitle.set(true)" class="btn">
+                  <i class="ms-2 pi pi-pencil"></i>
+                </button>
+              } @else {
+                <div class="d-flex">
+                  <input type="text" class="form-control title-input" formControlName="title" />
+                  <button pTooltip="confirm" (click)="editTitle.set(false)" class="btn">
+                    <i class="ms-2 pi pi-check"></i>
+                  </button>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
 }

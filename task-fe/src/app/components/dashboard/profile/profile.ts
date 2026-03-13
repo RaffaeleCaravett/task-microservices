@@ -40,10 +40,12 @@ import { TableModule } from 'primeng/table';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ProfileService } from '../../../services/profile.service';
 import { ModeService } from '../../../services/mode.service';
-import { MessageService } from 'primeng/api';
 import { ProjectState } from '../../../enums/enums';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { Tooltip } from 'primeng/tooltip';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-profile',
@@ -61,6 +63,8 @@ import { Tooltip } from 'primeng/tooltip';
     NgClass,
     ProgressSpinnerModule,
     Tooltip,
+    MenuModule,
+    ButtonModule,
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
@@ -115,11 +119,30 @@ export class ProfileComponent implements OnInit {
   protected isAddingProject: WritableSignal<boolean> = signal(false);
   protected sizeForm: FormGroup = new FormGroup({});
   protected showEditModal: WritableSignal<boolean> = signal(false);
-  
+  protected editProjectForm: FormGroup = new FormGroup({});
+  editTitle: WritableSignal<boolean> = signal(false);
+  protected items: MenuItem[] = [
+    {
+      label: 'Options',
+      items: [
+        {
+          label: 'Edit',
+          icon: 'pi pi-edit',
+        },
+        {
+          label: 'Favourite',
+          icon: 'pi pi-star',
+        },
+      ],
+    },
+  ];
+  protected selectedItemForEdit: project | null = null;
+
   ngOnInit(): void {
     this.user = this.authService.getUser();
     this.company = this.authService.getCompany();
     if (this.company) {
+      this.refreshUsers();
       this.filteredUsers = [...this.company.users];
       this.search();
     }
@@ -142,7 +165,36 @@ export class ProfileComponent implements OnInit {
     this.sizeForm = new FormGroup({
       size: new FormControl(this.size),
     });
+    this.editProjectForm = new FormGroup({
+      title: new FormControl('', [Validators.required, Validators.maxLength(100)]),
+      description: new FormControl('', [Validators.required, Validators.maxLength(600)]),
+      managerId: new FormControl('', Validators.required),
+      typeId: new FormControl('', Validators.required),
+      state: new FormControl('', Validators.required),
+    });
+    this.editProjectForm.valueChanges.subscribe((value: any) => {
+      this.handleEditProjectChange(value);
+    });
     this.loadDatas();
+  }
+
+  handleEditProjectChange(value: any) {
+    this.selectedItemForEdit!.title = value.title;
+    this.selectedItemForEdit!.description = value.description;
+    if(this.selectedItemForEdit!.manager.id != value.managerId){
+      //To do
+    }
+     if(this.selectedItemForEdit!.projectType.id != value.typeId){
+      //To do
+    }
+    this.selectedItemForEdit!.projectState = value.state;
+  }
+  refreshUsers() {
+    this.companyService.getUserList(this.company!.id).subscribe({
+      next: (data: User[]) => {
+        this.company!.users = data;
+      },
+    });
   }
   changeSize() {
     console.log(this.sizeForm.controls['size'].value);
@@ -282,6 +334,41 @@ export class ProfileComponent implements OnInit {
         }, 1000);
       },
     });
+  }
+
+  manageFavourite(item: project) {
+    item.favourite ? this.unmarkAsFavourite(item.id) : this.markAsFavourite(item.id);
+  }
+  unmarkAsFavourite(id: number) {
+    this.companyService.unmarkAsFavourite(id).subscribe({
+      next: (data: project) => {
+        this.search();
+      },
+    });
+  }
+  markAsFavourite(id: number) {
+    this.companyService.markAsFavourite(id).subscribe({
+      next: (data: project) => {
+        this.search();
+      },
+    });
+  }
+  openEdit(item: project) {
+    this.showEditModal.set(true);
+    this.selectedItemForEdit = item;
+    document.body.style.overflow = 'hidden';
+    this.editProjectForm.patchValue({
+      title: this.selectedItemForEdit.title,
+      description: this.selectedItemForEdit.description,
+      managerId: this.selectedItemForEdit.manager.id,
+      typeId: this.selectedItemForEdit.projectType.id,
+      state: this.selectedItemForEdit.projectState,
+    });
+  }
+  closeEdit() {
+    this.showEditModal.set(false);
+    this.selectedItemForEdit = null;
+    document.body.style.overflow = '';
   }
   applyFilters() {}
   constructor() {

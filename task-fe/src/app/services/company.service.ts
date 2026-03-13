@@ -26,6 +26,18 @@ export class CompanyService {
       .pipe(map((u) => this.addColor(u)));
   }
 
+
+   getUserList(
+    companyId: number,
+  ): Observable<User[]> {
+    return this.http
+      .get<User[]>(
+        API_URL.general +
+          '/company/users/list/' +
+          companyId,
+      );
+  }
+
   filterUsersPage(usersPage: Page<User>, skipFilters?: boolean) {
     if (skipFilters) return usersPage;
     var content = usersPage?.content;
@@ -78,5 +90,12 @@ export class CompanyService {
         `?page=${filters.page || 0}&size=${filters.size || 10}&sort=${filters.sort || 'id'}&order=${filters.order || 0}`,
       filters,
     );
+  }
+
+  markAsFavourite(id:number):Observable<project>{
+    return this.http.get<project>(API_URL.general + '/project/favourite/'+id);
+  }
+  unmarkAsFavourite(id:number):Observable<project>{
+    return this.http.get<project>(API_URL.general + '/project/unfavourite/'+id);
   }
 }

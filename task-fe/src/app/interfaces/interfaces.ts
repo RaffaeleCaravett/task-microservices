@@ -146,6 +146,7 @@ export interface project {
     id: number;
     tipoProgetto: string;
   };
+  favourite:boolean;
 }
 
 export interface projectDTO {
