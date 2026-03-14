@@ -65,6 +65,7 @@ import { ButtonModule } from 'primeng/button';
     Tooltip,
     MenuModule,
     ButtonModule,
+    DatePipe
   ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
@@ -108,6 +109,7 @@ export class ProfileComponent implements OnInit {
   protected addProject: FormGroup = new FormGroup({});
   protected addProjectFormSubmitted: boolean = false;
   protected selectedManager: User | null = null;
+  protected selectedManagerForEdit: User | null = null;
   showManagers: WritableSignal<boolean> = signal(false);
   protected filteredUsers: User[] = [];
   protected types: projectType[] = [];
@@ -121,6 +123,10 @@ export class ProfileComponent implements OnInit {
   protected showEditModal: WritableSignal<boolean> = signal(false);
   protected editProjectForm: FormGroup = new FormGroup({});
   editTitle: WritableSignal<boolean> = signal(false);
+  editDescription: WritableSignal<boolean> = signal(false);
+  editType: WritableSignal<boolean> = signal(false);
+  editState: WritableSignal<boolean> = signal(false);
+  editManager: WritableSignal<boolean> = signal(false);
   protected items: MenuItem[] = [
     {
       label: 'Options',
@@ -177,13 +183,22 @@ export class ProfileComponent implements OnInit {
     });
     this.loadDatas();
   }
+  checkManagerForEdit(){
+    if(this.selectedManagerForEdit){
+      this.editManager.set(false);
+    }else{
+      this.messageService.add({
+              severity: 'error',
+              summary: 'Choose a manager',
+              detail: 'Select a manager for the project.',
+              life: 3000,
+            });
+    }
+  }
 
   handleEditProjectChange(value: any) {
     this.selectedItemForEdit!.title = value.title;
     this.selectedItemForEdit!.description = value.description;
-    if(this.selectedItemForEdit!.manager.id != value.managerId){
-      //To do
-    }
      if(this.selectedItemForEdit!.projectType.id != value.typeId){
       //To do
     }
@@ -202,10 +217,17 @@ export class ProfileComponent implements OnInit {
     console.log(this.size);
     this.search();
   }
-  chooseManager(item: User) {
+  chooseManager(item: User, edit?:boolean) {
+    if(!edit){
     this.addProject.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
     this.addProject.updateValueAndValidity();
     this.selectedManager = item;
+    }else{
+    this.editProjectForm.controls['managerId'].setValue(item.nome + ' ' + item.cognome);
+    this.editProjectForm.updateValueAndValidity();
+    this.selectedManagerForEdit = item;
+    this.selectedItemForEdit!.manager = this.selectedManagerForEdit;
+    }
     this.showManagers.set(false);
   }
 
@@ -251,11 +273,11 @@ export class ProfileComponent implements OnInit {
     }
   }
   filterManagers(value: string | null | undefined) {
+    this.selectedManagerForEdit = null;
     if (value) {
       let filtered = this.company?.users.filter(
         (u: User) =>
-          u.nome.toLowerCase().includes(value.toLowerCase()) ||
-          u.cognome.toLowerCase().includes(value.toLowerCase()),
+          (u.nome.toLowerCase() + ' ' + u.cognome.toLowerCase()).includes(value.toLowerCase())
       );
       this.filteredUsers = filtered || [];
     } else {
@@ -263,6 +285,7 @@ export class ProfileComponent implements OnInit {
     }
     this.cdr.markForCheck();
   }
+
   buildFilters(): CompanyProjectsFilters {
     return {
       page: this.page,
@@ -355,19 +378,24 @@ export class ProfileComponent implements OnInit {
   }
   openEdit(item: project) {
     this.showEditModal.set(true);
-    this.selectedItemForEdit = item;
+    this.selectedItemForEdit = JSON.parse(JSON.stringify(item));
     document.body.style.overflow = 'hidden';
     this.editProjectForm.patchValue({
-      title: this.selectedItemForEdit.title,
-      description: this.selectedItemForEdit.description,
-      managerId: this.selectedItemForEdit.manager.id,
-      typeId: this.selectedItemForEdit.projectType.id,
-      state: this.selectedItemForEdit.projectState,
+      title: this.selectedItemForEdit!.title,
+      description: this.selectedItemForEdit!.description,
+      managerId: this.selectedItemForEdit!.manager.nome + ' ' + this.selectedItemForEdit!.manager.cognome,
+      typeId: this.selectedItemForEdit!.projectType.id,
+      state: this.selectedItemForEdit!.projectState,
     });
   }
   closeEdit() {
     this.showEditModal.set(false);
     this.selectedItemForEdit = null;
+    this.editTitle.set(false);
+    this.editDescription.set(false);
+    this.editManager.set(false);
+    this.editState.set(false);
+    this.editType.set(false);
     document.body.style.overflow = '';
   }
   applyFilters() {}

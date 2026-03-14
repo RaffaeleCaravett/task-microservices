@@ -171,109 +171,116 @@
                     </form>
                   </div>
                 </div>
-                @for (item of projectsToShow?.content; track $index) {
-                  <div class="col-xl-4 col-md-6 p-5">
-                    <div
-                      class="border shadow panel rounded h-100"
-                      [ngClass]="item.favourite ? 'favourite' : ''"
-                    >
+                <div class="py-5 row">
+                  @for (item of projectsToShow?.content; track $index) {
+                    <div class="col-xl-4 col-md-6 p-5">
                       <div
-                        class="rounded-top panel_title w-100 d-flex align-items-center gap-2 justify-content-between p-3 fs-4 bg-primary"
-                        [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                        class="border shadow panel rounded h-100"
+                        [ngClass]="item.favourite ? 'favourite' : ''"
                       >
-                        <div><i class="pi pi-briefcase fs-4"></i> {{ item.title }}</div>
-                        <div class="d-flex">
-                          <div class="dropdown">
-                            <button
-                              class="btn dropdown-toggle"
-                              [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
-                              type="button"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false"
-                            >
-                              <i class="pi pi-list"></i>
-                            </button>
-                            <ul
-                              class="dropdown-menu"
-                              [ngClass]="item.favourite ? 'bg-primary' : ''"
-                            >
-                              <li>
-                                <button
-                                  class="dropdown-item"
-                                  [ngClass]="item.favourite ? 'text-gold' : ''"
-                                  type="button"
-                                  (click)="openEdit(item)"
-                                >
-                                  <i class="pi pi-pencil me-2"></i>Edit
-                                </button>
-                              </li>
-                              <li>
-                                <button
-                                  class="dropdown-item"
-                                  [ngClass]="item.favourite ? 'text-gold' : ''"
-                                  type="button"
-                                  (click)="manageFavourite(item)"
-                                >
-                                  <i class="pi pi-star me-2"></i
-                                  >{{
-                                    item.favourite ? 'Remove from favourites' : 'Mark as favourite'
-                                  }}
-                                </button>
-                              </li>
-                            </ul>
-                          </div>
-                          <button
-                            class="btn"
-                            [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
-                            pTooltip="Delete project"
-                          >
-                            <i class="pi pi-trash"></i>
-                          </button>
-                        </div>
-                      </div>
-                      <div class="panel_body">
-                        <div class="p-3">
-                          <div class="my-1 d-flex justify-content-between">
-                            <div>
-                              <span class="fw-bold text-muted text-uppercase"
-                                >Manager progetto </span
-                              ><br />
-                              {{ item?.manager?.nome + ' ' + item?.manager?.cognome }}
+                        <div
+                          class="rounded-top panel_title w-100 d-flex align-items-center gap-2 justify-content-between p-3 fs-4 bg-primary"
+                          [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                        >
+                          <div><i class="pi pi-briefcase fs-4"></i> {{ item.title }}</div>
+                          <div class="d-flex">
+                            <div class="dropdown">
+                              <button
+                                class="btn dropdown-toggle"
+                                [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <i class="pi pi-list"></i>
+                              </button>
+                              <ul
+                                class="dropdown-menu"
+                                [ngClass]="item.favourite ? 'bg-primary' : ''"
+                              >
+                                <li>
+                                  <button
+                                    class="dropdown-item"
+                                    [ngClass]="item.favourite ? 'text-gold' : ''"
+                                    type="button"
+                                    (click)="openEdit(item)"
+                                  >
+                                    <i class="pi pi-pencil me-2"></i>Edit
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    class="dropdown-item"
+                                    [ngClass]="item.favourite ? 'text-gold' : ''"
+                                    type="button"
+                                    (click)="manageFavourite(item)"
+                                  >
+                                    <i class="pi pi-star me-2"></i
+                                    >{{
+                                      item.favourite
+                                        ? 'Remove from favourites'
+                                        : 'Mark as favourite'
+                                    }}
+                                  </button>
+                                </li>
+                              </ul>
                             </div>
-                            <div class="d-flex gap-2 flex-column">
-                              <span class="fw-bold text-muted text-uppercase">Type </span>
+                            <button
+                              class="btn"
+                              [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                              pTooltip="Delete project"
+                            >
+                              <i class="pi pi-trash"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="panel_body">
+                          <div class="p-3">
+                            <div class="my-1 d-flex justify-content-between">
+                              <div>
+                                <span class="fw-bold text-muted text-uppercase"
+                                  >Manager progetto </span
+                                ><br />
+                                {{ item?.manager?.nome + ' ' + item?.manager?.cognome }}
+                              </div>
+                              <div class="d-flex gap-2 flex-column">
+                                <span class="fw-bold text-muted text-uppercase">Type </span>
+                                <span
+                                  class="type_{{ item?.projectType?.tipoProgetto }} p-1 rounded"
+                                  >{{ item?.projectType?.tipoProgetto }}</span
+                                >
+                              </div>
+                            </div>
+                            <div class="d-flex gap-2 flex-column my-1">
+                              <span class="fw-bold text-muted text-uppercase">Stato </span>
                               <span
-                                class="type_{{ item?.projectType?.tipoProgetto }} p-1 rounded"
-                                >{{ item?.projectType?.tipoProgetto }}</span
+                                class="state_{{
+                                  item?.projectState?.toLocaleUpperCase()
+                                }} p-1 rounded"
+                                >{{ item?.projectState?.toLocaleUpperCase() }}</span
                               >
                             </div>
-                          </div>
-                          <div class="d-flex gap-2 flex-column my-1">
-                            <span class="fw-bold text-muted text-uppercase">Stato </span>
-                            <span
-                              class="state_{{
-                                item?.projectState?.toLocaleUpperCase()
-                              }} p-1 rounded"
-                              >{{ item?.projectState?.toLocaleUpperCase() }}</span
+                            <div
+                              class="shadow rounded p-2 mt-2 shadow-sm overflow-auto"
+                              [style.height]="'120px'"
                             >
-                          </div>
-                          <div
-                            class="border rounded p-2 mt-2 shadow-sm overflow-auto"
-                            [style.height]="'120px'"
-                          >
-                            {{ item?.description }}
-                          </div>
-                          <div class="text-end pt-2">
-                            <span class="fw-bold text-uppercase text-muted">Creato in data</span>
-                            {{ item?.createdAt }}
+                              {{ item?.description }}
+                            </div>
+                            <div class="text-end pt-2">
+                              <span class="fw-bold text-uppercase text-muted">Creato in data</span>
+                              {{ item?.createdAt | date: 'dd/MM/yyyy' }}
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-                } @empty {
-                  <p class="fs-4"><i class="text-muted">Non ci sono progetti da mostrare ...</i></p>
-                }
+                  } @empty {
+                    <p class="fs-4">
+                      <i class="text-muted">Non ci sono progetti da mostrare ...</i>
+                    </p>
+                  }
+                </div>
+
                 <div class="d-flex justify-content-between gap-2 align-items-center pt-4">
                   <div class="fs-5">
                     <label class="fs-5 text-muted text-uppercase fs-bold">Elements</label>
@@ -285,29 +292,31 @@
                     /
                     {{ projectsToShow.totalElements }}
                   </div>
-                  <div class="d-flex justify-content-center gap-2">
-                    <button
-                      class="btn"
-                      pTooltip="previous"
-                      [disabled]="page === 0"
-                      tooltipPosition="bottom"
-                      (click)="previous()"
-                    >
-                      <i class="pi pi-chevron-left fs-3"></i>
-                    </button>
-                    <span class="text-muted text-uppercase fw-bold fs-5 pt-2">
-                      Page {{ projectsToShow.number + 1 }} / {{ projectsToShow.totalPages }}
-                    </span>
-                    <button
-                      class="btn"
-                      pTooltip="next"
-                      tooltipPosition="bottom"
-                      [disabled]="page + 1 === projectsToShow.totalPages"
-                      (click)="next()"
-                    >
-                      <i class="pi pi-chevron-right fs-3"></i>
-                    </button>
-                  </div>
+                  @if (projectsToShow.pageable.pageNumber > 0) {
+                    <div class="d-flex justify-content-center gap-2">
+                      <button
+                        class="btn"
+                        pTooltip="previous"
+                        [disabled]="page === 0"
+                        tooltipPosition="bottom"
+                        (click)="previous()"
+                      >
+                        <i class="pi pi-chevron-left fs-3"></i>
+                      </button>
+                      <span class="text-muted text-uppercase fw-bold fs-5 pt-2">
+                        Page {{ projectsToShow.number + 1 }} / {{ projectsToShow.totalPages }}
+                      </span>
+                      <button
+                        class="btn"
+                        pTooltip="next"
+                        tooltipPosition="bottom"
+                        [disabled]="page + 1 === projectsToShow.totalPages"
+                        (click)="next()"
+                      >
+                        <i class="pi pi-chevron-right fs-3"></i>
+                      </button>
+                    </div>
+                  }
                 </div>
               } @else {
                 <div class="spinner-border text-primary m-auto my-5" role="status">
@@ -397,7 +406,7 @@
                           [style.maxHeight]="'500px'"
                         >
                           @for (item of filteredUsers; track $index) {
-                            <div (click)="chooseManager(item)">
+                            <div (click)="chooseManager(item)" class="manager">
                               {{ item.nome + ' ' + item.cognome }}
                             </div>
                           } @empty {
@@ -533,7 +542,12 @@
           class="modal_title rounded-top p-2 col-12 d-flex justify-content-between align-items-center px-2 bg-primary"
           [ngClass]="selectedItemForEdit?.favourite ? 'text-gold' : 'text-white'"
         >
-          <div class="fs-2">Edit</div>
+          <div class="fs-2">
+            @if (selectedItemForEdit?.favourite) {
+              <i class="pi pi-star-fill fs-3 me-2" title="favourite"></i>
+            }
+            Edit
+          </div>
           <div class="text-end">
             <button class="btn" (click)="closeEdit()">
               <i class="pi pi-times fs-3 text-danger"></i>
@@ -544,6 +558,9 @@
           <div class="row fs-4">
             <div class="col-12">
               @if (!editTitle()) {
+                <div>
+                  <label class="fw-bold text-muted text-uppercase">title</label>
+                </div>
                 <span class="fw-bold">{{ selectedItemForEdit?.title }}</span>
                 <button pTooltip="edit" (click)="editTitle.set(true)" class="btn">
                   <i class="ms-2 pi pi-pencil"></i>
@@ -556,6 +573,124 @@
                   </button>
                 </div>
               }
+            </div>
+            <div class="col-12 py-5">
+              <div class="d-flex justify-content-between">
+                @if (!editManager()) {
+                  <div>
+                    <label class="text-xs text-muted text-uppercase fw-bold">Manager progetto</label
+                    ><button pTooltip="edit" (click)="editManager.set(true)" class="btn">
+                      <i class="ms-2 pi pi-pencil"></i>
+                    </button>
+                    <div>
+                      {{
+                        selectedItemForEdit?.manager?.nome +
+                          ' ' +
+                          selectedItemForEdit?.manager?.cognome
+                      }}
+                    </div>
+                  </div>
+                } @else {
+                  <div>
+                    <div class="d-flex align-items-center">
+                      <input
+                        type="text"
+                        formControlName="managerId"
+                        class="form-control border-0 bg-white"
+                        (click)="showManagers.set(true)"
+                        (input)="
+                          showManagers.set(true);
+                          filterManagers(editProjectForm.controls['managerId'].value)
+                        "
+                      />
+                      <div class="d-flex gap-2">
+                        @if (addProject.controls['managerId'].value.length > 0) {
+                          <i
+                            class="pi pi-times pt-2"
+                            (click)="
+                              editProjectForm.controls['managerId'].setValue('');
+                              selectedManagerForEdit = null;
+                              showManagers.set(false)
+                            "
+                          ></i>
+                        }
+                        @if (!showManagers()) {
+                          <i class="pi pi-chevron-down pt-2" (click)="showManagers.set(true)"></i>
+                        } @else {
+                          <i class="pi pi-chevron-up pt-2" (click)="showManagers.set(false)"></i>
+                        }
+                        <button class="btn" (click)="checkManagerForEdit()">
+                          <i class="pi pi-check"></i>
+                        </button>
+                      </div>
+                    </div>
+                    @if (showManagers()) {
+                      <div class="position-relative bg-white">
+                        <div
+                          class="position-absolute overflow-auto top-0 bg-white border w-100 p-1 rounded shadow"
+                          [style.maxHeight]="'500px'"
+                        >
+                          @for (item of filteredUsers; track $index) {
+                            <div (click)="chooseManager(item, true)" class="manager">
+                              {{ item.nome + ' ' + item.cognome }}
+                            </div>
+                          } @empty {
+                            <div>No managers ...</div>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+                @if (!editType()) {
+                  <div class="d-flex gap-1 flex-column">
+                    <label class="fw-bold text-muted text-uppercase text-xs"
+                      >Type
+                      <button pTooltip="edit" (click)="editManager.set(true)" class="btn">
+                        <i class="ms-2 pi pi-pencil"></i></button
+                    ></label>
+                    <span
+                      class="type_{{ selectedItemForEdit?.projectType?.tipoProgetto }} p-1 rounded"
+                      >{{ selectedItemForEdit?.projectType?.tipoProgetto }}</span
+                    >
+                  </div>
+                } @else {
+                  <div></div>
+                }
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex flex-column gap-1">
+                <span class="fw-bold text-muted text-uppercase d-flex gap-1 align-items-center"
+                  >Stato<button pTooltip="edit" (click)="editState.set(true)" class="btn">
+                    <i class="ms-2 pi pi-pencil"></i>
+                  </button>
+                </span>
+                <span
+                  class="state_{{
+                    selectedItemForEdit?.projectState?.toLocaleUpperCase()
+                  }} p-1 rounded"
+                  >{{ selectedItemForEdit?.projectState?.toLocaleUpperCase() }}</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-12 py-5">
+            <div class="shadow rounded p-2 d-flex justify-content-between align-items-start">
+              <div>{{ selectedItemForEdit?.description }}</div>
+              <button (click)="editTitle.set(true)" class="btn">
+                <i class="ms-2 pi pi-pencil"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-12 text-end">
+            <div class="d-flex flex-column gap-1">
+              <label class="fw-bold text-uppercase text-muted"
+                >creato in data
+                <button (click)="editTitle.set(true)" class="btn">
+                  <i class="ms-2 pi pi-pencil"></i></button
+              ></label>
+              <div>{{ selectedItemForEdit?.createdAt | date: 'dd/MM/yyyy' }}</div>
             </div>
           </div>
         </div>
