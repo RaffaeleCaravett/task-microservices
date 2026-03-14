@@ -3,221 +3,698 @@
   } @else {
     <div class="col-12 overflow-auto p-3">
       <div class="row" [style.height]="'100%'">
-        <div class="col-md-12 py-5 fw-bold text-uppercase text-center rounded-top title">
-          <h4 class="w-75 m-auto">
-            If you don’t have a plan for yourself, someone else has one for you.
-          </h4>
-        </div>
-        @if (!addMode()) {
-          <div
-            class="col-lg-3 py-5"
-            [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow ? 'd-none' : ''"
-          >
-            <form [formGroup]="searchProjectForm" class="d-flex m-auto">
-              <input
-                type="text"
-                class="form-control text-end"
-                formControlName="search"
-                placeholder="Search between your project..."
-              />
-            </form>
+        <div class="col-md-12 text-muted text-center rounded-top title">
+          <div class="m-auto p-3 border rounded personal-box d-flex">
+            <i class="pi pi-lightbulb fs-4 fw-bold text-warning"></i
+            ><i
+              >You must have a project, otherwise someone else has it for you. And guess what? Not
+              so much has been planned in your favour.</i
+            >
           </div>
-          <div
-            class="col-lg-3"
-            [ngClass]="projectsToShow?.content?.length === 0 || !projectsToShow ? '' : 'd-none'"
-          ></div>
-          <div class="col-lg-9 py-5">
-            @for (item of projectsToShow?.content; track $index) {
-              <div
-                class="m-1 m-auto bg-light shadow-sm p-3 border rounded"
-                [style.height]="'fit-content'"
-              >
-                <p class="text-center h2">{{ item?.name }}</p>
-                <p class="d-flex justify-content-around">
-                  <span><span class="fw-bold">Manager : </span> {{ item?.manager?.email }}</span>
-                  <span
-                    ><span class="fw-bold">Stato : </span
-                    >{{ item?.state?.toLocaleUpperCase() }}</span
-                  >
-                </p>
-                <p class="py-2 text-start">{{ item?.description }}</p>
-                <p class="text-end">{{ item?.createdAt }}</p>
+        </div>
+        <div class="col-md-12 px-3">
+          <div class="row">
+            <div class="col-md-10">
+              <h1 class="my-5">Lista progetti</h1>
+            </div>
+            @if (!addMode()) {
+              <div class="col-md-2 text-end">
+                <button
+                  class="btn btn-outline-white border text-muted my-5 mx-1"
+                  (click)="filtersOpened.set(true); blockScroll(true)"
+                  pTooltip="filters"
+                  tooltipPosition="left"
+                >
+                  Filters
+                </button>
+                <button
+                  class="btn btn-primary my-5 mx-1"
+                  (click)="switchToAddMode()"
+                  pTooltip="Create a new project"
+                  tooltipPosition="bottom"
+                >
+                  + Add project
+                </button>
               </div>
             }
-            <div class="text-center py-5">
-              <button class="btn btn-primary my-5" (click)="switchToAddMode()">
-                + Add project
-              </button>
+          </div>
+        </div>
+
+        @if (!addMode()) {
+          <!-- <div class="col-12 text-muted text-end mt-4 px-3 d-flex justify-content-end">
+            <button
+              class="btn d-flex align-items-center gap-2"
+              (click)="filtersOpened.set(!filtersOpened())"
+            >
+              <label class="fs-4 text-uppercase text-muted fw-bold">Filters</label>
+
+              @if (filtersOpened()) {
+                <i class="pi pi-chevron-up fs-4"></i>
+              } @else {
+                <i class="pi pi-chevron-down fs-4"></i>
+              }
+            </button>
+          </div> -->
+          <div
+            class="col-12 overflow-hidden shadow"
+            [ngClass]="filtersOpened() ? ['opened-filters', 'p-2'] : 'closed-filters'"
+          >
+            <form [formGroup]="searchProjectForm" class="row py-5 bg-light">
+              <div class="col-12 text-end">
+                <button class="btn" (click)="filtersOpened.set(false); blockScroll(false)">
+                  <i class="pi pi-times fs-3 text-danger"></i>
+                </button>
+              </div>
+              <div class="col-12 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">Title</label>
+                  <input
+                    type="text"
+                    class="form-control border-0"
+                    formControlName="title"
+                    [maxlength]="10"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
+              </div>
+              <div class="col-12 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">description</label>
+                  <input
+                    type="text"
+                    [maxlength]="100"
+                    class="form-control border-0"
+                    formControlName="description"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
+              </div>
+              <div class="col-12 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">manager</label>
+                  <input
+                    type="text"
+                    [maxlength]="10"
+                    class="form-control border-0"
+                    formControlName="managerId"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
+              </div>
+              <div class="col-12 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">type</label>
+                  <select
+                    type="text"
+                    class="form-select border-0"
+                    formControlName="projectType"
+                    [style.maxWidth]="'350px'"
+                  >
+                    <option value=""></option>
+                    @for (item of types; track $index) {
+                      <option value="{{ item.id }}">{{ item.tipoProgetto }}</option>
+                    }
+                  </select>
+                </div>
+              </div>
+              <div class="col-12 my-5 px-5">
+                <div class="input-container">
+                  <label class="fw-bold text-uppercase text-muted text-center">creation date</label>
+                  <input
+                    type="date"
+                    class="form-control border-0"
+                    placeholder=""
+                    formControlName="createdAt"
+                    [style.maxWidth]="'350px'"
+                  />
+                </div>
+              </div>
+              <div class="col-12">
+                <button class="btn border border-primary px-5 m-1" (click)="reset()">
+                  <i class="pi pi-times me-2"></i> Reset
+                </button>
+                <button class="btn btn-primary px-5 m-1" (click)="search()">
+                  <i class="pi pi-search me-2"></i>Search
+                </button>
+              </div>
+            </form>
+          </div>
+          @for (state of states; track state) {
+            <div class="col-md-3 text-center py-4">
+              <label [ngClass]="stateSelected == state ? 'border-bottom' : 'text-muted'">
+                <button
+                  class="btn"
+                  [ngClass]="stateSelected == state ? ['text-primary', 'fw-bold'] : 'text-muted'"
+                  (click)="stateSelected = state; search(true)"
+                >
+                  {{ state }}
+                </button>
+              </label>
+            </div>
+          }
+          <div class="col-lg-12 py-5">
+            <div class="row">
+              @if (!isLoadingProjects()) {
+                <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+                  <span class="text-muted text-uppercase fs-5">elements</span>
+                  <div class="border-bottom">
+                    <form [formGroup]="sizeForm">
+                      <select
+                        class="form-select bg-white border-0"
+                        formControlName="size"
+                        (change)="changeSize()"
+                      >
+                        @for (item of sizes; track $index) {
+                          <option value="{{ item }}">{{ item }}</option>
+                        }
+                      </select>
+                    </form>
+                  </div>
+                </div>
+                <div class="py-5 row">
+                  @for (item of projectsToShow?.content; track $index) {
+                    <div class="col-xl-4 col-md-6 p-5">
+                      <div
+                        class="border shadow panel rounded h-100"
+                        [ngClass]="item.favourite ? 'favourite' : ''"
+                      >
+                        <div
+                          class="rounded-top panel_title w-100 d-flex align-items-center gap-2 justify-content-between p-3 fs-4 bg-primary"
+                          [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                        >
+                          <div><i class="pi pi-briefcase fs-4"></i> {{ item.title }}</div>
+                          <div class="d-flex">
+                            <div class="dropdown">
+                              <button
+                                class="btn dropdown-toggle"
+                                [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                                type="button"
+                                data-bs-toggle="dropdown"
+                                aria-expanded="false"
+                              >
+                                <i class="pi pi-list"></i>
+                              </button>
+                              <ul
+                                class="dropdown-menu"
+                                [ngClass]="item.favourite ? 'bg-primary' : ''"
+                              >
+                                <li>
+                                  <button
+                                    class="dropdown-item"
+                                    [ngClass]="item.favourite ? 'text-gold' : ''"
+                                    type="button"
+                                    (click)="openEdit(item)"
+                                  >
+                                    <i class="pi pi-pencil me-2"></i>Edit
+                                  </button>
+                                </li>
+                                <li>
+                                  <button
+                                    class="dropdown-item"
+                                    [ngClass]="item.favourite ? 'text-gold' : ''"
+                                    type="button"
+                                    (click)="manageFavourite(item)"
+                                  >
+                                    <i class="pi pi-star me-2"></i
+                                    >{{
+                                      item.favourite
+                                        ? 'Remove from favourites'
+                                        : 'Mark as favourite'
+                                    }}
+                                  </button>
+                                </li>
+                              </ul>
+                            </div>
+                            <button
+                              class="btn"
+                              [ngClass]="item.favourite ? 'text-gold' : 'text-white'"
+                              pTooltip="Delete project"
+                            >
+                              <i class="pi pi-trash"></i>
+                            </button>
+                          </div>
+                        </div>
+                        <div class="panel_body">
+                          <div class="p-3">
+                            <div class="my-1 d-flex justify-content-between">
+                              <div>
+                                <span class="fw-bold text-muted text-uppercase"
+                                  >Manager progetto </span
+                                ><br />
+                                {{ item?.manager?.nome + ' ' + item?.manager?.cognome }}
+                              </div>
+                              <div class="d-flex gap-2 flex-column">
+                                <span class="fw-bold text-muted text-uppercase">Type </span>
+                                <span
+                                  class="type_{{ item?.projectType?.tipoProgetto }} p-1 rounded"
+                                  >{{ item?.projectType?.tipoProgetto }}</span
+                                >
+                              </div>
+                            </div>
+                            <div class="d-flex gap-2 flex-column my-1">
+                              <span class="fw-bold text-muted text-uppercase">Stato </span>
+                              <span
+                                class="state_{{
+                                  item?.projectState?.toLocaleUpperCase()
+                                }} p-1 rounded"
+                                >{{ item?.projectState?.toLocaleUpperCase() }}</span
+                              >
+                            </div>
+                            <div
+                              class="shadow rounded p-2 mt-2 shadow-sm overflow-auto"
+                              [style.height]="'120px'"
+                            >
+                              {{ item?.description }}
+                            </div>
+                            <div class="text-end pt-2">
+                              <span class="fw-bold text-uppercase text-muted">Creato in data</span>
+                              {{ item?.createdAt | date: 'dd/MM/yyyy' }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  } @empty {
+                    <p class="fs-4">
+                      <i class="text-muted">Non ci sono progetti da mostrare ...</i>
+                    </p>
+                  }
+                </div>
+
+                <div class="d-flex justify-content-between gap-2 align-items-center pt-4">
+                  <div class="fs-5">
+                    <label class="fs-5 text-muted text-uppercase fs-bold">Elements</label>
+                    {{
+                      page === 0
+                        ? projectsToShow.numberOfElements
+                        : size * projectsToShow.number + projectsToShow.numberOfElements
+                    }}
+                    /
+                    {{ projectsToShow.totalElements }}
+                  </div>
+                  @if (projectsToShow.pageable.pageNumber > 0) {
+                    <div class="d-flex justify-content-center gap-2">
+                      <button
+                        class="btn"
+                        pTooltip="previous"
+                        [disabled]="page === 0"
+                        tooltipPosition="bottom"
+                        (click)="previous()"
+                      >
+                        <i class="pi pi-chevron-left fs-3"></i>
+                      </button>
+                      <span class="text-muted text-uppercase fw-bold fs-5 pt-2">
+                        Page {{ projectsToShow.number + 1 }} / {{ projectsToShow.totalPages }}
+                      </span>
+                      <button
+                        class="btn"
+                        pTooltip="next"
+                        tooltipPosition="bottom"
+                        [disabled]="page + 1 === projectsToShow.totalPages"
+                        (click)="next()"
+                      >
+                        <i class="pi pi-chevron-right fs-3"></i>
+                      </button>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <div class="spinner-border text-primary m-auto my-5" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              }
             </div>
           </div>
         } @else {
-          <form [formGroup]="addProject">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-6 my-4">
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    maxlength="100"
-                    formControlName="title"
-                    class="form-control"
-                  />
-                  @if (
-                    addProjectFormSubmitted && addProject.controls['title'].hasError('required')
-                  ) {
-                    <div>
-                      <p class="text-danger">Inserisci il titolo</p>
+          <div class="col-12 text-end py-5 d-flex justify-content-end">
+            <button
+              class="btn btn-danger d-flex gap-2 align-items-center"
+              pTooltip="Go back to projects"
+              tooltipPosition="left"
+              (click)="addMode.set(false)"
+            >
+              <i class="pi pi-arrow-left"></i> Back
+            </button>
+          </div>
+          @if (!isAddingProject()) {
+            <form [formGroup]="addProject">
+              <div class="container shadow p-4 add-project">
+                <div class="row">
+                  <div class="col-md-6 my-4">
+                    <div class="border-bottom">
+                      <label class="text-uppercase text-muted fw-bold">Title</label>
+                      <input
+                        type="text"
+                        maxlength="100"
+                        formControlName="title"
+                        class="form-control border-0 bg-white"
+                      />
                     </div>
-                  } @else if (
-                    addProjectFormSubmitted && addProject.controls['title'].hasError('maxLength')
-                  ) {
-                    <div>
-                      <p class="text-danger">Massimo 100 caratteri</p>
-                    </div>
-                  } @else if (addProjectFormSubmitted) {
-                    <div>
-                      <p class="text-success">Campo valido</p>
-                    </div>
-                  }
-                </div>
-                <div class="col-md-6 my-4">
-                  <div class="d-flex align-items-center border-bottom rounded">
-                    <input
-                      type="text"
-                      formControlName="managerId"
-                      placeholder="Choose a manager"
-                      class="form-control border-bottom-0"
-                      (click)="showManagers.set(true)"
-                      (input)="showManagers.set(true)"
-                    />
-                    <div class="d-flex gap-2">
-                      @if (addProject.controls['managerId'].value.length > 0) {
-                        <i
-                          class="pi pi-times"
-                          (click)="
-                            addProject.controls['managerId'].setValue(''); selectedManager = null
-                          "
-                        ></i>
-                      }
-                      @if (!showManagers()) {
-                        <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
-                      } @else {
-                        <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
-                      }
-                    </div>
+
+                    @if (
+                      addProjectFormSubmitted && addProject.controls['title'].hasError('required')
+                    ) {
+                      <div>
+                        <p class="text-danger">Inserisci il titolo</p>
+                      </div>
+                    } @else if (
+                      addProjectFormSubmitted && addProject.controls['title'].hasError('maxLength')
+                    ) {
+                      <div>
+                        <p class="text-danger">Massimo 100 caratteri</p>
+                      </div>
+                    } @else if (addProjectFormSubmitted) {
+                      <div>
+                        <p class="text-success">Campo valido</p>
+                      </div>
+                    }
                   </div>
-                  @if (showManagers()) {
-                    <div class="position-relative bg-white">
-                      <div
-                        class="position-absolute overflow-auto top-0 bg-white border w-100 p-1 rounded shadow"
-                        [style.maxHeight]="'500px'"
-                      >
-                        @for (item of filteredUsers; track $index) {
-                          <div (click)="chooseManager(item)">
-                            {{ item.nome + ' ' + item.cognome }}
-                          </div>
-                        } @empty {
-                          <div>No managers ...</div>
-                        }
+                  <div class="col-md-6 my-4">
+                    <div class="border-bottom">
+                      <label class="text-uppercase text-muted fw-bold">Manager</label>
+                      <div class="d-flex align-items-center">
+                        <input
+                          type="text"
+                          formControlName="managerId"
+                          class="form-control border-0 bg-white"
+                          (click)="showManagers.set(true)"
+                          (input)="showManagers.set(true)"
+                        />
+                        <div class="d-flex gap-2">
+                          @if (addProject.controls['managerId'].value.length > 0) {
+                            <i
+                              class="pi pi-times"
+                              (click)="
+                                addProject.controls['managerId'].setValue('');
+                                selectedManager = null;
+                                showManagers.set(false)
+                              "
+                            ></i>
+                          }
+                          @if (!showManagers()) {
+                            <i class="pi pi-chevron-down" (click)="showManagers.set(true)"></i>
+                          } @else {
+                            <i class="pi pi-chevron-up" (click)="showManagers.set(false)"></i>
+                          }
+                        </div>
                       </div>
                     </div>
-                  }
-                  @if (
-                    addProjectFormSubmitted && addProject.controls['managerId'].hasError('required')
-                  ) {
-                    <div>
-                      <p class="text-danger">Scegli il manager per questo progetto</p>
-                    </div>
-                  } @else if (addProjectFormSubmitted) {
-                    <div>
-                      <p class="text-success">Campo valido</p>
-                    </div>
-                  }
-                </div>
-                <div class="col-md-6 my-4">
-                  <div class="d-flex align-items-center border-bottom rounded">
-                    <select type="text" formControlName="typeId" class="form-select">
-                      <option value="" selected disabled>Choose a type</option>
-                      @for (item of types; track $index) {
-                        <option [value]="item.id">{{ item.tipoProgetto }}</option>
-                      }
-                    </select>
+                    @if (showManagers()) {
+                      <div class="position-relative bg-white">
+                        <div
+                          class="position-absolute overflow-auto top-0 bg-white border w-100 p-1 rounded shadow"
+                          [style.maxHeight]="'500px'"
+                        >
+                          @for (item of filteredUsers; track $index) {
+                            <div (click)="chooseManager(item)" class="manager">
+                              {{ item.nome + ' ' + item.cognome }}
+                            </div>
+                          } @empty {
+                            <div>No managers ...</div>
+                          }
+                        </div>
+                      </div>
+                    }
+                    @if (
+                      addProjectFormSubmitted &&
+                      addProject.controls['managerId'].hasError('required')
+                    ) {
+                      <div>
+                        <p class="text-danger">Scegli il manager per questo progetto</p>
+                      </div>
+                    } @else if (addProjectFormSubmitted) {
+                      <div>
+                        <p class="text-success">Campo valido</p>
+                      </div>
+                    }
                   </div>
-
-                  @if (
-                    addProjectFormSubmitted && addProject.controls['typeId'].hasError('required')
-                  ) {
-                    <div>
-                      <p class="text-danger">Inserisci il tipo</p>
+                  <div class="col-md-6 my-4">
+                    <div class="border-bottom">
+                      <label class="text-uppercase text-muted fw-bold">Type</label>
+                      <div class="d-flex align-items-center">
+                        <select
+                          type="text"
+                          formControlName="typeId"
+                          class="form-select bg-white border-0"
+                        >
+                          @for (item of types; track $index) {
+                            <option [value]="item.id">{{ item.tipoProgetto }}</option>
+                          }
+                        </select>
+                      </div>
                     </div>
-                  } @else if (addProjectFormSubmitted) {
-                    <div>
-                      <p class="text-success">Campo valido</p>
-                    </div>
-                  }
-                </div>
-                <div class="col-md-6 my-4">
-                  <div class="d-flex align-items-center border-bottom rounded">
-                    <select type="text" formControlName="state" class="form-select">
-                      <option value="" selected disabled>Choose a state</option>
-                      @for (item of states; track $index) {
-                        <option [value]="item">{{ item }}</option>
-                      }
-                    </select>
+                    @if (
+                      addProjectFormSubmitted && addProject.controls['typeId'].hasError('required')
+                    ) {
+                      <div>
+                        <p class="text-danger">Inserisci il tipo</p>
+                      </div>
+                    } @else if (addProjectFormSubmitted) {
+                      <div>
+                        <p class="text-success">Campo valido</p>
+                      </div>
+                    }
                   </div>
+                  <div class="col-md-6 my-4">
+                    <div class="border-bottom">
+                      <label class="text-uppercase text-muted fw-bold">State</label>
+                      <div class="d-flex align-items-center">
+                        <select
+                          type="text"
+                          formControlName="state"
+                          class="form-select bg-white border-0"
+                        >
+                          @for (item of states; track $index) {
+                            <option [value]="item">{{ item }}</option>
+                          }
+                        </select>
+                      </div>
+                    </div>
+                    @if (
+                      addProjectFormSubmitted && addProject.controls['state'].hasError('required')
+                    ) {
+                      <div>
+                        <p class="text-danger">Inserisci lo stato</p>
+                      </div>
+                    } @else if (addProjectFormSubmitted) {
+                      <div>
+                        <p class="text-success">Campo valido</p>
+                      </div>
+                    }
+                  </div>
+                  <div class="col-md-12 my-4">
+                    <div class="border-bottom">
+                      <label class="fw-bold text-muted text-uppercase">Description</label>
+                      <textarea
+                        maxlength="600"
+                        rows="5"
+                        formControlName="description"
+                        class="form-control bg-white border-0"
+                      >
+                      </textarea>
+                    </div>
 
-                  @if (
-                    addProjectFormSubmitted && addProject.controls['state'].hasError('required')
-                  ) {
-                    <div>
-                      <p class="text-danger">Inserisci lo stato</p>
-                    </div>
-                  } @else if (addProjectFormSubmitted) {
-                    <div>
-                      <p class="text-success">Campo valido</p>
-                    </div>
-                  }
-                </div>
-                <div class="col-md-12 my-4">
-                  <textarea
-                    placeholder="Description"
-                    maxlength="600"
-                    rows="5"
-                    formControlName="description"
-                    class="form-control"
-                  >
-                  </textarea>
-                  @if (
-                    addProjectFormSubmitted &&
-                    addProject.controls['description'].hasError('required')
-                  ) {
-                    <div class="col-12">
-                      <p class="text-danger">Inserisci la descrizione</p>
-                    </div>
-                  } @else if (
-                    addProjectFormSubmitted &&
-                    addProject.controls['description'].hasError('maxLength')
-                  ) {
-                    <div class="col-12">
-                      <p class="text-danger">Massimo 600 caratteri</p>
-                    </div>
-                  } @else if (addProjectFormSubmitted) {
-                    <div class="col-12">
-                      <p class="text-success">Campo valido</p>
-                    </div>
-                  }
-                </div>
-                <div class="col-12 text-end py-3">
-                  <button class="btn btn-primary" (click)="createProject()">
-                    <i class="pi pi-plus"></i>
-                    Add project
-                  </button>
+                    @if (
+                      addProjectFormSubmitted &&
+                      addProject.controls['description'].hasError('required')
+                    ) {
+                      <div class="col-12">
+                        <p class="text-danger">Inserisci la descrizione</p>
+                      </div>
+                    } @else if (
+                      addProjectFormSubmitted &&
+                      addProject.controls['description'].hasError('maxLength')
+                    ) {
+                      <div class="col-12">
+                        <p class="text-danger">Massimo 600 caratteri</p>
+                      </div>
+                    } @else if (addProjectFormSubmitted) {
+                      <div class="col-12">
+                        <p class="text-success">Campo valido</p>
+                      </div>
+                    }
+                  </div>
+                  <div class="col-12 text-end py-3">
+                    <button class="btn btn-primary" (click)="createProject()">
+                      <i class="pi pi-plus"></i>
+                      Add project
+                    </button>
+                  </div>
                 </div>
               </div>
+            </form>
+          } @else {
+            <div class="spinner-border text-primary m-auto my-5" role="status">
+              <span class="visually-hidden">Loading...</span>
             </div>
-          </form>
+          }
         }
       </div>
     </div>
   }
 </div>
+
+@if (showEditModal()) {
+  <div class="edit_modal">
+    <div class="edit_modal_content w-75 bg-white rounded">
+      <form [formGroup]="editProjectForm">
+        <div
+          class="modal_title rounded-top p-2 col-12 d-flex justify-content-between align-items-center px-2 bg-primary"
+          [ngClass]="selectedItemForEdit?.favourite ? 'text-gold' : 'text-white'"
+        >
+          <div class="fs-2">
+            @if (selectedItemForEdit?.favourite) {
+              <i class="pi pi-star-fill fs-3 me-2" title="favourite"></i>
+            }
+            Edit
+          </div>
+          <div class="text-end">
+            <button class="btn" (click)="closeEdit()">
+              <i class="pi pi-times fs-3 text-danger"></i>
+            </button>
+          </div>
+        </div>
+        <div class="modal_body p-3">
+          <div class="row fs-4">
+            <div class="col-12">
+              @if (!editTitle()) {
+                <div>
+                  <label class="fw-bold text-muted text-uppercase">title</label>
+                </div>
+                <span class="fw-bold">{{ selectedItemForEdit?.title }}</span>
+                <button pTooltip="edit" (click)="editTitle.set(true)" class="btn">
+                  <i class="ms-2 pi pi-pencil"></i>
+                </button>
+              } @else {
+                <div class="d-flex">
+                  <input type="text" class="form-control title-input" formControlName="title" />
+                  <button pTooltip="confirm" (click)="editTitle.set(false)" class="btn">
+                    <i class="ms-2 pi pi-check"></i>
+                  </button>
+                </div>
+              }
+            </div>
+            <div class="col-12 py-5">
+              <div class="d-flex justify-content-between">
+                @if (!editManager()) {
+                  <div>
+                    <label class="text-xs text-muted text-uppercase fw-bold">Manager progetto</label
+                    ><button pTooltip="edit" (click)="editManager.set(true)" class="btn">
+                      <i class="ms-2 pi pi-pencil"></i>
+                    </button>
+                    <div>
+                      {{
+                        selectedItemForEdit?.manager?.nome +
+                          ' ' +
+                          selectedItemForEdit?.manager?.cognome
+                      }}
+                    </div>
+                  </div>
+                } @else {
+                  <div>
+                    <div class="d-flex align-items-center">
+                      <input
+                        type="text"
+                        formControlName="managerId"
+                        class="form-control border-0 bg-white"
+                        (click)="showManagers.set(true)"
+                        (input)="
+                          showManagers.set(true);
+                          filterManagers(editProjectForm.controls['managerId'].value)
+                        "
+                      />
+                      <div class="d-flex gap-2">
+                        @if (addProject.controls['managerId'].value.length > 0) {
+                          <i
+                            class="pi pi-times pt-2"
+                            (click)="
+                              editProjectForm.controls['managerId'].setValue('');
+                              selectedManagerForEdit = null;
+                              showManagers.set(false)
+                            "
+                          ></i>
+                        }
+                        @if (!showManagers()) {
+                          <i class="pi pi-chevron-down pt-2" (click)="showManagers.set(true)"></i>
+                        } @else {
+                          <i class="pi pi-chevron-up pt-2" (click)="showManagers.set(false)"></i>
+                        }
+                        <button class="btn" (click)="checkManagerForEdit()">
+                          <i class="pi pi-check"></i>
+                        </button>
+                      </div>
+                    </div>
+                    @if (showManagers()) {
+                      <div class="position-relative bg-white">
+                        <div
+                          class="position-absolute overflow-auto top-0 bg-white border w-100 p-1 rounded shadow"
+                          [style.maxHeight]="'500px'"
+                        >
+                          @for (item of filteredUsers; track $index) {
+                            <div (click)="chooseManager(item, true)" class="manager">
+                              {{ item.nome + ' ' + item.cognome }}
+                            </div>
+                          } @empty {
+                            <div>No managers ...</div>
+                          }
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+                @if (!editType()) {
+                  <div class="d-flex gap-1 flex-column">
+                    <label class="fw-bold text-muted text-uppercase text-xs"
+                      >Type
+                      <button pTooltip="edit" (click)="editManager.set(true)" class="btn">
+                        <i class="ms-2 pi pi-pencil"></i></button
+                    ></label>
+                    <span
+                      class="type_{{ selectedItemForEdit?.projectType?.tipoProgetto }} p-1 rounded"
+                      >{{ selectedItemForEdit?.projectType?.tipoProgetto }}</span
+                    >
+                  </div>
+                } @else {
+                  <div></div>
+                }
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="d-flex flex-column gap-1">
+                <span class="fw-bold text-muted text-uppercase d-flex gap-1 align-items-center"
+                  >Stato<button pTooltip="edit" (click)="editState.set(true)" class="btn">
+                    <i class="ms-2 pi pi-pencil"></i>
+                  </button>
+                </span>
+                <span
+                  class="state_{{
+                    selectedItemForEdit?.projectState?.toLocaleUpperCase()
+                  }} p-1 rounded"
+                  >{{ selectedItemForEdit?.projectState?.toLocaleUpperCase() }}</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="col-12 py-5">
+            <div class="shadow rounded p-2 d-flex justify-content-between align-items-start">
+              <div>{{ selectedItemForEdit?.description }}</div>
+              <button (click)="editTitle.set(true)" class="btn">
+                <i class="ms-2 pi pi-pencil"></i>
+              </button>
+            </div>
+          </div>
+          <div class="col-12 text-end">
+            <div class="d-flex flex-column gap-1">
+              <label class="fw-bold text-uppercase text-muted"
+                >creato in data
+                <button (click)="editTitle.set(true)" class="btn">
+                  <i class="ms-2 pi pi-pencil"></i></button
+              ></label>
+              <div>{{ selectedItemForEdit?.createdAt | date: 'dd/MM/yyyy' }}</div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+}

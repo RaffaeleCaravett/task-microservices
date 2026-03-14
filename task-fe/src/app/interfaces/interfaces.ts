@@ -135,12 +135,18 @@ export interface User {
 export interface project {
   id: number;
   createdAt: string;
-  state: ProjectState;
+  projectState: ProjectState;
   user: User[];
   manager: User;
   task: task[];
   name: string;
   description: string;
+  title: string;
+  projectType: {
+    id: number;
+    tipoProgetto: string;
+  };
+  favourite:boolean;
 }
 
 export interface projectDTO {
@@ -220,4 +226,9 @@ export interface BasicPageFilter {
 }
 export interface CompanyProjectsFilters extends BasicPageFilter {
   projectName: string | null;
+  state: 'PENDING' | 'STARTED' | 'STOPPED' | 'COMPLETED';
+  description: string | null;
+  manager: string | null;
+  type: string | null;
+  date: string | null;
 }

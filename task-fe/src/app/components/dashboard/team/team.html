@@ -2,7 +2,9 @@
   <p-toast></p-toast>
   <div class="row py-5">
     <div class="col-12 py-5 text-uppercase">
-      <h2>Take care of your team.</h2>
+      <div class="border rounded personal-box m-auto p-3 d-flex">
+        <i class="pi pi-lightbulb fs-4 text-warning"></i><i>Behind every great result there is team who believe in what it does.</i>
+      </div>
     </div>
     @if (!addSomeone) {
       <div class="text-end pt-5 col-12">
@@ -58,6 +60,8 @@
                 </div>
               </div>
             </div>
+          }@empty {
+            <p class="text-start fs-4 text-muted"><i>No one is in your team ...</i></p>
           }
         </div>
       </div>
