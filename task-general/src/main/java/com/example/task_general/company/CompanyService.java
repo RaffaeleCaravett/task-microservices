@@ -37,6 +37,9 @@ public class CompanyService {
     public Page<User> getUsersByCompanyId(Long id, Pageable pageable) {
         return userService.filterByCompanyId(id, new UserLightFilters(null, null, null), pageable);
     }
+    public List<User> getUsersByCompanyId(Long id) {
+        return userService.filterByCompanyId(id);
+    }
 
     public List<User> removeUserFromCompany(Long userId, Company company) {
         var user = userService.findById(userId);

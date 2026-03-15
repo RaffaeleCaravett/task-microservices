@@ -34,4 +34,5 @@ public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificat
         if (id == null) return null;
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("companies").get("id"), id);
     }
+
 }

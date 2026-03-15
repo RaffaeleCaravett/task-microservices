@@ -554,17 +554,17 @@
             </button>
           </div>
         </div>
-        <div class="modal_body p-3">
+        <div class="modal_body p-3 overflow-auto">
           <div class="row fs-4">
             <div class="col-12">
               @if (!editTitle()) {
                 <div>
-                  <label class="fw-bold text-muted text-uppercase">title</label>
+                  <label class="fw-bold text-muted text-uppercase"
+                    >title<button pTooltip="edit" (click)="editTitle.set(true)" class="btn">
+                      <i class="ms-2 pi pi-pencil"></i></button
+                  ></label>
                 </div>
                 <span class="fw-bold">{{ selectedItemForEdit?.title }}</span>
-                <button pTooltip="edit" (click)="editTitle.set(true)" class="btn">
-                  <i class="ms-2 pi pi-pencil"></i>
-                </button>
               } @else {
                 <div class="d-flex">
                   <input type="text" class="form-control title-input" formControlName="title" />
@@ -575,7 +575,7 @@
               }
             </div>
             <div class="col-12 py-5">
-              <div class="d-flex justify-content-between">
+              <div class="manager_type">
                 @if (!editManager()) {
                   <div>
                     <label class="text-xs text-muted text-uppercase fw-bold">Manager progetto</label
@@ -604,7 +604,7 @@
                         "
                       />
                       <div class="d-flex gap-2">
-                        @if (addProject.controls['managerId'].value.length > 0) {
+                        @if (editProjectForm.controls['managerId'].value.length > 0) {
                           <i
                             class="pi pi-times pt-2"
                             (click)="
@@ -646,7 +646,7 @@
                   <div class="d-flex gap-1 flex-column">
                     <label class="fw-bold text-muted text-uppercase text-xs"
                       >Type
-                      <button pTooltip="edit" (click)="editManager.set(true)" class="btn">
+                      <button pTooltip="edit" (click)="editType.set(true)" class="btn">
                         <i class="ms-2 pi pi-pencil"></i></button
                     ></label>
                     <span
@@ -655,43 +655,80 @@
                     >
                   </div>
                 } @else {
-                  <div></div>
+                  <div class="row">
+                    <div class="col-12">
+                      <label class="text-muted text-xs fw-bold text-uppercase"> Pick one</label>
+                    </div>
+                    @for (item of types; track $index) {
+                      <div class="col-md-4 p-3">
+                        <span
+                          class="type_{{ item.tipoProgetto }} p-1 rounded manager"
+                          (click)="chooseType(item.tipoProgetto)"
+                          >{{ item.tipoProgetto }}</span
+                        >
+                      </div>
+                    }
+                  </div>
                 }
               </div>
             </div>
             <div class="col-12">
-              <div class="d-flex flex-column gap-1">
-                <span class="fw-bold text-muted text-uppercase d-flex gap-1 align-items-center"
-                  >Stato<button pTooltip="edit" (click)="editState.set(true)" class="btn">
-                    <i class="ms-2 pi pi-pencil"></i>
-                  </button>
-                </span>
-                <span
-                  class="state_{{
-                    selectedItemForEdit?.projectState?.toLocaleUpperCase()
-                  }} p-1 rounded"
-                  >{{ selectedItemForEdit?.projectState?.toLocaleUpperCase() }}</span
-                >
-              </div>
+              @if (!editState()) {
+                <div class="d-flex flex-column gap-1">
+                  <label class="fw-bold text-muted text-uppercase d-flex gap-1 align-items-center"
+                    >Stato<button pTooltip="edit" (click)="editState.set(true)" class="btn">
+                      <i class="ms-2 pi pi-pencil"></i>
+                    </button>
+                  </label>
+                  <span
+                    class="state_{{
+                      selectedItemForEdit?.projectState?.toLocaleUpperCase()
+                    }} p-1 rounded"
+                    >{{ selectedItemForEdit?.projectState?.toLocaleUpperCase() }}</span
+                  >
+                </div>
+              } @else {
+                <div class="row">
+                  <div class="col-12">
+                    <label class="text-muted text-xs fw-bold text-uppercase"> Pick one</label>
+                  </div>
+                  @for (item of states; track $index) {
+                    <div class="col-xl-2 p-3">
+                      <span
+                        class="state_{{ item }} p-1 rounded manager"
+                        (click)="chooseState(item)"
+                        >{{ item }}</span
+                      >
+                    </div>
+                  }
+                </div>
+              }
             </div>
           </div>
           <div class="col-12 py-5">
-            <div class="shadow rounded p-2 d-flex justify-content-between align-items-start">
-              <div>{{ selectedItemForEdit?.description }}</div>
-              <button (click)="editTitle.set(true)" class="btn">
-                <i class="ms-2 pi pi-pencil"></i>
-              </button>
-            </div>
+            @if (!editDescription()) {
+              <div class="shadow rounded p-2 d-flex justify-content-between align-items-start">
+                <div>{{ selectedItemForEdit?.description }}</div>
+                <button (click)="editDescription.set(true)" class="btn">
+                  <i class="ms-2 pi pi-pencil"></i>
+                </button>
+              </div>
+            } @else {
+              <textarea formControlName="description" class="form-control" rows="5"></textarea>
+              <div class="text-end">
+                <button class="btn" (click)="updateDescription()">
+                  <i class="pi pi-check"></i>
+                </button>
+              </div>
+            }
           </div>
-          <div class="col-12 text-end">
-            <div class="d-flex flex-column gap-1">
-              <label class="fw-bold text-uppercase text-muted"
-                >creato in data
-                <button (click)="editTitle.set(true)" class="btn">
-                  <i class="ms-2 pi pi-pencil"></i></button
-              ></label>
-              <div>{{ selectedItemForEdit?.createdAt | date: 'dd/MM/yyyy' }}</div>
-            </div>
+          <div class="col-12 d-flex justify-content-end">
+              <div class="d-flex flex-column gap-1">
+                <label class="fw-bold text-uppercase text-muted"
+                  >creato in data
+                  </label>
+                <div>{{ selectedItemForEdit?.createdAt | date: 'dd/MM/yyyy' }}</div>
+              </div>
           </div>
         </div>
       </form>

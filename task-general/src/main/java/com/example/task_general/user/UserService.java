@@ -80,4 +80,16 @@ public class UserService {
             throw new InternalServerException("Qualcosa è successo internamente. Risolviamo subito.");
         }
     }
+    public List<User> filterByCompanyId(Long id) {
+        try {
+            if(null == id){
+                throw new BadRequestException("L'id della company non può essere null");
+            }
+            return userRepository.findAll(Specification.where(UserRepository.companyIdEquals(id)));
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerException("Qualcosa è successo internamente. Risolviamo subito.");
+        }
+    }
 }

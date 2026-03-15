@@ -27,6 +27,7 @@ public class Project {
     private LocalDate createdAt;
     private String title;
     private String description;
+    private Boolean favourite;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "progetti_utenti",
             joinColumns = @JoinColumn(name = "progetto_id"),

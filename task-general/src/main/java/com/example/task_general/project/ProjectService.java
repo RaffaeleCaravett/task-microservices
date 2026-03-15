@@ -3,10 +3,12 @@ package com.example.task_general.project;
 import com.example.task_general.company.Company;
 import com.example.task_general.company.CompanyService;
 import com.example.task_general.dtos.entitiesDTO.ProjectDTO;
+import com.example.task_general.dtos.entitiesDTO.ProjectFilterDTO;
 import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.EntityNotPresentException;
 import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.UnauthorizedException;
+import com.example.task_general.projectType.ProjectType;
 import com.example.task_general.projectType.ProjectTypeService;
 import com.example.task_general.user.UserService;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -33,26 +35,27 @@ public class ProjectService {
 
     public Project create(ProjectDTO projectDTO, Company company) {
         var foundCompany = companyService.findById(projectDTO.getCompanyId());
-        if(!foundCompany.getId().equals(company.getId())){
+        if (!foundCompany.getId().equals(company.getId())) {
             throw new BadRequestException("Non puoi creare progetti per altre companie");
         }
-       try{
-           Project project = new Project();
-           project.setCreatedAt(LocalDate.now());
-           project.setProjectState(ProjectState.valueOf(projectDTO.getState()));
-           project.setTitle(projectDTO.getTitle());
-           project.setDescription(projectDTO.getDescription());
-           project.setCompany(companyService.findById(projectDTO.getCompanyId()));
-           project.setManager(userService.findById(projectDTO.getManagerId()));
-           if(null != projectDTO.getDevelopers()) {
-               project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
-           }
-           project.setTasks(new ArrayList<>());
-           project.setProjectType(projectTypeService.findById(projectDTO.getTypeId()));
-           return projectRepository.save(project);
-       }catch (Exception e){
-           throw new InternalServerException("Something bad happened, we're working on it to solve as soon as possible.");
-       }
+        try {
+            Project project = new Project();
+            project.setCreatedAt(LocalDate.now());
+            project.setProjectState(ProjectState.valueOf(projectDTO.getState()));
+            project.setTitle(projectDTO.getTitle());
+            project.setDescription(projectDTO.getDescription());
+            project.setCompany(companyService.findById(projectDTO.getCompanyId()));
+            project.setManager(userService.findById(projectDTO.getManagerId()));
+            project.setFavourite(false);
+            if (null != projectDTO.getDevelopers()) {
+                project.setUsers(userService.findAllById(projectDTO.getDevelopers()));
+            }
+            project.setTasks(new ArrayList<>());
+            project.setProjectType(projectTypeService.findById(projectDTO.getTypeId()));
+            return projectRepository.save(project);
+        } catch (Exception e) {
+            throw new InternalServerException("Something bad happened, we're working on it to solve as soon as possible.");
+        }
 
     }
 
@@ -140,7 +143,7 @@ public class ProjectService {
         return projectRepository.save(project);
     }
 
-    public Page<Project> filterByCompanyIdAndName(Long id, String name, Pageable pageable){
+    public Page<Project> filterByFilter(Long id, ProjectFilterDTO projectFilterDTO, Pageable pageable) {
         try {
             Specification<Project> spec = new Specification<Project>() {
                 @Override
@@ -151,12 +154,60 @@ public class ProjectService {
             if (id != null) {
                 spec = ProjectRepository.companyIdEquals(id);
             }
-            if (name != null) {
-                spec = spec.and(ProjectRepository.nameContains(name));
+            if (projectFilterDTO.projectName() != null) {
+                spec = spec.and(ProjectRepository.nameContains(projectFilterDTO.projectName()));
+            }
+            if (projectFilterDTO.description() != null) {
+                spec = spec.and(ProjectRepository.descriptionContains(projectFilterDTO.description()));
+            }
+            if (projectFilterDTO.manager() != null) {
+                spec = spec.and(ProjectRepository.managerNameContains(projectFilterDTO.manager()));
+            }
+            if (projectFilterDTO.type() != null) {
+                ProjectType projectType = projectTypeService.findById(projectFilterDTO.type());
+                spec = spec.and(ProjectRepository.typeEquals(projectType.getId()));
+            }
+            if (projectFilterDTO.state() != null) {
+                try {
+                    ProjectState projectState = ProjectState.valueOf(projectFilterDTO.state());
+                    spec = spec.and(ProjectRepository.stateEquals(projectState));
+                } catch (Exception e) {
+                    throw new BadRequestException("Lo stato inserito non è corretto");
+                }
+            }
+            if (projectFilterDTO.date() != null && !projectFilterDTO.date().isBlank() && !projectFilterDTO.date().isEmpty()) {
+                try {
+                    LocalDate date = LocalDate.parse(projectFilterDTO.date());
+                    spec = spec.and(ProjectRepository.createdAtGreaterThanOrEqualTo(date));
+                } catch (Exception e) {
+                    throw new BadRequestException("La data inserita non è corretta");
+                }
             }
             return projectRepository.findAll(spec, pageable);
+        } catch (BadRequestException e) {
+            throw new BadRequestException(e.getMessage());
         } catch (Exception e) {
             throw new InternalServerException("Qualcosa è successo internamente. Risolviamo subito.");
         }
+    }
+
+    public Project markAsFavourite(Long id , Long companyId){
+        Project project = findById(id);
+        if(project.getCompany().getId().equals(companyId)){
+            project.setFavourite(true);
+        }else{
+            throw new BadRequestException("Non puoi modificare i progetti di altre aziende.");
+        }
+        return projectRepository.save(project);
+    }
+
+    public Project unmarkAsFavourite(Long id , Long companyId){
+        Project project = findById(id);
+        if(project.getCompany().getId().equals(companyId)){
+            project.setFavourite(false);
+        }else{
+            throw new BadRequestException("Non puoi modificare i progetti di altre aziende.");
+        }
+        return projectRepository.save(project);
     }
 }
