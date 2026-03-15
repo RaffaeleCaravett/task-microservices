@@ -2,6 +2,7 @@ package com.example.task_general.user;
 
 import com.example.task_general.codiceAccesso.CodiceAccesso;
 import com.example.task_general.company.Company;
+import com.example.task_general.log.Log;
 import com.example.task_general.project.Project;
 import com.example.task_general.secretCode.SecretCode;
 import com.example.task_general.task.Task;
@@ -51,6 +52,9 @@ public class User extends UserInfos implements UserDetails {
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonIgnore
     private SecretCode secretCode;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<Log> logs;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));
