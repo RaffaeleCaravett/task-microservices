@@ -35,6 +35,11 @@ public class CompanyController {
         return companyService.getUsersByCompanyId(id, pageable);
     }
 
+    @GetMapping("/users/list/{id}")
+    public List<User> getUsers(@PathVariable Long id) {
+        return companyService.getUsersByCompanyId(id);
+    }
+
     @PostMapping("/user")
     public CodiceAccesso addUserToCompany(@RequestBody @Valid FirstUserLoginDTO userLoginDTO, BindingResult bindingResult, @AuthenticationPrincipal Company company) {
         if (bindingResult.hasErrors()) {
