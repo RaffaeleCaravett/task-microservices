@@ -27,7 +27,7 @@ public class AuthController {
     private final CodiceAccessoRepository codiceAccessoRepository;
 
     @PostMapping("/email")
-    public Long getUserByEmail(@RequestBody @Valid CompanyLoginDTO companyLoginDTO, BindingResult bindingResult) {
+    public Long getUsersByEmail(@RequestBody @Valid CompanyLoginDTO companyLoginDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new UnauthorizedException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }
