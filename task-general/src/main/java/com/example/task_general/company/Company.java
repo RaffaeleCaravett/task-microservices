@@ -5,6 +5,7 @@ import com.example.task_general.formaGiuridica.FormaGiuridica;
 import com.example.task_general.indirizzo.Indirizzo;
 import com.example.task_general.log.Log;
 import com.example.task_general.metodoPagamento.MetodoPagamento;
+import com.example.task_general.milestone.Milestone;
 import com.example.task_general.project.Project;
 import com.example.task_general.settore.Settore;
 import com.example.task_general.user.Role;
@@ -68,6 +69,9 @@ public class Company extends UserInfos implements UserDetails {
     @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonIgnore
     private List<Log> logs;
+    @OneToMany(mappedBy = "company", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    private List<Milestone> milestones;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(this.role.name()));
