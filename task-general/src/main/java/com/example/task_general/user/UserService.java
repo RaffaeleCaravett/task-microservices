@@ -1,9 +1,13 @@
 package com.example.task_general.user;
 
+import com.example.task_general.company.Company;
 import com.example.task_general.dtos.entitiesDTO.UserLightFilters;
 import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.SignupException;
+import com.example.task_general.exceptions.UnauthorizedException;
+import com.example.task_general.secretCode.SecretCode;
+import com.example.task_general.secretCode.SecretCodeRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -16,8 +20,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static org.springframework.data.jpa.domain.Specification.where;
 
@@ -26,7 +32,7 @@ import static org.springframework.data.jpa.domain.Specification.where;
 public class UserService {
 
     private final UserRepository userRepository;
-
+    private final SecretCodeRepository secretCodeRepository;
 
     public User findById(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new SignupException("Utente non trovato, id: " + id));
@@ -91,5 +97,37 @@ public class UserService {
         } catch (Exception e) {
             throw new InternalServerException("Qualcosa è successo internamente. Risolviamo subito.");
         }
+    }
+
+    public Boolean canRequestCode(Long userId){
+        SecretCode secretCode = secretCodeRepository.findByUser_Id(userId);
+        return !secretCode.getValid();
+    }
+    public SecretCode updateCode(Long userId, User user, Company company){
+        SecretCode secretCode = secretCodeRepository.findByUser_Id(userId);
+
+        if((null!= user && !userId.equals(user.getId())) || (null!= company && !company.getId().equals(secretCode.getUser().getCompanies().get(0).getId()))){
+            throw new UnauthorizedException("Non puoi modificare questa risorsa");
+        }
+        if(!secretCode.getValid() ){
+            secretCode.setValid(true);
+            secretCode.setCreationDate(LocalDate.now());
+            secretCode.setNotified(false);
+            secretCode.setCode(createSecretCode());
+            return secretCodeRepository.save(secretCode);
+        }else{
+            throw new BadRequestException("Il codice non è ancora scaduto. Non puoi modificarlo.");
+        }
+
+    }
+    public String createSecretCode() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 6) {
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
     }
 }
