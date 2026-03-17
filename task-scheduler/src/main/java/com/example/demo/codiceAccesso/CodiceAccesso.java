@@ -1,0 +1,24 @@
+package com.example.demo.codiceAccesso;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.Instant;
+
+@Entity
+@Table(name = "codice_accessi")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class CodiceAccesso {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String code;
+    private Instant creationTime;
+    private Boolean isUsed;
+}

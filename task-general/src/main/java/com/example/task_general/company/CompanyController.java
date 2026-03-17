@@ -7,6 +7,7 @@ import com.example.task_general.dtos.entitiesDTO.UserLoginDTO;
 import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.project.Project;
 import com.example.task_general.projectType.ProjectType;
+import com.example.task_general.secretCode.SecretCode;
 import com.example.task_general.user.User;
 import jakarta.validation.Valid;
 import lombok.Getter;
@@ -41,7 +42,7 @@ public class CompanyController {
     }
 
     @PostMapping("/user")
-    public CodiceAccesso addUserToCompany(@RequestBody @Valid FirstUserLoginDTO userLoginDTO, BindingResult bindingResult, @AuthenticationPrincipal Company company) {
+    public SecretCode addUserToCompany(@RequestBody @Valid FirstUserLoginDTO userLoginDTO, BindingResult bindingResult, @AuthenticationPrincipal Company company) {
         if (bindingResult.hasErrors()) {
             throw new BadRequestException(bindingResult.getAllErrors().getFirst().getDefaultMessage());
         }

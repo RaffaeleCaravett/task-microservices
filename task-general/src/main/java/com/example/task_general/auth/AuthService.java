@@ -9,6 +9,8 @@ import com.example.task_general.exceptions.BadRequestException;
 import com.example.task_general.exceptions.InternalServerException;
 import com.example.task_general.exceptions.SignupException;
 import com.example.task_general.exceptions.UnauthorizedException;
+import com.example.task_general.secretCode.SecretCode;
+import com.example.task_general.secretCode.SecretCodeRepository;
 import com.example.task_general.user.Role;
 import com.example.task_general.user.User;
 import com.example.task_general.user.UserRepository;
@@ -36,6 +38,7 @@ public class AuthService {
     private final CodiceAccessoRepository codiceAccessoRepository;
     private final UserService userService;
     private final CompanyRepository companyRepository;
+    private final SecretCodeRepository secretCodeRepository;
 
     public Long findByEmail(UserLoginDTO userLoginDTO) {
 
@@ -54,6 +57,15 @@ public class AuthService {
         codiceAccesso.setCompany(null);
         codiceAccesso.setCode(createAccessCode());
         return codiceAccessoRepository.save(codiceAccesso);
+    }
+    public SecretCode createUserSecretCode(Long id) {
+        SecretCode codiceAccesso = new SecretCode();
+        codiceAccesso.setCreationDate(LocalDate.now());
+        codiceAccesso.setUser(userRepository.findById(id).orElseThrow(() -> new UnauthorizedException("Accesso negato")));
+        codiceAccesso.setValid(true);
+        codiceAccesso.setNotified(false);
+        codiceAccesso.setCode(createAccessCode());
+        return secretCodeRepository.save(codiceAccesso);
     }
 
     public String createAccessCode() {
@@ -78,7 +90,7 @@ public class AuthService {
     }
 
     @Transactional
-    public CodiceAccesso addUserToCompany(FirstUserLoginDTO userLoginDTO, Company company) {
+    public SecretCode addUserToCompany(FirstUserLoginDTO userLoginDTO, Company company) {
 
             if (userRepository.findByEmail(userLoginDTO.getEmail()).isPresent()) {
                 throw new BadRequestException("User già presente in db");
@@ -112,7 +124,7 @@ public class AuthService {
             }
             company.setUsers(users);
             companyRepository.save(company);
-            return createUserAccessCode(user.getId());
+            return createUserSecretCode(user.getId());
         } catch (Exception e) {
             throw new InternalServerException("E' successo un problema imprevisto nella registrazione");
         }
