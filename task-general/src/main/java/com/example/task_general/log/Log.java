@@ -36,4 +36,6 @@ public class Log {
     @OneToOne(mappedBy = "log")
     @JsonIgnore
     private Milestone milestone;
+    private Long resourceId;
+    private String resourceName;
 }

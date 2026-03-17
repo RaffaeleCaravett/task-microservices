@@ -25,7 +25,7 @@ public class Milestone {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "company_id")
     private Company company;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
